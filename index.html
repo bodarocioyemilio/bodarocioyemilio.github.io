@@ -84,22 +84,21 @@
 
     .hero-names {
       font-family: 'Great Vibes', cursive;
-      font-size: clamp(2.2rem, 6.5vw, 5.5rem);
+      font-size: min(9.5vw, 5.5rem);
       color: var(--rose);
       line-height: 1.1;
       padding-top: 0.25em;
-      clip-path: inset(-0.3em 100% -0.3em 0);
+      clip-path: inset(-0.3em 100% -0.3em -0.6em);
       animation: inkReveal 1.4s cubic-bezier(.77,0,.175,1) .5s both;
-      word-break: keep-all;
-      overflow-wrap: normal;
+      white-space: nowrap;
     }
 
     .hero-amp {
       font-family: 'Great Vibes', cursive;
-      font-size: clamp(1.6rem, 4vw, 3.5rem);
+      font-size: min(6vw, 4rem);
       color: var(--rose);
       display: block;
-      margin: .5rem 0;
+      margin: .3rem 0 .8rem;
       line-height: 1;
     }
 
@@ -230,9 +229,13 @@
       position: absolute;
       bottom: 2rem; left: 50%;
       transform: translateX(-50%);
-      display: flex; flex-direction: column; align-items: center; gap: .5rem;
+      display: none; flex-direction: column; align-items: center; gap: .5rem;
       z-index: 10;
       animation: fadeIn 2s ease 2s both;
+    }
+    @media (max-width: 768px) {
+      .scroll-cue { display: flex; }
+      .hero-rsvp  { margin-top: 2.5rem; }
     }
     .scroll-cue span {
       font-family: 'Montserrat', sans-serif;
@@ -620,8 +623,8 @@
       from { opacity:0; } to { opacity:1; }
     }
     @keyframes inkReveal {
-      from { clip-path: inset(-0.3em 100% -0.3em 0); }
-      to   { clip-path: inset(-0.3em 0%   -0.3em 0); }
+      from { clip-path: inset(-0.3em 100% -0.3em -0.6em); }
+      to   { clip-path: inset(-0.3em -0.6em -0.3em -0.6em); }
     }
     @keyframes shimmer {
       0%   { background-position: -200% center; }
@@ -777,7 +780,7 @@
 <!-- ════════════════════════════════════════════
      AGENDA
 ════════════════════════════════════════════ -->
-<section id="agenda">
+<section id="agenda" style="padding-top:1.5rem">
   <div class="s-inner">
 
     <div class="aos" style="text-align:center">
@@ -862,6 +865,16 @@
 
 
 <!-- ════════════════════════════════════════════
+     SKYLINE PARALLAX
+════════════════════════════════════════════ -->
+<div id="skyline">
+  <div class="skyline-inner">
+    <img class="skyline-img" id="skylineImg" src="illustrations/skyline.png" alt="Panorámica de Elda">
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
      MESSAGE
 ════════════════════════════════════════════ -->
 <section id="message">
@@ -883,16 +896,6 @@
     </div>
   </div>
 </section>
-
-
-<!-- ════════════════════════════════════════════
-     SKYLINE PARALLAX
-════════════════════════════════════════════ -->
-<div id="skyline">
-  <div class="skyline-inner">
-    <img class="skyline-img" id="skylineImg" src="illustrations/skyline.png" alt="Panorámica de Elda">
-  </div>
-</div>
 
 
 <!-- ════════════════════════════════════════════
