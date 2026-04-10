@@ -629,15 +629,18 @@
       perspective: 2000px;
       cursor: pointer;
       transition: opacity 0.6s ease;
+      gap: 0;
     }
     #book-intro.fade-out { opacity: 0; pointer-events: none; }
 
     .book-cover {
-      flex: 1;
+      flex: 0 0 50%;
+      width: 50%;
+      height: 100%;
       overflow: hidden;
-      transform-style: preserve-3d;
-      transition: transform 1.2s cubic-bezier(0.6, 0, 0.4, 1);
+      transition: transform 1.8s cubic-bezier(0.6, 0, 0.4, 1);
       will-change: transform;
+      backface-visibility: hidden;
     }
     .book-cover img {
       width: 100%;
@@ -645,8 +648,16 @@
       object-fit: cover;
       display: block;
     }
-    #cover-left  { transform-origin: left center; }
-    #cover-right { transform-origin: right center; }
+    #cover-left {
+      transform-origin: left center;
+      transform-style: preserve-3d;
+    }
+    #cover-left img  { object-position: right center; }
+    #cover-right {
+      transform-origin: right center;
+      transform-style: preserve-3d;
+    }
+    #cover-right img { object-position: left center; }
 
     #book-intro.opening #cover-left  { transform: rotateY(-180deg); }
     #book-intro.opening #cover-right { transform: rotateY(180deg); }
