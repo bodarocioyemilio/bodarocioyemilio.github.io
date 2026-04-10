@@ -84,20 +84,23 @@
 
     .hero-names {
       font-family: 'Great Vibes', cursive;
-      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-size: clamp(2.2rem, 6.5vw, 5.5rem);
       color: var(--rose);
-      line-height: 1.05;
+      line-height: 1.1;
       padding-top: 0.25em;
       clip-path: inset(-0.3em 100% -0.3em 0);
       animation: inkReveal 1.4s cubic-bezier(.77,0,.175,1) .5s both;
+      word-break: keep-all;
+      overflow-wrap: normal;
     }
 
     .hero-amp {
       font-family: 'Great Vibes', cursive;
-      font-size: clamp(2rem, 4.5vw, 3.5rem);
-      color: var(--gold);
+      font-size: clamp(1.6rem, 4vw, 3.5rem);
+      color: var(--rose);
       display: block;
-      margin: .2rem 0;
+      margin: .5rem 0;
+      line-height: 1;
     }
 
     .hero-line {
@@ -116,6 +119,11 @@
       text-transform: uppercase;
       color: var(--sepia-light);
       margin-bottom: 2rem;
+    }
+    .hero-date-short { display: none; }
+    @media (max-width: 480px) {
+      .hero-date-long  { display: none; }
+      .hero-date-short { display: inline; }
     }
 
     /* ── RSVP Button ── */
@@ -244,7 +252,7 @@
     /* ═══════════════════════════════════════════════
        SHARED
     ════════════════════════════════════════════════ */
-    section { position: relative; padding: 6rem 2rem; }
+    section { position: relative; padding: 4rem 2rem; }
     .s-inner { max-width: 860px; margin: 0 auto; }
 
     .s-label {
@@ -270,7 +278,7 @@
        COUNTDOWN
     ════════════════════════════════════════════════ */
     #countdown {
-      padding: 5rem 2rem;
+      padding: 3.5rem 2rem;
       text-align: center;
       background: linear-gradient(180deg, var(--cream) 0%, var(--cream-warm) 100%);
     }
@@ -279,15 +287,17 @@
       align-items: center;
       justify-content: center;
       gap: 0;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       margin-top: 1.5rem;
+      width: 100%;
     }
     .cd-unit {
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 1.5rem 2.5rem;
-      min-width: 100px;
+      padding: 1.5rem clamp(.4rem, 2vw, 2.5rem);
+      min-width: 0;
+      flex: 1 1 0;
     }
     .cd-unit span {
       font-family: 'Cormorant Garamond', serif;
@@ -303,19 +313,21 @@
     .cd-unit small {
       font-family: 'Montserrat', sans-serif;
       font-weight: 300;
-      font-size: .6rem;
-      letter-spacing: .45em;
+      font-size: clamp(.42rem, 1.2vw, .6rem);
+      letter-spacing: clamp(.1em, .5vw, .45em);
       text-transform: uppercase;
       color: var(--sage);
       margin-top: .6rem;
+      white-space: nowrap;
     }
     .cd-sep {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2rem, 5vw, 4rem);
+      font-size: clamp(1.4rem, 4vw, 4rem);
       color: var(--gold);
       opacity: .5;
       align-self: flex-start;
       padding-top: 1.5rem;
+      flex-shrink: 0;
       animation: sepBlink 2s ease-in-out infinite;
     }
     @keyframes sepBlink {
@@ -328,8 +340,10 @@
       padding: 1.5rem;
     }
     @media (max-width: 500px) {
-      .cd-unit { padding: 1rem 1.2rem; min-width: 75px; }
-      .cd-sep { padding-top: 1rem; }
+      .cd-unit { padding: .8rem clamp(.15rem, 1.2vw, .8rem); }
+      .cd-unit span { font-size: clamp(2.2rem, 10vw, 3.2rem); }
+      .cd-unit small { font-size: clamp(.45rem, 1.6vw, .58rem); letter-spacing: .12em; }
+      .cd-sep { padding-top: .8rem; font-size: clamp(1.4rem, 5vw, 2.2rem); padding-left: 0; padding-right: 0; }
     }
 
     /* ═══════════════════════════════════════════════
@@ -468,6 +482,27 @@
       height: auto; object-fit: contain;
       filter: drop-shadow(0 4px 12px rgba(74,59,46,.12));
     }
+    .tl-map-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .3rem;
+      margin-top: .6rem;
+      font-family: 'Montserrat', sans-serif;
+      font-size: .55rem;
+      font-weight: 400;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--gold-dark);
+      text-decoration: none;
+      border: 1px solid var(--gold);
+      border-radius: 2rem;
+      padding: .3rem .7rem;
+      transition: background .2s, color .2s;
+      white-space: nowrap;
+    }
+    .tl-map-btn svg { width: 10px; height: 10px; flex-shrink: 0; }
+    .tl-map-btn:hover { background: var(--gold); color: var(--cream); }
+
     .tl-time {
       font-family: 'Montserrat', sans-serif; font-weight: 300;
       font-size: .62rem; letter-spacing: .4em; text-transform: uppercase;
@@ -601,17 +636,12 @@
        RESPONSIVE
     ════════════════════════════════════════════════ */
     @media (max-width: 640px) {
-      .timeline::before { display: none; }
-      .tl-item {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto auto auto;
-        margin-bottom: 3rem;
-      }
-      .tl-item .tl-text  { padding: 0 !important; grid-column: 1 !important; grid-row: 2; text-align: center !important; }
-      .tl-item .tl-illus { padding: 0 !important; grid-column: 1 !important; grid-row: 1; justify-content: center !important; }
-      .tl-item .tl-dot   { display: none; }
-      .tl-illus img { max-width: 80px; }
       .venues { gap: 1.5rem; }
+      .tl-illus img { max-width: 70px; }
+      .tl-item:nth-child(odd) .tl-text  { padding-right: 1.2rem; }
+      .tl-item:nth-child(odd) .tl-illus { padding-left: 1.2rem; }
+      .tl-item:nth-child(even) .tl-text  { padding-left: 1.2rem; }
+      .tl-item:nth-child(even) .tl-illus { padding-right: 1.2rem; }
     }
   </style>
 
@@ -703,16 +733,15 @@
     </div>
 
     <div class="hero-line"></div>
-    <p class="hero-date">Sábado &nbsp;·&nbsp; 12 de Septiembre de 2026 &nbsp;·&nbsp; Elda</p>
+    <p class="hero-date">
+      <span class="hero-date-long">Sábado &nbsp;·&nbsp; 12 de Septiembre de 2026 &nbsp;·&nbsp; Elda</span>
+      <span class="hero-date-short">12 / 09 / 2026 &nbsp;·&nbsp; Elda</span>
+    </p>
 
-    <a href="#countdown" class="btn-rsvp hero-rsvp" style="animation: fadeIn 1s ease 1.6s both;">
+    <a href="https://forms.gle/DcPiyKScZdqJ9xwH6" target="_blank" rel="noopener" class="btn-rsvp hero-rsvp" style="animation: fadeIn 1s ease 1.6s both;">
       <span>Confirma tu asistencia</span>
       <span class="btn-arrow">→</span>
     </a>
-  </div>
-
-  <div class="hero-church-wrap" id="heroChurch">
-    <img src="illustrations/iglesia.png" alt="Iglesia de Santa Ana, Elda">
   </div>
 
   <div class="hero-wm" aria-hidden="true">2026</div>
@@ -741,11 +770,92 @@
       <div class="cd-unit"><span id="cd-secs">--</span><small>segundos</small></div>
     </div>
 
-    <div style="text-align:center; margin-top:2.5rem;" class="aos d2">
-      <a href="#info" class="btn-rsvp">
-        <span>Confirmar asistencia</span>
-        <span class="btn-arrow">→</span>
-      </a>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     AGENDA
+════════════════════════════════════════════ -->
+<section id="agenda">
+  <div class="s-inner">
+
+    <div class="aos" style="text-align:center">
+      <p class="s-label">Nuestra agenda</p>
+      <h2 class="s-title">El gran día</h2>
+      <div class="gold-bar"></div>
+    </div>
+
+    <div class="timeline">
+
+      <div class="tl-item aos">
+        <div class="tl-text">
+          <p class="tl-time">18:00 h</p>
+          <p class="tl-event">Ceremonia</p>
+          <p class="tl-detail">Iglesia de Santa Ana, Elda</p>
+          <a class="tl-map-btn" href="https://www.google.com/maps/place/Iglesia+de+Santa+Ana/@38.4792039,-0.7958946,17z/data=!3m1!4b1!4m6!3m5!1s0xd63c4d47745d7f1:0x608ff98f64e70278!8m2!3d38.4792039!4d-0.7958946!16s%2Fg%2F1tfg9027?entry=ttu&g_ep=EgoyMDI2MDQwNy4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            Ubicación
+          </a>
+        </div>
+        <div class="tl-dot"></div>
+        <div class="tl-illus">
+          <img src="illustrations/ramo.png" alt="Ramo de novia" style="width:120px; mix-blend-mode:multiply">
+        </div>
+      </div>
+
+      <div class="tl-item aos d1">
+        <div class="tl-illus">
+          <img src="illustrations/senial.png" alt="Señal" style="width:175px; mix-blend-mode:multiply">
+        </div>
+        <div class="tl-dot"></div>
+        <div class="tl-text">
+          <p class="tl-time">19:30 h</p>
+          <p class="tl-event">Recepción en la Finca</p>
+          <p class="tl-detail">Finca Quinta Lacy</p>
+          <a class="tl-map-btn" href="https://www.google.com/maps/place/Quinta+Lacy/@38.45347,-0.8136903,17z/data=!3m1!4b1!4m6!3m5!1s0xd63c492df14876f:0xd55330b06dea4860!8m2!3d38.45347!4d-0.81111!16s%2Fg%2F1hc3qhcqt?entry=ttu&g_ep=EgoyMDI2MDQwNy4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            Ubicación
+          </a>
+        </div>
+      </div>
+
+      <div class="tl-item aos d2">
+        <div class="tl-text">
+          <p class="tl-time">20:00 h</p>
+          <p class="tl-event">Cocktail</p>
+          <p class="tl-detail">Bajo las estrellas</p>
+        </div>
+        <div class="tl-dot"></div>
+        <div class="tl-illus">
+          <img src="illustrations/Copa 1.png" alt="Copa cocktail" style="width:72px">
+        </div>
+      </div>
+
+      <div class="tl-item aos">
+        <div class="tl-illus">
+          <img src="illustrations/Platos 1.png" alt="Cena" style="width:100px; mix-blend-mode:multiply">
+        </div>
+        <div class="tl-dot"></div>
+        <div class="tl-text">
+          <p class="tl-time">21:30 h</p>
+          <p class="tl-event">Cena</p>
+          <p class="tl-detail">Mesa y mantel</p>
+        </div>
+      </div>
+
+      <div class="tl-item aos d1">
+        <div class="tl-text">
+          <p class="tl-time">∞</p>
+          <p class="tl-event">Fiesta</p>
+          <p class="tl-detail">Hasta que el cuerpo aguante</p>
+        </div>
+        <div class="tl-dot"></div>
+        <div class="tl-illus">
+          <img src="illustrations/disco.png" alt="Fiesta" style="width:80px; mix-blend-mode:multiply">
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -799,7 +909,7 @@
 
     <p class="date-text aos d2">
       La ceremonia se celebrará en la <strong>Iglesia de Santa Ana</strong>,
-      en Elda. A continuación, lo festejearemos en la <strong>Finca Quinta Lazy</strong>.
+      en Elda. A continuación, lo festejearemos en la <strong>Finca Quinta Lacy</strong>.
     </p>
 
     <div class="venues">
@@ -811,89 +921,10 @@
       <div class="venue-card aos d1">
         <p class="v-time">19:30 h</p>
         <p class="v-name">Recepción</p>
-        <p class="v-place">Finca Quinta Lazy</p>
+        <p class="v-place">Finca Quinta Lacy</p>
       </div>
     </div>
 
-  </div>
-</section>
-
-
-<!-- ════════════════════════════════════════════
-     AGENDA
-════════════════════════════════════════════ -->
-<section id="agenda">
-  <div class="s-inner">
-
-    <div class="aos" style="text-align:center">
-      <p class="s-label">Nuestra agenda</p>
-      <h2 class="s-title">El gran día</h2>
-      <div class="gold-bar"></div>
-    </div>
-
-    <div class="timeline">
-
-      <div class="tl-item aos">
-        <div class="tl-text">
-          <p class="tl-time">18:00 h</p>
-          <p class="tl-event">Ceremonia</p>
-          <p class="tl-detail">Iglesia de Santa Ana, Elda</p>
-        </div>
-        <div class="tl-dot"></div>
-        <div class="tl-illus">
-          <img src="illustrations/ramo.png" alt="Ramo de novia" style="width:120px; mix-blend-mode:multiply">
-        </div>
-      </div>
-
-      <div class="tl-item aos d1">
-        <div class="tl-illus">
-          <img src="illustrations/senial.png" alt="Señal" style="width:130px; mix-blend-mode:multiply">
-        </div>
-        <div class="tl-dot"></div>
-        <div class="tl-text">
-          <p class="tl-time">19:30 h</p>
-          <p class="tl-event">Recepción en la Finca</p>
-          <p class="tl-detail">Finca Quinta Lazy</p>
-        </div>
-      </div>
-
-      <div class="tl-item aos d2">
-        <div class="tl-text">
-          <p class="tl-time">20:00 h</p>
-          <p class="tl-event">Cocktail</p>
-          <p class="tl-detail">Bajo las estrellas</p>
-        </div>
-        <div class="tl-dot"></div>
-        <div class="tl-illus">
-          <img src="illustrations/Copa 1.png" alt="Copa cocktail" style="width:72px">
-        </div>
-      </div>
-
-      <div class="tl-item aos">
-        <div class="tl-illus">
-          <img src="illustrations/Platos 1.png" alt="Cena" style="width:100px; mix-blend-mode:multiply">
-        </div>
-        <div class="tl-dot"></div>
-        <div class="tl-text">
-          <p class="tl-time">21:30 h</p>
-          <p class="tl-event">Cena</p>
-          <p class="tl-detail">Mesa y mantel</p>
-        </div>
-      </div>
-
-      <div class="tl-item aos d1">
-        <div class="tl-text">
-          <p class="tl-time">∞</p>
-          <p class="tl-event">Fiesta</p>
-          <p class="tl-detail">Hasta que el cuerpo aguante</p>
-        </div>
-        <div class="tl-dot"></div>
-        <div class="tl-illus">
-          <img src="illustrations/disco.png" alt="Fiesta" style="width:80px; mix-blend-mode:multiply">
-        </div>
-      </div>
-
-    </div>
   </div>
 </section>
 
