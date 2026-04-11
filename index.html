@@ -91,7 +91,7 @@
       color: var(--rose);
       line-height: 1.1;
       padding-top: 0.25em;
-      clip-path: inset(-0.3em 100% -0.3em -0.6em);
+      clip-path: inset(-0.5em 100% -0.5em -1em);
       animation: inkReveal 1.4s cubic-bezier(.77,0,.175,1) .5s both;
       white-space: nowrap;
     }
@@ -626,8 +626,8 @@
       from { opacity:0; } to { opacity:1; }
     }
     @keyframes inkReveal {
-      from { clip-path: inset(-0.3em 100% -0.3em -0.6em); }
-      to   { clip-path: inset(-0.3em -0.6em -0.3em -0.6em); }
+      from { clip-path: inset(-0.5em 100% -0.5em -1em); }
+      to   { clip-path: inset(-0.5em -4em -0.5em -1em); }
     }
     @keyframes shimmer {
       0%   { background-position: -200% center; }
