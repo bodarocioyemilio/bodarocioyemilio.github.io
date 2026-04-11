@@ -1630,7 +1630,13 @@ if (stickyRsvp && heroEl) {
   if (isTouch) {
     stickyRsvp.removeAttribute('target');
     stickyRsvp.removeAttribute('rel');
+    // También el botón RSVP de la hero
+    document.querySelectorAll('.hero-rsvp').forEach(el => {
+      el.removeAttribute('target');
+      el.removeAttribute('rel');
+    });
   }
+
 
   const heroObs = new IntersectionObserver(entries => {
     entries[0].isIntersecting
