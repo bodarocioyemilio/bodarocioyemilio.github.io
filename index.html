@@ -9,6 +9,11 @@
   <link rel="icon" type="image/png" sizes="16x16" href="illustrations/favicon_io/favicon-16x16.png">
   <link rel="manifest" href="illustrations/favicon_io/site.webmanifest">
   <link rel="shortcut icon" href="illustrations/favicon_io/favicon.ico">
+  <!-- Precarga imágenes críticas de la animación inicial -->
+  <link rel="preload" as="image" href="illustrations/toWEBP/portada-izquierda.webp" type="image/webp" fetchpriority="high">
+  <link rel="preload" as="image" href="illustrations/toWEBP/portada-derecha.webp" type="image/webp" fetchpriority="high">
+  <link rel="preload" as="image" href="illustrations/toWEBP/logo.webp" type="image/webp" fetchpriority="high">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Great+Vibes&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
@@ -942,6 +947,12 @@
     }
     #book-intro.fade-out { opacity: 0; pointer-events: none; }
 
+    /* Imágenes ocultas hasta que estén completamente cargadas */
+    #book-intro img { opacity: 0; transition: opacity 0.25s ease; }
+    #book-intro.images-ready img { opacity: 1; }
+    /* Preservar la transición del logo al abrir */
+    #book-intro.opening #book-logo { opacity: 0 !important; transition: opacity 0.4s ease !important; }
+
     .book-cover {
       flex: 0 0 50%;
       width: 50%;
@@ -1734,8 +1745,24 @@ setInterval(updateCountdown, 1000);
     }, 1200);
   }
 
-  // Auto-open después de 1.2 s
-  setTimeout(closeIntro, 1200);
+  // Esperar a que las imágenes del intro estén completamente cargadas
+  var introImgs = Array.from(intro.querySelectorAll('img'));
+  var imagePromises = introImgs.map(function (img) {
+    if (img.complete && img.naturalWidth > 0) return Promise.resolve();
+    return new Promise(function (res) {
+      img.addEventListener('load',  res, { once: true });
+      img.addEventListener('error', res, { once: true }); // nunca bloquear en error
+    });
+  });
+
+  // Fade-in de imágenes cuando estén listas
+  Promise.all(imagePromises).then(function () {
+    intro.classList.add('images-ready');
+  });
+
+  // Auto-open: esperar mínimo 1.2 s Y que las imágenes estén cargadas
+  var timerPromise = new Promise(function (res) { setTimeout(res, 1200); });
+  Promise.all([timerPromise].concat(imagePromises)).then(closeIntro);
 
   // Skip on click / tap
   intro.addEventListener('click', closeIntro);
