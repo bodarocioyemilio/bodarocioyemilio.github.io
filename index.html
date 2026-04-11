@@ -878,35 +878,86 @@
     .hotel-map-btn:hover { background: var(--gold); color: var(--cream); }
     .hotel-group-desc { font-size: 0.95rem; color: var(--text); margin: -0.5rem 0 1.25rem; line-height: 1.6; }
 
-    /* Transport blocks */
-    .transport-blocks { display: flex; flex-direction: column; gap: 1.2rem; }
-    .transport-block {
-      background: var(--cream-warm);
-      border-left: 3px solid var(--gold);
-      padding: 1.5rem 1.8rem;
-      border-radius: 0 6px 6px 0;
-    }
-    .transport-block-title {
+    /* Transport — timeline */
+    .transport-wrapper { display: flex; flex-direction: column; gap: 1.6rem; }
+
+    .transport-leg { position: relative; }
+    .transport-leg-title {
       font-family: 'Montserrat', sans-serif; font-weight: 400;
-      font-size: .68rem; letter-spacing: .38em; text-transform: uppercase;
-      color: var(--sage); margin-bottom: 1rem;
+      font-size: .64rem; letter-spacing: .42em; text-transform: uppercase;
+      color: var(--sage); margin-bottom: 1.1rem;
     }
-    .transport-route { display: flex; flex-direction: column; gap: .7rem; }
-    .transport-row {
+
+    /* ── Transport timeline ─────────────────────────────
+       Sistema de coordenadas:
+         padding-left del contenedor = 1.5rem
+         dot width = 0.8rem → radio = 0.4rem
+         dot margin-left = -1.5rem  → borde izq del dot en x=0 (dentro del contenedor)
+         centro del dot en x = 0.4rem
+         línea ::before en left = calc(0.4rem - 1px) → centrada sobre el dot
+    ───────────────────────────────────────────────────── */
+    .tr-tl { position: relative; padding-left: 1.5rem; }
+    .tr-tl::before {
+      content: ''; position: absolute;
+      left: calc(0.4rem - 1px); top: 0.55rem; bottom: 0.55rem;
+      width: 2px; background: var(--gold-light);
+    }
+
+    .tr-stop {
+      display: flex; align-items: flex-start;
+      gap: .7rem; margin-bottom: .85rem;
+    }
+    .tr-stop:last-child { margin-bottom: 0; }
+
+    .tr-dot {
+      flex-shrink: 0;
+      width: .8rem; height: .8rem;
+      border-radius: 50%;
+      background: var(--cream); border: 2px solid var(--gold);
+      margin-left: -1.5rem;   /* vuelve al borde izq del padding */
+      margin-top: .28rem;
+      position: relative; z-index: 1;
+    }
+    .tr-dot--dest  { background: var(--gold); border-color: var(--gold-dark); }
+    .tr-dot--bridge { background: var(--sage); border-color: var(--sage); }
+
+    .tr-name {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.08rem; color: var(--sepia); line-height: 1.6;
+      font-size: 1.08rem; font-weight: 600; color: var(--sepia);
     }
-    .transport-time { font-weight: 600; }
+    .tr-time {
+      font-family: 'Montserrat', sans-serif;
+      font-size: .75rem; color: var(--gold-dark); font-weight: 500;
+      letter-spacing: .04em; margin-top: .1rem;
+    }
+    .tr-dest-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: .9rem; font-style: italic; color: var(--sepia-light); margin-top: .1rem;
+    }
+
     .transport-map-link {
+      display: inline-block; margin-top: .25rem;
+      font-family: 'Montserrat', sans-serif;
+      font-size: .7rem; letter-spacing: .04em;
       color: var(--gold-dark); text-decoration: none;
       border-bottom: 1px solid var(--gold-light);
-      transition: color .2s ease; font-size: .95rem;
+      transition: color .2s ease, border-color .2s ease;
     }
     .transport-map-link:hover { color: var(--rose); border-color: var(--rose); }
+
+    .transport-bridge {
+      background: var(--cream-warm);
+      border: 1px solid var(--gold-light);
+      border-radius: 6px; padding: .9rem 1.2rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-size: 1rem;
+      color: var(--sepia-light); line-height: 1.6; text-align: center;
+    }
+
     .transport-note {
       font-family: 'Cormorant Garamond', serif;
-      font-style: italic; font-size: 1.05rem;
-      color: var(--sepia-light); margin-top: .5rem; line-height: 1.7;
+      font-style: italic; font-size: 1rem;
+      color: var(--sepia-light); line-height: 1.7; margin-top: .4rem;
     }
 
     /* ═══════════════════════════════════════════════
@@ -1303,58 +1354,76 @@
       <div class="info-accordion-section aos d1">
         <div class="i-icon">
           <svg viewBox="0 0 24 24">
-            <rect x="1" y="3" width="15" height="13" rx="1"/>
-            <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
-            <circle cx="5.5" cy="18.5" r="2.5"/>
-            <circle cx="18.5" cy="18.5" r="2.5"/>
+            <rect x="2" y="3" width="20" height="13" rx="2"/>
+            <line x1="2" y1="9" x2="22" y2="9"/>
+            <line x1="12" y1="3" x2="12" y2="9"/>
+            <rect x="4" y="11" width="3.5" height="2.5" rx=".5"/>
+            <rect x="10.25" y="11" width="3.5" height="2.5" rx=".5"/>
+            <rect x="16.5" y="11" width="3.5" height="2.5" rx=".5"/>
+            <line x1="7" y1="16" x2="2" y2="16"/>
+            <line x1="17" y1="16" x2="22" y2="16"/>
+            <circle cx="6.5" cy="18.5" r="2"/>
+            <circle cx="17.5" cy="18.5" r="2"/>
           </svg>
         </div>
         <p class="i-title">Transporte</p>
         <div class="i-body">
-          <p>Hemos organizado transporte para que nadie tenga que preocuparse por conducir. Consulta los horarios y puntos de recogida.</p>
+          <p>Hemos organizado <strong>autobuses</strong> para que nadie tenga que preocuparse por conducir. A continuación encontraréis los horarios y puntos de recogida.</p>
         </div>
         <button class="accordion-btn" data-accordion="transporte" aria-expanded="false" aria-controls="accordion-transporte">
           <span>Ver información del transporte ↓</span>
         </button>
         <div class="accordion-body" id="accordion-transporte" aria-hidden="true">
 
-          <div class="transport-blocks">
+          <div class="transport-wrapper">
 
-            <div class="transport-block">
-              <p class="transport-block-title">🚌 Ida: hacia la iglesia</p>
-              <div class="transport-route">
-                <p class="transport-row">
-                  <span class="transport-time">Alicante → Elda</span> · Salida a las <span class="transport-time">12:30 h</span> &nbsp;
-                  <!-- TODO: reemplazar con enlace real de Google Maps -->
-                  <a href="https://maps.app.goo.gl/placeholder-alicante" target="_blank" rel="noopener" class="transport-map-link">📍 Punto de recogida Alicante</a>
-                </p>
-                <p class="transport-row">
-                  <span class="transport-time">San Vicente → Elda</span> · Salida a las <span class="transport-time">12:45 h</span> &nbsp;
-                  <!-- TODO: reemplazar con enlace real de Google Maps -->
-                  <a href="https://maps.app.goo.gl/placeholder-sanvicente" target="_blank" rel="noopener" class="transport-map-link">📍 Punto de recogida San Vicente</a>
-                </p>
+            <!-- IDA -->
+            <div class="transport-leg">
+              <p class="transport-leg-title">🚌 Ida — hacia la iglesia</p>
+              <div class="tr-tl">
+                <div class="tr-stop">
+                  <div class="tr-dot"></div>
+                  <div><p class="tr-name">Alicante</p><p class="tr-time">Salida · 16:55 h</p><!-- TODO: reemplazar con enlace real de Google Maps --><a href="https://maps.app.goo.gl/placeholder-alicante" target="_blank" rel="noopener" class="transport-map-link">📍 Ver punto de recogida</a></div>
+                </div>
+                <div class="tr-stop">
+                  <div class="tr-dot"></div>
+                  <div><p class="tr-name">San Vicente del Raspeig</p><p class="tr-time">Parada · 17:10 h</p><!-- TODO: reemplazar con enlace real de Google Maps --><a href="https://maps.app.goo.gl/placeholder-sanvicente" target="_blank" rel="noopener" class="transport-map-link">📍 Ver punto de recogida</a></div>
+                </div>
+                <div class="tr-stop">
+                  <div class="tr-dot"></div>
+                  <div><p class="tr-name">AC Hotel Elda</p><p class="tr-time">Parada · 17:40 h</p><!-- TODO: reemplazar con enlace real de Google Maps --><a href="https://maps.app.goo.gl/placeholder-achotel" target="_blank" rel="noopener" class="transport-map-link">📍 Ver punto de recogida</a></div>
+                </div>
+                <div class="tr-stop">
+                  <div class="tr-dot tr-dot--dest"></div>
+                  <div><p class="tr-name">Iglesia</p><p class="tr-dest-label">Destino · llegada ~17:45 h</p></div>
+                </div>
               </div>
             </div>
 
-            <div class="transport-block">
-              <p class="transport-block-title">⛪ De la Iglesia a la Finca</p>
-              <p class="transport-note">Una vez finalizada la ceremonia, el transporte os llevará directamente a la finca. No os preocupéis, ¡os esperamos allí!</p>
-            </div>
+            <!-- PUENTE IGLESIA → FINCA -->
+            <p class="transport-bridge">⛪ Tras la ceremonia, el autobús os llevará directamente a la finca. ¡No os preocupéis por nada!</p>
 
-            <div class="transport-block">
-              <p class="transport-block-title">🌙 Vuelta nocturna</p>
-              <p class="transport-note" style="margin-top:0; margin-bottom:.8rem;">Habrá dos horarios de regreso desde la finca a los puntos de origen (Alicante y San Vicente).</p>
-              <div class="transport-route">
-                <p class="transport-row">
-                  <span class="transport-time">Primera salida</span> desde la Finca: <span class="transport-time">01:00 h</span> &nbsp;
-                  <!-- TODO: reemplazar con enlace real de Google Maps -->
-                  <a href="https://maps.app.goo.gl/placeholder-finca" target="_blank" rel="noopener" class="transport-map-link">📍 Finca</a>
-                </p>
-                <p class="transport-row">
-                  <span class="transport-time">Segunda salida</span> desde la Finca: <span class="transport-time">04:00 h</span> &nbsp;
-                  <!-- TODO: reemplazar con enlace real de Google Maps -->
-                  <a href="https://maps.app.goo.gl/placeholder-finca" target="_blank" rel="noopener" class="transport-map-link">📍 Finca</a>
-                </p>
+            <!-- VUELTA -->
+            <div class="transport-leg">
+              <p class="transport-leg-title">🌙 Vuelta — regreso nocturno</p>
+              <p class="transport-note" style="margin-bottom:1rem;">Habrá dos salidas desde la finca. Ambas realizarán el mismo recorrido de paradas.</p>
+              <div class="tr-tl">
+                <div class="tr-stop">
+                  <div class="tr-dot tr-dot--bridge"></div>
+                  <div><p class="tr-name">Finca</p><p class="tr-time">1ª salida · 01:00 h &nbsp;·&nbsp; 2ª salida · 04:00 h</p><!-- TODO: reemplazar con enlace real de Google Maps --><a href="https://maps.app.goo.gl/placeholder-finca" target="_blank" rel="noopener" class="transport-map-link">📍 Ver ubicación finca</a></div>
+                </div>
+                <div class="tr-stop">
+                  <div class="tr-dot"></div>
+                  <div><p class="tr-name">AC Hotel Elda</p><p class="tr-dest-label">Parada intermedia</p></div>
+                </div>
+                <div class="tr-stop">
+                  <div class="tr-dot"></div>
+                  <div><p class="tr-name">San Vicente del Raspeig</p><p class="tr-dest-label">Parada intermedia</p></div>
+                </div>
+                <div class="tr-stop">
+                  <div class="tr-dot tr-dot--dest"></div>
+                  <div><p class="tr-name">Alicante</p><p class="tr-dest-label">Destino final</p></div>
+                </div>
               </div>
             </div>
 
