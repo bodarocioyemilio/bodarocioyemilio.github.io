@@ -277,14 +277,11 @@
       animation: shimmer 3s linear infinite;
     }
 
-    .vine-row { text-align: center; padding: 1rem 0; }
-    .vine-row img { width: clamp(180px, 38vw, 360px); opacity: .6; }
-
     /* ═══════════════════════════════════════════════
        COUNTDOWN
     ════════════════════════════════════════════════ */
     #countdown {
-      padding: 3.5rem 2rem;
+      padding: 1rem 2rem 3.5rem;
       text-align: center;
       background: linear-gradient(180deg, var(--cream) 0%, var(--cream-warm) 100%);
     }
@@ -352,13 +349,6 @@
       .cd-sep { padding-top: .8rem; font-size: clamp(1.4rem, 5vw, 2.2rem); padding-left: 0; padding-right: 0; }
     }
 
-    /* ═══════════════════════════════════════════════
-       MESSAGE
-    ════════════════════════════════════════════════ */
-    #message {
-      text-align: center;
-      background: linear-gradient(180deg, var(--cream-warm) 0%, var(--cream) 50%, var(--cream-warm) 100%);
-    }
     .msg-quote {
       font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 300;
       font-size: clamp(1.35rem, 3vw, 1.95rem); color: var(--sepia);
@@ -367,21 +357,66 @@
     .msg-quote em { color: var(--rose); font-style: normal; }
 
     /* ═══════════════════════════════════════════════
-       SKYLINE PARALLAX
+       INVITATION SPLIT (skyline + texto fusionados)
     ════════════════════════════════════════════════ */
-    #skyline {
-      padding: 0; overflow: hidden;
-      height: clamp(260px, 42vw, 480px);
-    }
-    .skyline-inner {
-      position: relative; height: 100%;
-      display: flex; align-items: center; justify-content: center;
+    #invitation-split {
+      padding: 0;
       overflow: hidden;
+      background: linear-gradient(180deg, var(--cream-warm) 0%, var(--cream) 50%, var(--cream-warm) 100%);
     }
-    .skyline-img {
-      width: clamp(420px, 75vw, 820px);
-      height: auto; display: block;
-      will-change: transform;
+
+    .invitation-split-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: clamp(320px, 42vw, 520px);
+      max-width: 100%;
+    }
+
+    .invitation-img-col {
+      overflow: hidden;
+      position: relative;
+    }
+
+    .invitation-skyline {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      display: block;
+    }
+
+    .invitation-text-col {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: clamp(2rem, 6vw, 5rem) clamp(2rem, 5vw, 4.5rem);
+      text-align: left;
+    }
+
+    .invitation-text-col .msg-quote {
+      margin: 0 0 .6rem;
+      text-align: left;
+      max-width: 520px;
+      font-size: clamp(.8rem, 1.4vw, 1rem);
+      line-height: 1.6;
+    }
+
+    @media (max-width: 700px) {
+      .invitation-split-inner {
+        grid-template-columns: 1fr;
+      }
+      .invitation-img-col {
+        min-height: 220px;
+      }
+      .invitation-text-col {
+        align-items: center;
+        text-align: center;
+        padding: 2.5rem 1.5rem;
+      }
+      .invitation-text-col .msg-quote {
+        text-align: center;
+      }
     }
 
     /* ═══════════════════════════════════════════════
@@ -649,6 +684,179 @@
       .tl-item:nth-child(even) .tl-text  { padding-left: 1.2rem; }
       .tl-item:nth-child(even) .tl-illus { padding-right: 1.2rem; }
     }
+
+    /* ═══════════════════════════════════════════════
+       ACCORDION — ALOJAMIENTO & TRANSPORTE
+    ════════════════════════════════════════════════ */
+    .info-accordion-list {
+      margin-top: 3.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    .info-accordion-section {
+      background: var(--cream);
+      padding: 2.5rem 2rem;
+      text-align: center;
+    }
+    .accordion-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      margin-top: 1.2rem;
+      padding: .75rem 1.8rem;
+      border: 1px solid var(--gold);
+      background: transparent;
+      color: var(--sepia);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      font-size: .68rem;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: color .3s ease;
+    }
+    .accordion-btn::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: var(--gold);
+      transform: translateX(-100%);
+      transition: transform .35s cubic-bezier(.77,0,.175,1);
+      z-index: 0;
+    }
+    .accordion-btn:hover::before { transform: translateX(0); }
+    .accordion-btn:hover { color: var(--cream); }
+    .accordion-btn span { position: relative; z-index: 1; }
+
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height .4s ease, opacity .4s ease;
+      text-align: left;
+    }
+    .accordion-body.open {
+      max-height: 3000px;
+      opacity: 1;
+      margin-top: 2rem;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .accordion-body { transition: none; }
+    }
+
+    /* Hotel cards */
+    .hotel-group { margin-bottom: 2.5rem; }
+    .hotel-group-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; font-weight: 400;
+      color: var(--sepia); margin-bottom: 1.2rem;
+      text-align: center;
+    }
+    .hotel-group-title::after {
+      content: ''; display: block;
+      width: 30px; height: 1px;
+      background: var(--gold);
+      margin: .4rem auto 0;
+    }
+    .hotel-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+    .hotel-card {
+      background: var(--cream-warm);
+      border-radius: 8px; overflow: hidden;
+      box-shadow: 0 4px 16px rgba(74,59,46,.1);
+      display: flex; flex-direction: column;
+    }
+    .hotel-card img {
+      width: 100%; aspect-ratio: 16/9;
+      object-fit: cover; display: block;
+    }
+    .hotel-card-body {
+      padding: 1.2rem; flex: 1;
+      display: flex; flex-direction: column;
+      align-items: center; text-align: center; gap: .4rem;
+    }
+    .hotel-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem; font-weight: 500; color: var(--sepia);
+    }
+    .hotel-addr {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-size: .9rem;
+      color: var(--sepia-light); flex: 1;
+    }
+    .hotel-map-btn {
+      display: inline-flex; align-items: center; gap: .4rem;
+      padding: .5rem 1.1rem;
+      border: 1px solid var(--gold); border-radius: 2rem;
+      color: var(--gold-dark); text-decoration: none;
+      font-family: 'Montserrat', sans-serif;
+      font-size: .58rem; font-weight: 400;
+      letter-spacing: .2em; text-transform: uppercase;
+      transition: background .2s ease, color .2s ease;
+      margin-top: auto;
+    }
+    .hotel-map-btn:hover { background: var(--gold); color: var(--cream); }
+
+    /* Transport blocks */
+    .transport-blocks { display: flex; flex-direction: column; gap: 1.2rem; }
+    .transport-block {
+      background: var(--cream-warm);
+      border-left: 3px solid var(--gold);
+      padding: 1.5rem 1.8rem;
+      border-radius: 0 6px 6px 0;
+    }
+    .transport-block-title {
+      font-family: 'Montserrat', sans-serif; font-weight: 400;
+      font-size: .68rem; letter-spacing: .38em; text-transform: uppercase;
+      color: var(--sage); margin-bottom: 1rem;
+    }
+    .transport-route { display: flex; flex-direction: column; gap: .7rem; }
+    .transport-row {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.08rem; color: var(--sepia); line-height: 1.6;
+    }
+    .transport-time { font-weight: 600; }
+    .transport-map-link {
+      color: var(--gold-dark); text-decoration: none;
+      border-bottom: 1px solid var(--gold-light);
+      transition: color .2s ease; font-size: .95rem;
+    }
+    .transport-map-link:hover { color: var(--rose); border-color: var(--rose); }
+    .transport-note {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-size: 1.05rem;
+      color: var(--sepia-light); margin-top: .5rem; line-height: 1.7;
+    }
+
+    /* ═══════════════════════════════════════════════
+       VIDEO SECTION
+    ════════════════════════════════════════════════ */
+    #video-section {
+      text-align: center;
+      background: linear-gradient(180deg, var(--cream-warm) 0%, var(--cream) 100%);
+      padding: 5rem 2rem;
+    }
+    .video-wrapper-vertical {
+      position: relative;
+      width: 100%;
+      max-width: 360px;
+      margin: 0 auto;
+      aspect-ratio: 9 / 16;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+    }
+    .video-wrapper-vertical iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border: none;
+    }
   </style>
 
   <!-- ── INTRO LIBRO: estilos ── -->
@@ -762,8 +970,50 @@
   <div class="hero-wm" aria-hidden="true">2026</div>
 
   <div class="scroll-cue">
-    <span>Ver más</span>
+    <span>Desliza</span>
     <div class="scroll-cue-line"></div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     SKYLINE + INVITACIÓN (fusionado)
+════════════════════════════════════════════ -->
+<section id="invitation-split">
+  <div class="invitation-split-inner">
+
+    <!-- Columna izquierda: imagen -->
+    <div class="invitation-img-col">
+      <picture>
+        <source srcset="illustrations/toWEBP/skyline.webp" type="image/webp">
+        <img src="illustrations/skyline.png" alt="Panorámica de Elda" class="invitation-skyline">
+      </picture>
+    </div>
+
+    <!-- Columna derecha: texto -->
+    <div class="invitation-text-col">
+      <p class="s-label aos">Una invitación de corazón</p>
+      <p class="msg-quote aos d1">
+        Desde que nos conocimos supimos que queríamos compartir la vida juntos, y por fin se acerca
+        el día en el que nos digamos el sí para siempre.
+      </p>
+      <p class="msg-quote aos d2">
+        Habéis sido partícipes de nuestra historia estos años y nos hace muy felices saber que vais
+        a acompañarnos en el día de nuestra boda.
+      </p>
+      <p class="msg-quote aos d3">
+        La ceremonia será en la Iglesia de Santa Ana, un lugar que lleva el nombre de nuestra
+        historia mucho antes de que nosotros llegáramos a ella: en esa misma iglesia se casaron los
+        abuelos maternos de Emilio, y también descansa el bisabuelo de Rocío.
+      </p>
+      <p class="msg-quote aos d4">
+        Después nos trasladaremos a la Finca Quinta Lacy. Sabéis que la pedida fue en Tomorrowland,
+        así que nos encantaría poder trasladaros por unas horas a ese festival que vamos a llevar
+        siempre grabado en el corazón.
+      </p>
+      <p class="msg-quote aos d5" style="font-size:clamp(1.2rem,2.5vw,1.7rem);margin-top:.4rem"><em>¡Comienza la cuenta atrás!</em></p>
+    </div>
+
   </div>
 </section>
 
@@ -773,8 +1023,6 @@
 ════════════════════════════════════════════ -->
 <section id="countdown">
   <div class="s-inner">
-    <p class="s-label aos" style="text-align:center">Quedan...</p>
-
     <div class="countdown-grid aos d1" id="cdGrid">
       <div class="cd-unit"><span id="cd-days">--</span><small>días</small></div>
       <div class="cd-sep">·</div>
@@ -891,81 +1139,6 @@
 </section>
 
 
-<!-- ════════════════════════════════════════════
-     SKYLINE PARALLAX
-════════════════════════════════════════════ -->
-<div id="skyline">
-  <div class="skyline-inner">
-    <picture>
-      <source srcset="illustrations/toWEBP/skyline.webp" type="image/webp">
-      <img class="skyline-img" id="skylineImg" src="illustrations/skyline.png" alt="Panorámica de Elda">
-    </picture>
-  </div>
-</div>
-
-
-<!-- ════════════════════════════════════════════
-     MESSAGE
-════════════════════════════════════════════ -->
-<section id="message">
-  <div class="s-inner" style="text-align:center">
-
-    <div class="vine-row aos">
-      <picture>
-        <source srcset="illustrations/toWEBP/enredadera.webp" type="image/webp">
-        <img src="illustrations/enredadera.png" alt="">
-      </picture>
-    </div>
-
-    <p class="s-label aos d1">Una invitación de corazón</p>
-
-    <p class="msg-quote aos d2">
-      "Nos hace muchísima ilusión invitarte a compartir<br>
-      uno de los días <em>más importantes de nuestra vida</em>."
-    </p>
-
-    <div class="vine-row aos d3">
-      <picture>
-        <source srcset="illustrations/toWEBP/enredadera.webp" type="image/webp">
-        <img src="illustrations/enredadera.png" alt="" style="transform:scaleY(-1) scaleX(-1);">
-      </picture>
-    </div>
-  </div>
-</section>
-
-
-<!-- ════════════════════════════════════════════
-     DATE & VENUE
-════════════════════════════════════════════ -->
-<section id="date" style="text-align:center">
-  <div class="s-inner">
-
-    <p class="date-day aos">Sábado</p>
-    <p class="date-num aos d1">12</p>
-    <p class="date-my aos d1">Septiembre &nbsp;·&nbsp; 2026</p>
-
-    <div class="gold-bar aos d2"></div>
-
-    <p class="date-text aos d2">
-      La ceremonia se celebrará en la <strong>Iglesia de Santa Ana</strong>,
-      en Elda. A continuación, lo festejearemos en la <strong>Finca Quinta Lacy</strong>.
-    </p>
-
-    <div class="venues">
-      <div class="venue-card aos">
-        <p class="v-time">18:00 h</p>
-        <p class="v-name">Ceremonia</p>
-        <p class="v-place">Iglesia de Santa Ana<br>Elda, Alicante</p>
-      </div>
-      <div class="venue-card aos d1">
-        <p class="v-time">19:30 h</p>
-        <p class="v-name">Recepción</p>
-        <p class="v-place">Finca Quinta Lacy</p>
-      </div>
-    </div>
-
-  </div>
-</section>
 
 
 <!-- ════════════════════════════════════════════
@@ -980,9 +1153,10 @@
       <div class="gold-bar"></div>
     </div>
 
-    <div class="info-grid">
+    <div class="info-accordion-list">
 
-      <div class="info-card aos">
+      <!-- ── ALOJAMIENTO ── -->
+      <div class="info-accordion-section aos">
         <div class="i-icon">
           <svg viewBox="0 0 24 24">
             <path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5Z"/>
@@ -991,11 +1165,98 @@
         </div>
         <p class="i-title">Alojamiento</p>
         <div class="i-body">
-          <p>Para que podáis disfrutar de la fiesta sin prisas, en nuestra web os hemos dejado una lista con los mejores alojamientos cercanos.</p>
+          <p>Hemos preparado una selección de alojamientos cercanos para que podáis disfrutar de la celebración con total comodidad y sin preocupaciones.</p>
         </div>
+        <button class="accordion-btn" data-accordion="alojamiento" aria-expanded="false" aria-controls="accordion-alojamiento">
+          <span>Ver alojamientos ↓</span>
+        </button>
+        <div class="accordion-body" id="accordion-alojamiento" aria-hidden="true">
+
+          <div class="hotel-group">
+            <h3 class="hotel-group-title">Elda</h3>
+            <div class="hotel-grid">
+
+              <div class="hotel-card">
+                <!-- TODO: reemplazar con foto real del Hotel NH Elda -->
+                <img src="https://picsum.photos/seed/hotel1/400/250" alt="Hotel NH Elda" loading="lazy">
+                <div class="hotel-card-body">
+                  <p class="hotel-name">Hotel NH Elda</p>
+                  <p class="hotel-addr">Av. de la Libertad</p>
+                  <!-- TODO: reemplazar con enlace real de Google Maps -->
+                  <a href="https://maps.app.goo.gl/placeholder1" target="_blank" rel="noopener" class="hotel-map-btn">📍 Ver ubicación</a>
+                </div>
+              </div>
+
+              <div class="hotel-card">
+                <!-- TODO: reemplazar con foto real del Hotel Huerto del Cura -->
+                <img src="https://picsum.photos/seed/hotel2/400/250" alt="Hotel Huerto del Cura" loading="lazy">
+                <div class="hotel-card-body">
+                  <p class="hotel-name">Hotel Huerto del Cura</p>
+                  <p class="hotel-addr">Referencia</p>
+                  <!-- TODO: reemplazar con enlace real de Google Maps -->
+                  <a href="https://maps.app.goo.gl/placeholder2" target="_blank" rel="noopener" class="hotel-map-btn">📍 Ver ubicación</a>
+                </div>
+              </div>
+
+              <div class="hotel-card">
+                <!-- TODO: reemplazar con foto real del Hostal El Romeral -->
+                <img src="https://picsum.photos/seed/hotel3/400/250" alt="Hostal El Romeral" loading="lazy">
+                <div class="hotel-card-body">
+                  <p class="hotel-name">Hostal El Romeral</p>
+                  <p class="hotel-addr">Calle Mayor</p>
+                  <!-- TODO: reemplazar con enlace real de Google Maps -->
+                  <a href="https://maps.app.goo.gl/placeholder3" target="_blank" rel="noopener" class="hotel-map-btn">📍 Ver ubicación</a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="hotel-group">
+            <h3 class="hotel-group-title">Alicante</h3>
+            <div class="hotel-grid">
+
+              <div class="hotel-card">
+                <!-- TODO: reemplazar con foto real del Hotel Meliá Alicante -->
+                <img src="https://picsum.photos/seed/hotel4/400/250" alt="Hotel Meliá Alicante" loading="lazy">
+                <div class="hotel-card-body">
+                  <p class="hotel-name">Hotel Meliá Alicante</p>
+                  <p class="hotel-addr">&nbsp;</p>
+                  <!-- TODO: reemplazar con enlace real de Google Maps -->
+                  <a href="https://maps.app.goo.gl/placeholder4" target="_blank" rel="noopener" class="hotel-map-btn">📍 Ver ubicación</a>
+                </div>
+              </div>
+
+              <div class="hotel-card">
+                <!-- TODO: reemplazar con foto real del Hotel Eurostars Lucentum -->
+                <img src="https://picsum.photos/seed/hotel5/400/250" alt="Hotel Eurostars Lucentum" loading="lazy">
+                <div class="hotel-card-body">
+                  <p class="hotel-name">Hotel Eurostars Lucentum</p>
+                  <p class="hotel-addr">&nbsp;</p>
+                  <!-- TODO: reemplazar con enlace real de Google Maps -->
+                  <a href="https://maps.app.goo.gl/placeholder5" target="_blank" rel="noopener" class="hotel-map-btn">📍 Ver ubicación</a>
+                </div>
+              </div>
+
+              <div class="hotel-card">
+                <!-- TODO: reemplazar con foto real del Hotel Amérigo -->
+                <img src="https://picsum.photos/seed/hotel6/400/250" alt="Hotel Amérigo" loading="lazy">
+                <div class="hotel-card-body">
+                  <p class="hotel-name">Hotel Amérigo</p>
+                  <p class="hotel-addr">&nbsp;</p>
+                  <!-- TODO: reemplazar con enlace real de Google Maps -->
+                  <a href="https://maps.app.goo.gl/placeholder6" target="_blank" rel="noopener" class="hotel-map-btn">📍 Ver ubicación</a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div><!-- /accordion-alojamiento -->
       </div>
 
-      <div class="info-card aos d1">
+      <!-- ── TRANSPORTE ── -->
+      <div class="info-accordion-section aos d1">
         <div class="i-icon">
           <svg viewBox="0 0 24 24">
             <rect x="1" y="3" width="15" height="13" rx="1"/>
@@ -1006,30 +1267,84 @@
         </div>
         <p class="i-title">Transporte</p>
         <div class="i-body">
-          <p>Contaremos con servicio de autobús para que solo os preocupéis de celebrar:</p>
-          <ul>
-            <li><strong>Ida:</strong> Alicante y San Vicente → Elda</li>
-            <li><strong>Celebración:</strong> Iglesia → Finca</li>
-            <li><strong>Regreso:</strong> Vuelta nocturna a los puntos de origen</li>
-          </ul>
+          <p>Hemos organizado transporte para que nadie tenga que preocuparse por conducir. Consulta los horarios y puntos de recogida.</p>
         </div>
+        <button class="accordion-btn" data-accordion="transporte" aria-expanded="false" aria-controls="accordion-transporte">
+          <span>Ver información del transporte ↓</span>
+        </button>
+        <div class="accordion-body" id="accordion-transporte" aria-hidden="true">
+
+          <div class="transport-blocks">
+
+            <div class="transport-block">
+              <p class="transport-block-title">🚌 Ida: hacia la iglesia</p>
+              <div class="transport-route">
+                <p class="transport-row">
+                  <span class="transport-time">Alicante → Elda</span> · Salida a las <span class="transport-time">12:30 h</span> &nbsp;
+                  <!-- TODO: reemplazar con enlace real de Google Maps -->
+                  <a href="https://maps.app.goo.gl/placeholder-alicante" target="_blank" rel="noopener" class="transport-map-link">📍 Punto de recogida Alicante</a>
+                </p>
+                <p class="transport-row">
+                  <span class="transport-time">San Vicente → Elda</span> · Salida a las <span class="transport-time">12:45 h</span> &nbsp;
+                  <!-- TODO: reemplazar con enlace real de Google Maps -->
+                  <a href="https://maps.app.goo.gl/placeholder-sanvicente" target="_blank" rel="noopener" class="transport-map-link">📍 Punto de recogida San Vicente</a>
+                </p>
+              </div>
+            </div>
+
+            <div class="transport-block">
+              <p class="transport-block-title">⛪ De la Iglesia a la Finca</p>
+              <p class="transport-note">Una vez finalizada la ceremonia, el transporte os llevará directamente a la finca. No os preocupéis, ¡os esperamos allí!</p>
+            </div>
+
+            <div class="transport-block">
+              <p class="transport-block-title">🌙 Vuelta nocturna</p>
+              <p class="transport-note" style="margin-top:0; margin-bottom:.8rem;">Habrá dos horarios de regreso desde la finca a los puntos de origen (Alicante y San Vicente).</p>
+              <div class="transport-route">
+                <p class="transport-row">
+                  <span class="transport-time">Primera salida</span> desde la Finca: <span class="transport-time">01:00 h</span> &nbsp;
+                  <!-- TODO: reemplazar con enlace real de Google Maps -->
+                  <a href="https://maps.app.goo.gl/placeholder-finca" target="_blank" rel="noopener" class="transport-map-link">📍 Finca</a>
+                </p>
+                <p class="transport-row">
+                  <span class="transport-time">Segunda salida</span> desde la Finca: <span class="transport-time">04:00 h</span> &nbsp;
+                  <!-- TODO: reemplazar con enlace real de Google Maps -->
+                  <a href="https://maps.app.goo.gl/placeholder-finca" target="_blank" rel="noopener" class="transport-map-link">📍 Finca</a>
+                </p>
+              </div>
+            </div>
+
+          </div>
+
+        </div><!-- /accordion-transporte -->
       </div>
 
-      <div class="info-card aos d2">
-        <div class="i-icon">
-          <svg viewBox="0 0 24 24">
-            <rect x="3" y="3" width="18" height="18" rx="2"/>
-            <line x1="3" y1="9" x2="21" y2="9"/>
-            <line x1="9" y1="21" x2="9" y2="9"/>
-          </svg>
-        </div>
-        <p class="i-title">Más detalles</p>
-        <div class="i-body">
-          <p>Confirma tu asistencia en nuestra web encontrando el código QR. Allí encontrarás todos los detalles, informaciones e instrucciones para el gran día.</p>
-          <span class="i-accent">¡Te esperamos!</span>
-        </div>
-      </div>
+    </div>
+  </div>
+</section>
 
+
+<!-- ════════════════════════════════════════════
+     VIDEO — Rocío & Emilio
+════════════════════════════════════════════ -->
+<section id="video-section">
+  <div class="s-inner">
+    <div class="aos" style="text-align:center">
+      <p class="s-label">Nosotros</p>
+      <h2 class="s-title">Nuestras locuras y ganas de pasárnoslo bien</h2>
+      <div class="gold-bar"></div>
+      <p class="date-text" style="margin-bottom:2.5rem;">Una pequeña muestra de quiénes somos y del estilo de fiesta que os espera.</p>
+    </div>
+    <!-- TODO: reemplazar 824804225 con el ID de tu vídeo real en Vimeo.
+         Si el vídeo es privado/no listado, añade también &h=HASH_VIMEO -->
+    <div class="video-wrapper-vertical aos d1">
+      <iframe
+        src="https://player.vimeo.com/video/824804225?autoplay=1&muted=1&loop=1&autopause=0&controls=1&title=0&byline=0&portrait=0"
+        frameborder="0"
+        allow="autoplay; fullscreen; picture-in-picture"
+        allowfullscreen
+        title="Rocío y Emilio"
+      ></iframe>
     </div>
   </div>
 </section>
@@ -1072,7 +1387,6 @@
 const heroEl    = document.getElementById('hero');
 const heroTop   = document.getElementById('heroTop');
 const heroChurch = document.getElementById('heroChurch');
-const skylineImg = document.getElementById('skylineImg');
 const heroVines  = document.querySelectorAll('.hero-vine-left, .hero-vine-right');
 const isTouch    = window.matchMedia('(hover: none)').matches;
 
@@ -1103,13 +1417,6 @@ function onScroll() {
       ? `translateY(${scrollOY * 0.12}px)`
       : `scaleX(-1) translateY(${scrollOY * 0.12}px)`;
   });
-
-  /* Skyline center-based parallax */
-  if (skylineImg) {
-    const rect   = skylineImg.closest('#skyline').getBoundingClientRect();
-    const center = rect.top + rect.height / 2 - window.innerHeight / 2;
-    skylineImg.style.transform = `translateY(${center * -0.18}px)`;
-  }
 
   applyChurchTransform();
 }
@@ -1350,6 +1657,46 @@ setInterval(updateCountdown, 1000);
   // Skip on click / tap
   intro.addEventListener('click', closeIntro);
   intro.addEventListener('touchstart', closeIntro, { passive: true });
+}());
+</script>
+
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   ACCORDION — alojamiento & transporte
+══════════════════════════════════════════════════════ */
+(function () {
+  var closedLabels = {
+    alojamiento: 'Ver alojamientos \u2193',
+    transporte:  'Ver información del transporte \u2193'
+  };
+  var openLabels = {
+    alojamiento: 'Cerrar alojamientos \u2191',
+    transporte:  'Cerrar información del transporte \u2191'
+  };
+
+  document.querySelectorAll('.accordion-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var key  = btn.dataset.accordion;
+      var body = document.getElementById('accordion-' + key);
+      if (!body) return;
+
+      var isOpen = btn.getAttribute('aria-expanded') === 'true';
+      var labelEl = btn.querySelector('span');
+
+      if (isOpen) {
+        body.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+        body.setAttribute('aria-hidden', 'true');
+        if (labelEl) labelEl.textContent = closedLabels[key] || 'Ver \u2193';
+      } else {
+        body.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+        body.setAttribute('aria-hidden', 'false');
+        if (labelEl) labelEl.textContent = openLabels[key] || 'Cerrar \u2191';
+      }
+    });
+  });
 }());
 </script>
 
