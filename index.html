@@ -133,6 +133,12 @@
       .hero-date-short { display: inline; }
     }
 
+    /* Móvil apaisado (landscape): reducir tamaño de nombres */
+    @media (max-height: 500px) and (orientation: landscape) {
+      .hero-names { font-size: min(6vw, 3rem); }
+      .hero-amp   { font-size: min(4vw, 2rem); }
+    }
+
     @media (min-width: 656px) {
       .hero-vine-left  { right: calc(50% + clamp(80px, 10vw, 220px)); }
       .hero-vine-right { left:  calc(50% + clamp(80px, 10vw, 220px)); }
@@ -249,6 +255,11 @@
     @media (max-width: 1100px) {
       .scroll-cue { display: flex; }
       .hero-rsvp  { margin-top: 2.5rem; }
+    }
+
+    /* Móvil apaisado (landscape): ocultar scroll cue — debe ir después del display:flex */
+    @media (max-height: 500px) and (orientation: landscape) {
+      .scroll-cue { display: none; }
     }
 
     /* Tablet: centrar contenido verticalmente para evitar espacio vacío */
