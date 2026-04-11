@@ -1778,5 +1778,77 @@ setInterval(updateCountdown, 1000);
 }());
 </script>
 
+<!-- Botón volver arriba -->
+<button id="btn-top" aria-label="Volver al inicio" title="Volver al inicio">
+  &#8679;
+</button>
+
+<style>
+  #btn-top {
+    position: fixed;
+    bottom: 2rem;
+    left: 1.5rem;
+    z-index: 9999;
+    width: 2.8rem;
+    height: 2.8rem;
+    border-radius: 50%;
+    border: 1.5px solid var(--gold);
+    background: var(--cream);
+    color: var(--gold-dark);
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 12px rgba(74,59,46,0.15);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(8px);
+    transition: opacity 0.3s ease, transform 0.3s ease, background 0.2s ease;
+  }
+  #btn-top.visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+  #btn-top:hover {
+    background: var(--cream-warm);
+    color: var(--gold);
+  }
+</style>
+
+<script>
+(function () {
+  var btn = document.getElementById('btn-top');
+  window.addEventListener('scroll', function () {
+    if (window.scrollY > 300) {
+      btn.classList.add('visible');
+    } else {
+      btn.classList.remove('visible');
+    }
+  }, { passive: true });
+  btn.addEventListener('click', function () {
+    var duration = Math.min(window.scrollY / 2, 1800); // velocidad proporcional, máx 1.8 s
+    var start = window.scrollY;
+    var startTime = null;
+
+    function easeInOutCubic(t) {
+      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+
+    function step(timestamp) {
+      if (!startTime) startTime = timestamp;
+      var elapsed = timestamp - startTime;
+      var progress = Math.min(elapsed / duration, 1);
+      window.scrollTo(0, start * (1 - easeInOutCubic(progress)));
+      if (progress < 1) requestAnimationFrame(step);
+    }
+
+    requestAnimationFrame(step);
+  });
+}());
+</script>
+
 </body>
 </html>
