@@ -1828,9 +1828,12 @@ setInterval(updateCountdown, 1000);
       btn.classList.remove('visible');
     }
   }, { passive: true });
-  btn.addEventListener('click', function () {
+  function scrollToTop(e) {
+    e.preventDefault();
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
+  }
+  btn.addEventListener('click', scrollToTop);
+  btn.addEventListener('touchend', scrollToTop);
 }());
 </script>
 
