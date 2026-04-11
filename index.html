@@ -1059,7 +1059,7 @@
 
 
 <!-- Sticky RSVP -->
-<a href="#countdown" class="btn-rsvp btn-sticky" id="stickyRsvp">
+<a href="https://forms.gle/DcPiyKScZdqJ9xwH6" target="_blank" rel="noopener" class="btn-rsvp btn-sticky" id="stickyRsvp">
   <span>Confirmar asistencia</span>
   <span class="btn-arrow">→</span>
 </a>
@@ -1188,6 +1188,12 @@ document.querySelectorAll('.aos').forEach(el => revealObs.observe(el));
 ══════════════════════════════════════════════════════ */
 const stickyRsvp = document.getElementById('stickyRsvp');
 if (stickyRsvp && heroEl) {
+  // En móvil: misma pestaña. En escritorio: nueva pestaña.
+  if (isTouch) {
+    stickyRsvp.removeAttribute('target');
+    stickyRsvp.removeAttribute('rel');
+  }
+
   const heroObs = new IntersectionObserver(entries => {
     entries[0].isIntersecting
       ? stickyRsvp.classList.remove('show')
