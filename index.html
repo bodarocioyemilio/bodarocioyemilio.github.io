@@ -592,52 +592,75 @@
     .i-accent { color: var(--rose); font-style: italic; margin-top: .6rem; display: block; }
 
     /* ═══════════════════════════════════════════════
-       CLOSING
+       FOOTER
     ════════════════════════════════════════════════ */
     #closing {
+      background: var(--sepia);
+      padding: 2.8rem 2rem;
       text-align: center;
-      background: linear-gradient(180deg, var(--cream) 0%, var(--cream-warm) 100%);
-      padding-bottom: 0;
-    }
-    .closing-bouquet {
-      width: clamp(140px, 22vw, 220px);
-      mix-blend-mode: multiply;
-      margin-bottom: 2.5rem;
-      filter: drop-shadow(0 8px 24px rgba(74,59,46,.15));
     }
     .closing-logo {
-      width: clamp(55px, 7vw, 80px);
-      mix-blend-mode: multiply;
-      margin: 0 auto 1.8rem;
+      width: clamp(40px, 5vw, 58px);
+      opacity: .75;
+      mix-blend-mode: screen;
       display: block;
+      margin: 0 auto 1.2rem;
     }
     .closing-names {
       font-family: 'Great Vibes', cursive;
-      font-size: clamp(2.8rem, 7vw, 5rem);
-      color: var(--rose);
+      font-size: clamp(2.4rem, 6vw, 3.8rem);
+      color: var(--cream-warm);
+      line-height: 1;
     }
     .closing-date {
       font-family: 'Montserrat', sans-serif; font-weight: 200;
-      font-size: clamp(.65rem, 1.8vw, .82rem);
+      font-size: clamp(.6rem, 1.6vw, .75rem);
       letter-spacing: .55em; text-transform: uppercase;
-      color: var(--sepia-light); margin-top: 1rem; opacity: .75;
+      color: var(--cream-warm); margin-top: .8rem; opacity: .45;
     }
     .closing-tagline {
       font-family: 'Cormorant Garamond', serif; font-style: italic;
-      font-size: 1.05rem; color: var(--sepia-light);
-      margin-top: 1.5rem; opacity: .7;
+      font-size: clamp(.9rem, 2vw, 1rem);
+      color: var(--cream-warm);
+      margin-top: .6rem; opacity: .4;
     }
-    .footer-strip {
-      background: var(--sepia);
-      padding: 1.5rem 2rem;
-      text-align: center;
-      margin-top: 4rem;
+    .footer-contact {
+      display: flex;
+      justify-content: center;
+      gap: clamp(2rem, 8vw, 6rem);
+      margin-top: 2rem;
+      padding-top: 1.6rem;
+      border-top: 1px solid rgba(255,255,255,.08);
     }
-    .footer-strip p {
-      font-family: 'Montserrat', sans-serif; font-weight: 200;
-      font-size: .6rem; letter-spacing: .3em; text-transform: uppercase;
-      color: var(--cream-warm); opacity: .4;
+    .footer-person {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .55rem;
     }
+    .footer-person-name {
+      font-family: 'Montserrat', sans-serif; font-weight: 400;
+      font-size: .6rem; letter-spacing: .25em; text-transform: uppercase;
+      color: var(--cream-warm); opacity: .5;
+      margin-bottom: .1rem;
+    }
+    .footer-links {
+      display: flex;
+      gap: 1.1rem;
+      align-items: center;
+    }
+    .footer-link {
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      font-family: 'Montserrat', sans-serif; font-weight: 300;
+      font-size: .65rem; letter-spacing: .04em;
+      color: var(--cream-warm); opacity: .55;
+      text-decoration: none;
+      transition: opacity .2s;
+    }
+    .footer-link:hover { opacity: .9; }
+    .footer-link svg { width: 13px; height: 13px; flex-shrink: 0; }
 
     /* ═══════════════════════════════════════════════
        SCROLL REVEAL
@@ -1388,26 +1411,46 @@
 
 
 <!-- ════════════════════════════════════════════
-     CLOSING
+     FOOTER
 ════════════════════════════════════════════ -->
-<section id="closing">
-  <div class="s-inner" style="text-align:center">
-    <picture>
-      <source srcset="illustrations/toWEBP/ramo.webp" type="image/webp">
-      <img class="closing-bouquet aos" src="illustrations/ramo.png" alt="Ramo de novia">
-    </picture>
-    <picture>
-      <source srcset="illustrations/toWEBP/logo.webp" type="image/webp">
-      <img class="closing-logo aos d1" src="illustrations/logo.png" alt="Monograma RE">
-    </picture>
-    <p class="closing-names aos d1">Rocío &amp; Emilio</p>
-    <p class="closing-date aos d2">12 · 09 · 2026</p>
-    <p class="closing-tagline aos d3">Con todo nuestro amor</p>
+<footer id="closing">
+  <picture>
+    <source srcset="illustrations/toWEBP/logo.webp" type="image/webp">
+    <img class="closing-logo" src="illustrations/logo.png" alt="Monograma RE">
+  </picture>
+  <p class="closing-names">Rocío &amp; Emilio</p>
+  <p class="closing-date">12 · 09 · 2026</p>
+  <p class="closing-tagline">Con todo nuestro amor</p>
+
+  <div class="footer-contact">
+    <div class="footer-person">
+      <span class="footer-person-name">Rocío</span>
+      <div class="footer-links">
+        <a class="footer-link" href="tel:+34699209978" aria-label="Llamar a Rocío">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.07 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 5.82 5.82l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16v.92z"/></svg>
+          699 20 99 78
+        </a>
+        <a class="footer-link" href="https://instagram.com/rociii.gc" target="_blank" rel="noopener" aria-label="Instagram de Rocío">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          @rociii.gc
+        </a>
+      </div>
+    </div>
+    <div class="footer-person">
+      <span class="footer-person-name">Emilio</span>
+      <div class="footer-links">
+        <a class="footer-link" href="tel:+34629730923" aria-label="Llamar a Emilio">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.07 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 5.82 5.82l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16v.92z"/></svg>
+          629 73 09 23
+        </a>
+        <a class="footer-link" href="https://instagram.com/emilio.maestre" target="_blank" rel="noopener" aria-label="Instagram de Emilio">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          @emilio.maestre
+        </a>
+      </div>
+    </div>
   </div>
-  <div class="footer-strip">
-    <p>Rocío García Cremades &amp; Emilio Maestre Hortal &nbsp;·&nbsp; Elda 2026</p>
-  </div>
-</section>
+</footer>
 
 
 <!-- Sticky RSVP -->
