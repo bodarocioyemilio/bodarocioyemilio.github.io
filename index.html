@@ -133,6 +133,11 @@
       .hero-date-short { display: inline; }
     }
 
+    @media (min-width: 656px) {
+      .hero-vine-left  { right: calc(50% + clamp(80px, 10vw, 220px)); }
+      .hero-vine-right { left:  calc(50% + clamp(80px, 10vw, 220px)); }
+    }
+
     /* ── RSVP Button ── */
     .btn-rsvp {
       display: inline-flex;
