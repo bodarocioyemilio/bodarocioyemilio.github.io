@@ -2037,8 +2037,10 @@ window.addEventListener('load', function () {
     e.preventDefault();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
+  // touchstart + passive:false intercepta antes de que Safari iOS procese
+  // el chrome del navegador (barra de direcciones), evitando el doble toque
+  btn.addEventListener('touchstart', scrollToTop, { passive: false });
   btn.addEventListener('click', scrollToTop);
-  btn.addEventListener('touchend', scrollToTop);
 }());
 </script>
 
