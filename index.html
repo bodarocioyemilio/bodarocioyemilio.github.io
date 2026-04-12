@@ -914,7 +914,8 @@
       margin-top: auto;
     }
     .hotel-map-btn:hover { background: var(--gold); color: var(--cream); }
-    .hotel-group-desc { font-size: 0.95rem; color: var(--text); margin: -0.5rem 0 1.25rem; line-height: 1.6; }
+    .hotel-group-desc { font-size: 0.95rem; color: var(--text); margin: -0.5rem 0 1.25rem; line-height: 1.6; text-align: center; }
+    .hotel-grid--single { display: flex; justify-content: center; }
 
     /* Transport — timeline */
     .transport-wrapper { display: flex; flex-direction: column; gap: 1.6rem; }
@@ -1347,7 +1348,7 @@
           <div class="hotel-group">
             <h3 class="hotel-group-title">Elda</h3>
             <p class="hotel-group-desc">Si os alojáis en Elda, os recomendamos el <strong>AC Hotel Elda</strong> por sus modernas instalaciones y su comodidad. Además, contará con parada de autobús para que el desplazamiento sea aún más sencillo.</p>
-            <div class="hotel-grid">
+            <div class="hotel-grid hotel-grid--single">
 
               <div class="hotel-card">
                 <img src="illustrations/hoteles/achotel.webp" alt="AC Hotel Elda" loading="lazy">
@@ -1363,6 +1364,7 @@
 
           <div class="hotel-group">
             <h3 class="hotel-group-title">Alicante</h3>
+            <p class="hotel-group-desc">Si preferís alojaros en Alicante, la ciudad tiene mucho que ofrecer y cuenta con hoteles estupendos. Estos son algunos de nuestros favoritos:</p>
             <div class="hotel-grid">
 
               <div class="hotel-card">
@@ -1422,15 +1424,15 @@
               <div class="tr-tl">
                 <div class="tr-stop">
                   <div class="tr-dot"></div>
-                  <div><p class="tr-name">Alicante</p><p class="tr-time">Salida · 16:55 h</p><!-- TODO: reemplazar con enlace real de Google Maps --><a href="https://maps.app.goo.gl/placeholder-alicante" target="_blank" rel="noopener" class="transport-map-link">📍 Ver punto de recogida</a></div>
+                  <div><p class="tr-name">Alicante</p><p class="tr-time">Salida · 16:55 h</p><!-- TODO: reemplazar con enlace real de Google Maps --><a href="https://maps.app.goo.gl/1LkAMj4sJB66mSvQ7" target="_blank" rel="noopener" class="transport-map-link">📍 Ver punto de recogida</a></div>
                 </div>
                 <div class="tr-stop">
                   <div class="tr-dot"></div>
-                  <div><p class="tr-name">San Vicente del Raspeig</p><p class="tr-time">Parada · 17:10 h</p><!-- TODO: reemplazar con enlace real de Google Maps --><a href="https://maps.app.goo.gl/placeholder-sanvicente" target="_blank" rel="noopener" class="transport-map-link">📍 Ver punto de recogida</a></div>
+                  <div><p class="tr-name">San Vicente del Raspeig</p><p class="tr-time">Parada · 17:10 h</p><!-- TODO: reemplazar con enlace real de Google Maps --><a href="https://maps.app.goo.gl/CwFQf5gSjerCRPTQA" target="_blank" rel="noopener" class="transport-map-link">📍 Ver punto de recogida</a></div>
                 </div>
                 <div class="tr-stop">
                   <div class="tr-dot"></div>
-                  <div><p class="tr-name">AC Hotel Elda</p><p class="tr-time">Parada · 17:40 h</p><!-- TODO: reemplazar con enlace real de Google Maps --><a href="https://maps.app.goo.gl/placeholder-achotel" target="_blank" rel="noopener" class="transport-map-link">📍 Ver punto de recogida</a></div>
+                  <div><p class="tr-name">AC Hotel Elda</p><p class="tr-time">Parada · 17:40 h</p><!-- TODO: reemplazar con enlace real de Google Maps --><a href="https://maps.app.goo.gl/UhspRWQVDBE4Gcqz6" target="_blank" rel="noopener" class="transport-map-link">📍 Ver punto de recogida</a></div>
                 </div>
                 <div class="tr-stop">
                   <div class="tr-dot tr-dot--dest"></div>
@@ -1449,7 +1451,7 @@
               <div class="tr-tl">
                 <div class="tr-stop">
                   <div class="tr-dot tr-dot--bridge"></div>
-                  <div><p class="tr-name">Finca</p><p class="tr-time">1ª salida · 01:00 h &nbsp;·&nbsp; 2ª salida · 04:00 h</p><!-- TODO: reemplazar con enlace real de Google Maps --><a href="https://maps.app.goo.gl/placeholder-finca" target="_blank" rel="noopener" class="transport-map-link">📍 Ver ubicación finca</a></div>
+                  <div><p class="tr-name">Finca</p><p class="tr-time">1ª salida · 01:00 h &nbsp;·&nbsp; 2ª salida · 04:00 h</p></div>
                 </div>
                 <div class="tr-stop">
                   <div class="tr-dot"></div>
