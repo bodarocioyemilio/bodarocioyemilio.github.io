@@ -2058,10 +2058,13 @@ window.addEventListener('load', function () {
     }
 
     /* --- #btn-top --- */
-    /* env(safe-area-inset-bottom): 34pt en Face ID iPhones, 0 en Touch ID.
-       +2rem sitúa el botón justo encima del área segura del dispositivo. */
+    /* Base touch: mismo valor que desktop */
     #btn-top {
       bottom: calc(env(safe-area-inset-bottom) + 2rem);
+    }
+    /* Safari iOS: sube extra para salir de la zona de reclamación de la toolbar */
+    #btn-top.safari-ios {
+      bottom: calc(env(safe-area-inset-bottom) + 3.5rem);
     }
     #btn-top:hover {
       background: var(--cream);
@@ -2085,6 +2088,14 @@ window.addEventListener('load', function () {
 <script>
 (function () {
   var btn = document.getElementById('btn-top');
+
+  // Detecta Safari iOS (excluye Chrome/CriOS, Firefox/FxiOS, Brave, Edge/EdgiOS)
+  var ua = navigator.userAgent;
+  var isIOSSafari = /iP(hone|ad|od)/.test(ua) &&
+                    /WebKit/.test(ua) &&
+                    !/CriOS|FxiOS|OPiOS|EdgiOS|Brave/.test(ua);
+  if (isIOSSafari) btn.classList.add('safari-ios');
+
   window.addEventListener('scroll', function () {
     if (window.scrollY > 300) {
       btn.classList.add('visible');
