@@ -1881,6 +1881,20 @@ setInterval(updateCountdown, 1000);
     });
   });
 }());
+
+// Precarga diferida de imágenes de hoteles: se ejecuta tras window.load,
+// una vez que todos los recursos críticos ya han sido descargados.
+// Así las imágenes estarán en caché cuando el usuario abra el acordeón.
+window.addEventListener('load', function () {
+  [
+    'illustrations/hoteles/achotel.webp',
+    'illustrations/hoteles/melia.webp',
+    'illustrations/hoteles/hospesamerigo.webp'
+  ].forEach(function (src) {
+    var img = new Image();
+    img.src = src;
+  });
+});
 </script>
 
 <!-- Botón volver arriba -->
