@@ -880,18 +880,29 @@
     }
     .hotel-card {
       background: var(--cream-warm);
-      border-radius: 8px; overflow: hidden;
-      box-shadow: 0 4px 16px rgba(74,59,46,.1);
+      border: 1px solid var(--divider);
+      overflow: hidden;
       display: flex; flex-direction: column;
+      position: relative;
+      transition: border-color .3s ease;
     }
+    .hotel-card::after {
+      content: '';
+      position: absolute; inset: -1px;
+      border: 1px solid var(--gold); opacity: 0;
+      transition: opacity .35s ease;
+      pointer-events: none;
+    }
+    .hotel-card:hover::after { opacity: .5; }
     .hotel-card img {
       width: 100%; aspect-ratio: 16/9;
       object-fit: cover; display: block;
+      border-bottom: 1px solid var(--divider);
     }
     .hotel-card-body {
-      padding: 1.2rem; flex: 1;
+      padding: 1.4rem 1.2rem; flex: 1;
       display: flex; flex-direction: column;
-      align-items: center; text-align: center; gap: .4rem;
+      align-items: center; text-align: center; gap: .45rem;
     }
     .hotel-name {
       font-family: 'Cormorant Garamond', serif;
@@ -904,16 +915,27 @@
     }
     .hotel-map-btn {
       display: inline-flex; align-items: center; gap: .4rem;
-      padding: .5rem 1.1rem;
-      border: 1px solid var(--gold); border-radius: 2rem;
+      padding: .45rem 1.1rem;
+      border: 1px solid var(--gold);
       color: var(--gold-dark); text-decoration: none;
       font-family: 'Montserrat', sans-serif;
-      font-size: .58rem; font-weight: 400;
-      letter-spacing: .2em; text-transform: uppercase;
-      transition: background .2s ease, color .2s ease;
+      font-size: .58rem; font-weight: 300;
+      letter-spacing: .25em; text-transform: uppercase;
+      position: relative; overflow: hidden;
+      transition: color .3s ease;
       margin-top: auto;
     }
-    .hotel-map-btn:hover { background: var(--gold); color: var(--cream); }
+    .hotel-map-btn::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: var(--gold);
+      transform: translateX(-100%);
+      transition: transform .35s cubic-bezier(.77,0,.175,1);
+      z-index: 0;
+    }
+    .hotel-map-btn:hover::before { transform: translateX(0); }
+    .hotel-map-btn:hover { color: var(--cream); }
+    .hotel-map-btn span { position: relative; z-index: 1; }
     .hotel-group-desc { font-size: 0.95rem; color: var(--text); margin: -0.5rem 0 1.25rem; line-height: 1.6; text-align: center; }
     .hotel-grid--single { display: flex; justify-content: center; }
 
@@ -932,8 +954,7 @@
       position: relative;
       padding: 1.4rem 1.6rem;
       background: var(--cream-warm);
-      border: 1px solid var(--gold-light);
-      border-radius: 8px;
+      border: 1px solid var(--divider);
     }
 
     /* Desktop: grid 2 columnas, puente abajo ocupando ambas */
@@ -945,7 +966,7 @@
           "ida vuelta"
           "bridge bridge";
         gap: 1.5rem;
-        align-items: start;
+        align-items: stretch;
       }
       .transport-leg--ida     { grid-area: ida; }
       .transport-leg--vuelta  { grid-area: vuelta; }
@@ -1017,8 +1038,8 @@
 
     .transport-bridge {
       background: var(--cream-warm);
-      border: 1px solid var(--gold-light);
-      border-radius: 6px; padding: .9rem 1.2rem;
+      border: 1px solid var(--divider);
+      padding: .9rem 1.2rem;
       font-family: 'Cormorant Garamond', serif;
       font-style: italic; font-size: 1rem;
       color: var(--sepia-light); line-height: 1.6; text-align: center;
@@ -1386,7 +1407,7 @@
                 <div class="hotel-card-body">
                   <p class="hotel-name">AC Hotel Elda</p>
                   <p class="hotel-addr">Avda. Chapí, 38</p>
-                  <a href="https://maps.app.goo.gl/UhspRWQVDBE4Gcqz6" target="_blank" rel="noopener" class="hotel-map-btn">📍 Ver ubicación</a>
+                  <a href="https://maps.app.goo.gl/UhspRWQVDBE4Gcqz6" target="_blank" rel="noopener" class="hotel-map-btn"><span>📍 Ver ubicación</span></a>
                 </div>
               </div>
 
@@ -1403,7 +1424,7 @@
                 <div class="hotel-card-body">
                   <p class="hotel-name">Hotel Meliá Alicante</p>
                   <p class="hotel-addr">Plaza del Puerto, 3</p>
-                  <a href="https://maps.app.goo.gl/6qYx9CodRHRAUcHw7" target="_blank" rel="noopener" class="hotel-map-btn">📍 Ver ubicación</a>
+                  <a href="https://maps.app.goo.gl/6qYx9CodRHRAUcHw7" target="_blank" rel="noopener" class="hotel-map-btn"><span>📍 Ver ubicación</span></a>
                 </div>
               </div>
 
@@ -1412,7 +1433,7 @@
                 <div class="hotel-card-body">
                   <p class="hotel-name">Hotel Hospes Amérigo</p>
                   <p class="hotel-addr">Calle Rafael Altamira, 7</p>
-                  <a href="https://maps.app.goo.gl/mjb3kp4YrMkEkjNT7" target="_blank" rel="noopener" class="hotel-map-btn">📍 Ver ubicación</a>
+                  <a href="https://maps.app.goo.gl/mjb3kp4YrMkEkjNT7" target="_blank" rel="noopener" class="hotel-map-btn"><span>📍 Ver ubicación</span></a>
                 </div>
               </div>
 
