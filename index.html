@@ -2021,10 +2021,10 @@ window.addEventListener('load', function () {
     }
 
     /* --- #btn-top --- */
-    /* Sube el botón por encima de la barra inferior de Safari iOS (~49pt ≈ 65px)
-       que se reserva para recuperar su toolbar en el primer toque */
+    /* env(safe-area-inset-bottom): 34pt en Face ID iPhones, 0 en Touch ID.
+       +3.5rem supera la barra de Safari (~49pt) en cualquier modelo. */
     #btn-top {
-      bottom: 5.5rem;
+      bottom: calc(env(safe-area-inset-bottom) + 3.5rem);
     }
     #btn-top:hover {
       background: var(--cream);
