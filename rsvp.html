@@ -874,6 +874,11 @@
         </div>
       </div>
 
+      <div class="field" style="margin-top:1.4rem">
+        <label for="comentariosMenu">¿Algo más que debamos saber? <span style="opacity:.6;font-size:.9em">(opcional)</span></label>
+        <textarea id="comentariosMenu" name="comentariosMenu" placeholder="Embarazo, dieta específica..."></textarea>
+      </div>
+
       <div class="btn-row">
         <button class="btn-back" onclick="goToStep(2)">← Atrás</button>
         <button class="btn-primary" onclick="goToStep(4)">
@@ -939,7 +944,7 @@
       <div class="conditional show" id="detalleTransporteWrap">
         <div class="field">
           <label for="detalleTransporte">¿Algo más que quieras contarnos? <span style="opacity:.6;font-size:.9em">(opcional)</span></label>
-          <textarea id="detalleTransporte" name="detalleTransporte" placeholder="Por ejemplo: vengo con mi pareja, necesito aparcamiento..."></textarea>
+          <textarea id="detalleTransporte" name="detalleTransporte" placeholder=""></textarea>
         </div>
       </div>
 
@@ -1160,8 +1165,9 @@ async function enviarFormulario(noAsiste = false) {
   const mensajeNo    = document.getElementById('mensajeNoAsiste').value.trim();
   const menu         = document.querySelector('input[name="menu"]:checked')?.value || '';
   const alergiasVal  = document.querySelector('input[name="alergias"]:checked')?.value || '';
-  const alergiasText = document.getElementById('alergiasTexto').value.trim();
-  const transporte   = document.querySelector('input[name="transporte"]:checked')?.value || '';
+  const alergiasText  = document.getElementById('alergiasTexto').value.trim();
+  const comentariosM  = document.getElementById('comentariosMenu').value.trim();
+  const transporte    = document.querySelector('input[name="transporte"]:checked')?.value || '';
   const paradaBus    = document.getElementById('paradaBus').value;
   const detalleT     = document.getElementById('detalleTransporte').value.trim();
 
@@ -1172,8 +1178,9 @@ async function enviarFormulario(noAsiste = false) {
     asistencia,
     mensajeNoAsiste: mensajeNo,
     menu,
-    alergias:        alergiasVal,
-    alergiasDetalle: alergiasText,
+    alergias:          alergiasVal,
+    alergiasDetalle:   alergiasText,
+    comentariosMenu:   comentariosM,
     transporte,
     paradaBus,
     detalleTransporte: detalleT
