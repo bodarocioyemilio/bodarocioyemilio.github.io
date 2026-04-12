@@ -1955,6 +1955,71 @@ window.addEventListener('load', function () {
     background: var(--cream-warm);
     color: var(--gold);
   }
+
+  /* ═══════════════════════════════════════════════════════
+     TOUCH DEVICES — anular hovers, sustituir por :active
+     Afecta solo a móvil/tablet (hover: none = sin puntero real)
+  ══════════════════════════════════════════════════════ */
+  @media (hover: none) {
+
+    /* --- .btn-rsvp & .accordion-btn: eliminar slide ::before --- */
+    .btn-rsvp::before,
+    .accordion-btn::before {
+      display: none;
+    }
+    .btn-rsvp:hover,
+    .accordion-btn:hover {
+      color: var(--sepia);
+    }
+    .btn-rsvp:hover .btn-arrow {
+      transform: none;
+    }
+    .btn-rsvp:active,
+    .accordion-btn:active {
+      background: var(--gold);
+      color: var(--cream);
+    }
+
+    /* --- .tl-map-btn & .hotel-map-btn --- */
+    .tl-map-btn:hover,
+    .hotel-map-btn:hover {
+      background: transparent;
+      color: var(--gold-dark);
+    }
+    .tl-map-btn:active,
+    .hotel-map-btn:active {
+      background: var(--gold);
+      color: var(--cream);
+    }
+
+    /* --- .transport-map-link --- */
+    .transport-map-link:hover {
+      color: var(--gold-dark);
+      border-color: var(--gold-light);
+    }
+    .transport-map-link:active {
+      color: var(--rose);
+      border-color: var(--rose);
+    }
+
+    /* --- #btn-top --- */
+    #btn-top:hover {
+      background: var(--cream);
+      color: var(--gold-dark);
+    }
+    #btn-top:active {
+      background: var(--cream-warm);
+      transform: translateY(0) scale(0.93);
+    }
+
+    /* --- .footer-link --- */
+    .footer-link:hover {
+      opacity: .55;
+    }
+    .footer-link:active {
+      opacity: .9;
+    }
+  }
 </style>
 
 <script>
