@@ -1938,6 +1938,10 @@ window.addEventListener('load', function () {
     font-size: 1.5rem;
     line-height: 1;
     cursor: pointer;
+    touch-action: manipulation; /* evita que Safari interprete gestos del OS antes que el toque */
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    -webkit-user-select: none;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2004,6 +2008,11 @@ window.addEventListener('load', function () {
     }
 
     /* --- #btn-top --- */
+    /* Sube el botón por encima de la barra inferior de Safari iOS (~49pt ≈ 65px)
+       que se reserva para recuperar su toolbar en el primer toque */
+    #btn-top {
+      bottom: 5.5rem;
+    }
     #btn-top:hover {
       background: var(--cream);
       color: var(--gold-dark);
@@ -2037,9 +2046,7 @@ window.addEventListener('load', function () {
     e.preventDefault();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-  // touchstart + passive:false intercepta antes de que Safari iOS procese
-  // el chrome del navegador (barra de direcciones), evitando el doble toque
-  btn.addEventListener('touchstart', scrollToTop, { passive: false });
+  btn.addEventListener('touchend', scrollToTop, { passive: false });
   btn.addEventListener('click', scrollToTop);
 }());
 </script>
