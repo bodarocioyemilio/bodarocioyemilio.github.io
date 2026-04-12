@@ -187,7 +187,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 1.4rem 1rem 3rem;
+      padding: .3rem 1rem 3rem;
     }
 
     .form-card {
@@ -201,7 +201,7 @@
     }
 
     @media (max-width: 480px) {
-      .form-outer { padding: 1.2rem .9rem 2.5rem; }
+      .form-outer { padding: .25rem .9rem 2.5rem; }
       .form-card  { padding: 1.6rem 1.2rem; }
     }
 
@@ -654,6 +654,21 @@
 
     .footer-link:hover { opacity: .9; }
     .footer-link svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+    /* ═══════════════════════════════════════
+       TOUCH — anular hovers, sustituir por :active
+    ════════════════════════════════════════ */
+    @media (hover: none) {
+      .btn-primary::before { display: none; }
+      .btn-primary:hover   { color: var(--sepia); }
+      .btn-primary:hover .btn-arrow { transform: none; }
+      .btn-primary:active  { background: var(--gold); color: var(--cream); }
+
+      .back-link:hover  { opacity: .7; color: var(--sepia-light); }
+      .back-link:active { opacity: 1;  color: var(--rose); }
+
+      .radio-option:hover { border-color: var(--divider); }
+    }
 
     /* ═══════════════════════════════════════
        KEYFRAMES

@@ -1549,6 +1549,7 @@ En este video podéis ver que nos apuntamos a todos los planes que podemos y que
     </div>
     <div class="video-wrapper-vertical aos d1">
       <iframe
+        id="vimeo-main"
         src="https://player.vimeo.com/video/1182192007?autoplay=1&muted=1&loop=1&autopause=0&controls=1&title=0&byline=0&portrait=0"
         frameborder="0"
         allow="autoplay; fullscreen; picture-in-picture"
@@ -2130,6 +2131,19 @@ window.addEventListener('load', function () {
   }
   btn.addEventListener('touchend', scrollToTop, { passive: false });
   btn.addEventListener('click', scrollToTop);
+}());
+</script>
+
+<script src="https://player.vimeo.com/api/player.js"></script>
+<script>
+(function () {
+  var iframe = document.getElementById('vimeo-main');
+  if (!iframe) return;
+  var player = new Vimeo.Player(iframe);
+  // Volumen al 30% pero manteniendo el silencio activado
+  player.setVolume(0.15).then(function () {
+    player.setMuted(true);
+  });
 }());
 </script>
 
