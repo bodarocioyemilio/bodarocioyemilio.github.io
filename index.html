@@ -1860,7 +1860,8 @@ setInterval(updateCountdown, 1000);
   };
 
   document.querySelectorAll('.accordion-btn').forEach(function (btn) {
-    btn.addEventListener('click', function () {
+    function toggleAccordion(e) {
+      e.preventDefault();
       var key  = btn.dataset.accordion;
       var body = document.getElementById('accordion-' + key);
       if (!body) return;
@@ -1879,7 +1880,13 @@ setInterval(updateCountdown, 1000);
         body.setAttribute('aria-hidden', 'false');
         if (labelEl) labelEl.textContent = openLabels[key] || 'Cerrar \u2191';
       }
+    }
+
+    btn.addEventListener('touchend', function (e) {
+      e.preventDefault(); // evita el click sintético de iOS que llega ~300ms después
+      toggleAccordion(e);
     });
+    btn.addEventListener('click', toggleAccordion);
   });
 }());
 
