@@ -737,7 +737,7 @@
     }
     @keyframes inkReveal {
       from { clip-path: inset(-0.5em 100% -0.5em -1em); }
-      to   { clip-path: inset(-0.5em -20vw -0.5em -1em); }
+      to   { clip-path: inset(-0.5em -300vw -0.5em -1em); }
     }
     @keyframes shimmer {
       0%   { background-position: -200% center; }
@@ -1561,6 +1561,17 @@ const heroTop   = document.getElementById('heroTop');
 const heroChurch = document.getElementById('heroChurch');
 const heroVines  = document.querySelectorAll('.hero-vine-left, .hero-vine-right');
 const isTouch    = window.matchMedia('(hover: none)').matches;
+
+/* Fix: eliminar clip-path al terminar la animación de los nombres para evitar
+   el bug de compositing GPU en móviles (texto cortado al cargar la página) */
+(function () {
+  const heroNames = document.querySelector('.hero-names');
+  if (!heroNames) return;
+  function removeClip() { heroNames.style.clipPath = 'none'; }
+  heroNames.addEventListener('animationend', removeClip, { once: true });
+  /* Fallback por si animationend no dispara (reducción de movimiento, etc.) */
+  setTimeout(removeClip, 2500);
+}());
 
 let scrollOY  = 0;          // scroll-based Y offset for church
 let mouseOX   = 0;          // lerped mouse X offset (-1 to 1)
