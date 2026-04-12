@@ -133,6 +133,14 @@
     @media (max-width: 480px) {
       .hero-date-long  { display: none; }
       .hero-date-short { display: inline; }
+
+      #hero {
+        height: 100svh;
+        min-height: unset;
+        justify-content: center;
+        padding-top: 3svh;
+        padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
+      }
     }
 
     /* Móvil apaisado (landscape): reducir tamaño de nombres */
