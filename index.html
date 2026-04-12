@@ -918,9 +918,40 @@
     .hotel-grid--single { display: flex; justify-content: center; }
 
     /* Transport — timeline */
-    .transport-wrapper { display: flex; flex-direction: column; gap: 1.6rem; }
+    .transport-wrapper {
+      display: flex; flex-direction: column; gap: 1.6rem;
+      max-width: 740px; margin: 0 auto;
+    }
+    /* Móvil: columna con orden IDA → puente → VUELTA */
+    .transport-legs-grid { display: flex; flex-direction: column; gap: 1.6rem; }
+    .transport-leg--ida        { order: 1; }
+    .transport-bridge--grid    { order: 2; }
+    .transport-leg--vuelta     { order: 3; }
 
-    .transport-leg { position: relative; }
+    .transport-leg {
+      position: relative;
+      padding: 1.4rem 1.6rem;
+      background: var(--cream-warm);
+      border: 1px solid var(--gold-light);
+      border-radius: 8px;
+    }
+
+    /* Desktop: grid 2 columnas, puente abajo ocupando ambas */
+    @media (min-width: 640px) {
+      .transport-legs-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+          "ida vuelta"
+          "bridge bridge";
+        gap: 1.5rem;
+        align-items: start;
+      }
+      .transport-leg--ida     { grid-area: ida; }
+      .transport-leg--vuelta  { grid-area: vuelta; }
+      .transport-bridge--grid { grid-area: bridge; order: unset; }
+    }
+
     .transport-leg-title {
       font-family: 'Montserrat', sans-serif; font-weight: 400;
       font-size: .64rem; letter-spacing: .42em; text-transform: uppercase;
@@ -1418,55 +1449,59 @@
 
           <div class="transport-wrapper">
 
-            <!-- IDA -->
-            <div class="transport-leg">
-              <p class="transport-leg-title">🚌 Ida — hacia la iglesia</p>
-              <div class="tr-tl">
-                <div class="tr-stop">
-                  <div class="tr-dot"></div>
-                  <div><p class="tr-name">Alicante</p><p class="tr-time">Salida · 16:55 h</p><!-- TODO: reemplazar con enlace real de Google Maps --><a href="https://maps.app.goo.gl/1LkAMj4sJB66mSvQ7" target="_blank" rel="noopener" class="transport-map-link">📍 Ver punto de recogida</a></div>
-                </div>
-                <div class="tr-stop">
-                  <div class="tr-dot"></div>
-                  <div><p class="tr-name">San Vicente del Raspeig</p><p class="tr-time">Parada · 17:10 h</p><!-- TODO: reemplazar con enlace real de Google Maps --><a href="https://maps.app.goo.gl/CwFQf5gSjerCRPTQA" target="_blank" rel="noopener" class="transport-map-link">📍 Ver punto de recogida</a></div>
-                </div>
-                <div class="tr-stop">
-                  <div class="tr-dot"></div>
-                  <div><p class="tr-name">AC Hotel Elda</p><p class="tr-time">Parada · 17:40 h</p><!-- TODO: reemplazar con enlace real de Google Maps --><a href="https://maps.app.goo.gl/UhspRWQVDBE4Gcqz6" target="_blank" rel="noopener" class="transport-map-link">📍 Ver punto de recogida</a></div>
-                </div>
-                <div class="tr-stop">
-                  <div class="tr-dot tr-dot--dest"></div>
-                  <div><p class="tr-name">Iglesia</p><p class="tr-dest-label">Destino · llegada ~17:45 h</p></div>
+            <div class="transport-legs-grid">
+
+              <!-- IDA -->
+              <div class="transport-leg transport-leg--ida">
+                <p class="transport-leg-title">🚌 Ida — hacia la iglesia</p>
+                <div class="tr-tl">
+                  <div class="tr-stop">
+                    <div class="tr-dot"></div>
+                    <div><p class="tr-name">Alicante</p><p class="tr-time">Salida · 16:55 h</p><a href="https://maps.app.goo.gl/1LkAMj4sJB66mSvQ7" target="_blank" rel="noopener" class="transport-map-link">📍 Ver punto de recogida</a></div>
+                  </div>
+                  <div class="tr-stop">
+                    <div class="tr-dot"></div>
+                    <div><p class="tr-name">San Vicente del Raspeig</p><p class="tr-time">Parada · 17:10 h</p><a href="https://maps.app.goo.gl/CwFQf5gSjerCRPTQA" target="_blank" rel="noopener" class="transport-map-link">📍 Ver punto de recogida</a></div>
+                  </div>
+                  <div class="tr-stop">
+                    <div class="tr-dot"></div>
+                    <div><p class="tr-name">AC Hotel Elda</p><p class="tr-time">Parada · 17:40 h</p><a href="https://maps.app.goo.gl/UhspRWQVDBE4Gcqz6" target="_blank" rel="noopener" class="transport-map-link">📍 Ver punto de recogida</a></div>
+                  </div>
+                  <div class="tr-stop">
+                    <div class="tr-dot tr-dot--dest"></div>
+                    <div><p class="tr-name">Iglesia</p><p class="tr-dest-label">Destino · llegada ~17:45 h</p></div>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <!-- PUENTE IGLESIA → FINCA -->
-            <p class="transport-bridge">⛪ Tras la ceremonia, el autobús os llevará directamente a la finca. ¡No os preocupéis por nada!</p>
+              <!-- PUENTE IGLESIA → FINCA -->
+              <p class="transport-bridge transport-bridge--grid">⛪ Tras la ceremonia, el autobús os llevará directamente a la finca. ¡No os preocupéis por nada!</p>
 
-            <!-- VUELTA -->
-            <div class="transport-leg">
-              <p class="transport-leg-title">🌙 Vuelta — regreso nocturno</p>
-              <p class="transport-note" style="margin-bottom:1rem;">Habrá dos salidas desde la finca. Ambas realizarán el mismo recorrido de paradas.</p>
-              <div class="tr-tl">
-                <div class="tr-stop">
-                  <div class="tr-dot tr-dot--bridge"></div>
-                  <div><p class="tr-name">Finca</p><p class="tr-time">1ª salida · 01:00 h &nbsp;·&nbsp; 2ª salida · 04:00 h</p></div>
-                </div>
-                <div class="tr-stop">
-                  <div class="tr-dot"></div>
-                  <div><p class="tr-name">AC Hotel Elda</p><p class="tr-dest-label">Parada intermedia</p></div>
-                </div>
-                <div class="tr-stop">
-                  <div class="tr-dot"></div>
-                  <div><p class="tr-name">San Vicente del Raspeig</p><p class="tr-dest-label">Parada intermedia</p></div>
-                </div>
-                <div class="tr-stop">
-                  <div class="tr-dot tr-dot--dest"></div>
-                  <div><p class="tr-name">Alicante</p><p class="tr-dest-label">Destino final</p></div>
+              <!-- VUELTA -->
+              <div class="transport-leg transport-leg--vuelta">
+                <p class="transport-leg-title">🌙 Vuelta — regreso nocturno</p>
+                <p class="transport-note" style="margin-bottom:1rem;">Habrá dos salidas desde la finca. Ambas realizarán el mismo recorrido de paradas.</p>
+                <div class="tr-tl">
+                  <div class="tr-stop">
+                    <div class="tr-dot tr-dot--bridge"></div>
+                    <div><p class="tr-name">Finca</p><p class="tr-time">1ª salida · 01:00 h &nbsp;·&nbsp; 2ª salida · 04:00 h</p></div>
+                  </div>
+                  <div class="tr-stop">
+                    <div class="tr-dot"></div>
+                    <div><p class="tr-name">AC Hotel Elda</p><p class="tr-dest-label">Parada intermedia</p></div>
+                  </div>
+                  <div class="tr-stop">
+                    <div class="tr-dot"></div>
+                    <div><p class="tr-name">San Vicente del Raspeig</p><p class="tr-dest-label">Parada intermedia</p></div>
+                  </div>
+                  <div class="tr-stop">
+                    <div class="tr-dot tr-dot--dest"></div>
+                    <div><p class="tr-name">Alicante</p><p class="tr-dest-label">Destino final</p></div>
+                  </div>
                 </div>
               </div>
-            </div>
+
+            </div><!-- /transport-legs-grid -->
 
           </div>
 
@@ -2024,9 +2059,9 @@ window.addEventListener('load', function () {
 
     /* --- #btn-top --- */
     /* env(safe-area-inset-bottom): 34pt en Face ID iPhones, 0 en Touch ID.
-       +3.5rem supera la barra de Safari (~49pt) en cualquier modelo. */
+       +2rem sitúa el botón justo encima del área segura del dispositivo. */
     #btn-top {
-      bottom: calc(env(safe-area-inset-bottom) + 3.5rem);
+      bottom: calc(env(safe-area-inset-bottom) + 2rem);
     }
     #btn-top:hover {
       background: var(--cream);
