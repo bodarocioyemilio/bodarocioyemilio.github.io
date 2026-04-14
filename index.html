@@ -200,6 +200,11 @@
       color: var(--sepia-light);
       opacity: .7;
       z-index: 10;
+      transition: opacity 1.2s ease;
+    }
+    .hero-rsvp-hint.hidden {
+      opacity: 0 !important;
+      pointer-events: none;
     }
     .hero-rsvp-hint span {
       font-family: 'Montserrat', sans-serif;
@@ -484,10 +489,11 @@
 
     .invitation-skyline {
       width: 100%;
-      height: 100%;
+      height: 115%;
       object-fit: cover;
       object-position: center center;
       display: block;
+      will-change: transform;
     }
 
     .invitation-text-col {
@@ -1715,6 +1721,9 @@ const heroTop   = document.getElementById('heroTop');
 const heroChurch = document.getElementById('heroChurch');
 const heroVines  = document.querySelectorAll('.hero-vine-left, .hero-vine-right');
 const isTouch    = window.matchMedia('(hover: none)').matches;
+const rsvpHintEl     = document.querySelector('.hero-rsvp-hint');
+const skylineImg     = document.querySelector('#invitation-split .invitation-skyline');
+const invitationSect = document.getElementById('invitation-split');
 
 /* Fix: eliminar clip-path al terminar la animación de los nombres para evitar
    el bug de compositing GPU en móviles (texto cortado al cargar la página) */
@@ -1753,6 +1762,9 @@ function onScroll() {
   /* Scroll cue: hide when user scrolls down, show at top */
   if (scrollCueEl) scrollCueEl.classList.toggle('hidden', scrollOY > 40);
 
+  /* Hero RSVP hint: fade out smoothly on scroll via CSS class */
+  if (rsvpHintEl) rsvpHintEl.classList.toggle('hidden', scrollOY > 80);
+
   /* Vines follow scroll only */
   heroVines.forEach(v => {
     v.style.transform = v.classList.contains('hero-vine-right')
@@ -1761,6 +1773,25 @@ function onScroll() {
   });
 
   applyChurchTransform();
+
+  /* Parallax invitation-split: whole section scrolls faster to close gap */
+  if (invitationSect) {
+    const sectionTop = invitationSect.getBoundingClientRect().top;
+    /* Only apply while section is near/above viewport — avoid affecting layout below */
+    if (sectionTop < window.innerHeight * 1.2) {
+      const push = Math.max(0, window.innerHeight - sectionTop) * 0.18;
+      invitationSect.style.transform = `translateY(-${push}px)`;
+      invitationSect.style.marginBottom = `-${push}px`;
+    }
+  }
+
+  /* Parallax skyline image: extra depth within its column */
+  if (skylineImg) {
+    const rect = skylineImg.closest('section').getBoundingClientRect();
+    const sectionTop = rect.top + scrollOY;
+    const relScroll = scrollOY - sectionTop + window.innerHeight;
+    skylineImg.style.transform = `translateY(${relScroll * -0.1}px)`;
+  }
 }
 
 let rafScroll = false;
