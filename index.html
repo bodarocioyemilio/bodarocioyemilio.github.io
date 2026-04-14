@@ -203,7 +203,7 @@
       transition: opacity 1.2s ease;
     }
     .hero-rsvp-hint.hidden {
-      opacity: 0 !important;
+      opacity: 0;
       pointer-events: none;
     }
     .hero-rsvp-hint span {
@@ -522,17 +522,17 @@
       .invitation-split-inner {
         grid-template-columns: 1fr;
       }
-      /* Orden móvil: etiqueta → imagen → texto */
-      .invitation-label-mobile { order: 1; }
-      .invitation-img-col      { order: 2; }
+      /* Orden móvil: imagen → etiqueta → texto */
+      .invitation-img-col      { order: 1; }
+      .invitation-label-mobile { order: 2; }
       .invitation-text-col     { order: 3; }
 
       /* En móvil: mostrar la etiqueta de arriba, ocultar la del bloque de texto */
       .invitation-label-mobile {
         display: block;
         text-align: center;
-        padding: 2.5rem 1.5rem 0;
-        margin-bottom: -0.5rem;
+        padding: 1.5rem 1.5rem 0;
+        margin-bottom: 0;
       }
       .invitation-label-desktop { display: none; }
 
@@ -1686,12 +1686,12 @@ En este video podéis ver que nos apuntamos a todos los planes que podemos y que
       <h2 class="s-title aos d1">¿Contamos contigo?</h2>
       <div class="gold-bar aos d2"></div>
       <p class="msg-quote aos d2">
-        Para poder organizar todo con cariño y que no falte nada, necesitamos saber si podrás
-        acompañarnos en este día tan especial.
+        Estamos organizando cada detalle con mucho cariño e ilusión, y para que todo sea perfecto
+        te agradeceríamos que nos confirmaras tu asistencia <em>antes del 1 de agosto</em>.
       </p>
       <p class="msg-quote aos d3">
-        Por favor, <em>confirma tu asistencia antes del 1 de agosto de 2026</em> para que podamos
-        tenerte en cuenta.
+        Prometemos que estamos preparando una boda muy divertida (y un poco canallita, ya nos conocéis).
+        ¿Te la vas a perder?
       </p>
       <a href="rsvp.html" class="btn-rsvp aos d4">
         <span>Confirmar asistencia</span>
@@ -1771,6 +1771,12 @@ const heroChurch = document.getElementById('heroChurch');
 const heroVines  = document.querySelectorAll('.hero-vine-left, .hero-vine-right');
 const isTouch    = window.matchMedia('(hover: none)').matches;
 const rsvpHintEl     = document.querySelector('.hero-rsvp-hint');
+if (rsvpHintEl) {
+  rsvpHintEl.addEventListener('animationend', () => {
+    rsvpHintEl.style.animation = 'none';
+    rsvpHintEl.style.opacity   = '';
+  }, { once: true });
+}
 const skylineImg     = document.querySelector('#invitation-split .invitation-skyline');
 const invitationSect = document.getElementById('invitation-split');
 const invitationTextCol = document.querySelector('#invitation-split .invitation-text-col');
