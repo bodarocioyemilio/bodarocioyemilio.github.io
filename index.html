@@ -1766,19 +1766,32 @@ En este video podéis ver que nos apuntamos a todos los planes que podemos y que
    FIX: Bloquear altura del hero para evitar reflow en
    móviles cuando la barra del navegador aparece/desaparece
    al hacer scroll (Safari, Brave, Chrome mobile…).
-   Se captura window.innerHeight una vez al cargar (con la
-   barra visible) y se guarda como --hero-h. Los eventos
-   de scroll NO disparan resize, por lo que el valor
-   permanece estable durante el desplazamiento.
+
+   Clave: la barra del navegador cambia SOLO la altura del
+   viewport, nunca el ancho. Por eso ignoramos los eventos
+   resize donde el ancho no varía: esos son la barra
+   apareciendo/desapareciendo. Solo actualizamos cuando
+   cambia el ancho (cambio de orientación, resize real en
+   escritorio).
 ══════════════════════════════════════════════════════ */
 (function lockHeroHeight() {
   var root = document.documentElement;
+  var lockedW = window.innerWidth;
+
   function lock() {
     root.style.setProperty('--hero-h', window.innerHeight + 'px');
+    lockedW = window.innerWidth;
   }
+
   lock();
-  // Se actualiza solo en resize real (cambio de orientación, etc.), nunca en scroll
-  window.addEventListener('resize', lock, { passive: true });
+
+  window.addEventListener('resize', function () {
+    // Solo actualizamos si cambió el ancho → cambio de orientación o resize real.
+    // Si solo cambia la altura (barra del nav aparece/desaparece) → ignorar.
+    if (window.innerWidth !== lockedW) {
+      lock();
+    }
+  }, { passive: true });
 }());
 
 /* ═══════════════════════════════════════════════════════
