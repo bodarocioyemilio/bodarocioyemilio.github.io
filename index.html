@@ -1161,6 +1161,30 @@
       width: 100%; height: 100%;
       border: none;
     }
+    #btn-mute-video {
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      white-space: nowrap;
+      border: 1.5px solid rgba(255,255,255,0.85);
+      border-radius: 999px;
+      background: rgba(0,0,0,0.45);
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.4rem 1.1rem;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      transition: background 0.2s;
+    }
+    #btn-mute-video:active {
+      background: rgba(0,0,0,0.75);
+    }
   </style>
 
   <!-- ── INTRO LIBRO: estilos ── -->
@@ -1638,12 +1662,13 @@ En este video podéis ver que nos apuntamos a todos los planes que podemos y que
     <div class="video-wrapper-vertical aos d1">
       <iframe
         id="vimeo-main"
-        src="https://player.vimeo.com/video/1182192007?autoplay=1&muted=1&loop=1&autopause=0&controls=1&title=0&byline=0&portrait=0"
+        src="https://player.vimeo.com/video/1182192007?autoplay=1&muted=1&loop=1&autopause=0&controls=0&title=0&byline=0&portrait=0"
         frameborder="0"
         allow="autoplay; fullscreen; picture-in-picture"
         allowfullscreen
         title="Rocío y Emilio"
       ></iframe>
+      <button id="btn-mute-video" aria-label="Activar sonido">Activar Sonido</button>
     </div>
   </div>
 </section>
@@ -2092,6 +2117,14 @@ setInterval(updateCountdown, 1000);
     });
     btn.addEventListener('click', toggleAccordion);
   });
+
+  // btn-rsvp: primer toque inmediato en móvil (mismo patrón que accordion-btn)
+  document.querySelectorAll('.btn-rsvp').forEach(function (btn) {
+    btn.addEventListener('touchend', function (e) {
+      e.preventDefault(); // evita el click sintético de iOS (~300 ms después)
+      window.location.href = btn.getAttribute('href');
+    }, { passive: false });
+  });
 }());
 
 // Precarga diferida de imágenes de hoteles: se ejecuta tras window.load,
@@ -2237,7 +2270,13 @@ window.addEventListener('load', function () {
                     !/CriOS|FxiOS|OPiOS|EdgiOS|Brave/.test(ua);
   if (isIOSSafari) btn.classList.add('safari-ios');
 
+  var introEl = document.getElementById('book-intro');
+  function introFinished() {
+    return !introEl || introEl.style.display === 'none';
+  }
+
   window.addEventListener('scroll', function () {
+    if (!introFinished()) return;
     if (window.scrollY > 300) {
       btn.classList.add('visible');
     } else {
@@ -2257,10 +2296,47 @@ window.addEventListener('load', function () {
 <script>
 (function () {
   var iframe = document.getElementById('vimeo-main');
-  if (!iframe) return;
+  var muteBtn = document.getElementById('btn-mute-video');
+  if (!iframe || !muteBtn) return;
+
   var player = new Vimeo.Player(iframe);
-  // Preconfigurar volumen para cuando el usuario desactive el silencio
-  player.setVolume(0.15);
+  var isMuted = true; // siempre empieza silenciado
+
+  function updateBtn() {
+    muteBtn.textContent = isMuted ? 'Activar Sonido' : 'Desactivar Sonido';
+    muteBtn.setAttribute('aria-label', muteBtn.textContent);
+  }
+
+  function toggleMute(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    isMuted = !isMuted;
+    if (isMuted) {
+      player.setMuted(true);
+    } else {
+      // Primero volumen, luego desmutear
+      player.setVolume(0.15).then(function () {
+        return player.setMuted(false);
+      });
+    }
+    updateBtn();
+  }
+
+  // Garantizar que al cargar la página el vídeo esté silenciado
+  player.ready().then(function () {
+    player.setMuted(true);
+    isMuted = true;
+    updateBtn();
+  });
+
+  // Touch: usar touchend con preventDefault para evitar el doble-toque en móvil
+  muteBtn.addEventListener('touchend', toggleMute, { passive: false });
+  // Click para escritorio (se dispara también en móvil si no hay touchend previo)
+  muteBtn.addEventListener('click', function (e) {
+    // En dispositivos táctiles touchend ya actuó; evitar doble ejecución
+    if (e.sourceCapabilities && e.sourceCapabilities.firesTouchEvents) return;
+    toggleMute(e);
+  });
 }());
 </script>
 
