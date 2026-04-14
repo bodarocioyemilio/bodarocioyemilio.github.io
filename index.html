@@ -187,6 +187,64 @@
     .btn-arrow { transition: transform .3s ease; }
     .btn-rsvp:hover .btn-arrow { transform: translateX(4px); }
 
+    /* Hero RSVP hint (scroll-down indicator) */
+    .hero-rsvp-hint {
+      position: absolute;
+      bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .6rem;
+      color: var(--sepia-light);
+      opacity: .7;
+      z-index: 10;
+    }
+    .hero-rsvp-hint span {
+      font-family: 'Montserrat', sans-serif;
+      font-size: .62rem;
+      letter-spacing: .4em;
+      text-transform: uppercase;
+      color: var(--sepia-light);
+      text-align: center;
+    }
+    .hero-rsvp-arrow {
+      width: 1px;
+      height: 38px;
+      background: linear-gradient(to bottom, var(--gold) 0%, transparent 100%);
+      animation: pulseDown 2s ease-in-out infinite;
+    }
+
+    /* RSVP section — variante de invitation-split */
+    #rsvp-section {
+      padding: 0;
+      overflow: hidden;
+      background: linear-gradient(180deg, var(--cream-warm) 0%, var(--cream) 50%, var(--cream-warm) 100%);
+    }
+    #rsvp-section .invitation-split-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .rsvp-split-inner .rsvp-text-col { order: 1; }
+    .rsvp-split-inner .rsvp-img-col  { order: 2; background: none; display: flex; align-items: center; justify-content: center; }
+    .rsvp-church-img {
+      width: auto;
+      max-width: 90%;
+      max-height: clamp(460px, 52vw, 640px);
+      object-fit: contain;
+      display: block;
+    }
+    @media (max-width: 700px) {
+      .rsvp-split-inner .rsvp-text-col { order: 1; }
+      .rsvp-split-inner .rsvp-img-col  { order: 2; justify-content: center; padding-top: 0; margin-top: -3rem; }
+      .rsvp-church-img {
+        max-height: 460px;
+        max-width: 95%;
+        margin-left: 6%;
+      }
+    }
+
     /* Sticky RSVP */
     .btn-sticky {
       position: fixed;
@@ -1185,17 +1243,13 @@
       <span class="hero-date-short">12 / 09 / 2026 &nbsp;·&nbsp; Elda</span>
     </p>
 
-    <a href="rsvp.html" class="btn-rsvp hero-rsvp" style="animation: fadeIn 1s ease 1.6s both;">
-      <span>Confirma tu asistencia</span>
-      <span class="btn-arrow">→</span>
-    </a>
   </div>
 
   <div class="hero-wm" aria-hidden="true">2026</div>
 
-  <div class="scroll-cue">
-    <span>Desliza</span>
-    <div class="scroll-cue-line"></div>
+  <div class="hero-rsvp-hint" style="animation: fadeIn 1s ease 1.6s both;">
+    <span>Confirma tu asistencia al final de la página</span>
+    <div class="hero-rsvp-arrow"></div>
   </div>
 </section>
 
@@ -1555,6 +1609,43 @@ En este video podéis ver que nos apuntamos a todos los planes que podemos y que
         title="Rocío y Emilio"
       ></iframe>
     </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     RSVP — Confirma tu asistencia
+════════════════════════════════════════════ -->
+<section id="rsvp-section">
+  <div class="invitation-split-inner rsvp-split-inner">
+
+    <!-- Columna izquierda: texto y botón -->
+    <div class="invitation-text-col rsvp-text-col">
+      <p class="s-label aos">Confirma tu asistencia</p>
+      <h2 class="s-title aos d1">¿Contamos contigo?</h2>
+      <div class="gold-bar aos d2"></div>
+      <p class="msg-quote aos d2">
+        Para poder organizar todo con cariño y que no falte nada, necesitamos saber si podrás
+        acompañarnos en este día tan especial.
+      </p>
+      <p class="msg-quote aos d3">
+        Por favor, <em>confirma tu asistencia antes del 1 de agosto de 2026</em> para que podamos
+        tenerte en cuenta.
+      </p>
+      <a href="rsvp.html" class="btn-rsvp aos d4">
+        <span>Confirmar asistencia</span>
+        <span class="btn-arrow">→</span>
+      </a>
+    </div>
+
+    <!-- Columna derecha: iglesia -->
+    <div class="invitation-img-col rsvp-img-col">
+      <picture>
+        <source srcset="illustrations/toWEBP/iglesia.webp" type="image/webp">
+        <img src="illustrations/toWEBP/iglesia.webp" alt="Iglesia de Santa Ana" class="invitation-skyline rsvp-church-img">
+      </picture>
+    </div>
+
   </div>
 </section>
 
