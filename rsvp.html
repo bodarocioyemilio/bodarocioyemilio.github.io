@@ -1253,6 +1253,15 @@ async function enviarFormulario(noAsiste = false) {
     return;
   }
 
+  // Modo test: si el nombre es 'test', simular envío sin llamar a Apps Script
+  if (nombre.toLowerCase() === 'test') {
+    console.warn('Modo test activado. Simulando envío sin llamar a Apps Script.');
+    console.log('Datos que se enviarían:', datos);
+    await new Promise(r => setTimeout(r, 900));
+    mostrarExito(asistencia, nombre);
+    return;
+  }
+
   try {
     await fetch(APPS_SCRIPT_URL, {
       method:  'POST',
