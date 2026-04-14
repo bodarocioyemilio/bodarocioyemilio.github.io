@@ -4,688 +4,27 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Confirma tu asistencia · Rocío &amp; Emilio</title>
+
+  <!-- ── Favicons ── -->
   <link rel="apple-touch-icon" sizes="180x180" href="illustrations/favicon_io/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="illustrations/favicon_io/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="illustrations/favicon_io/favicon-16x16.png">
   <link rel="manifest" href="illustrations/favicon_io/site.webmanifest">
   <link rel="shortcut icon" href="illustrations/favicon_io/favicon.ico">
 
+  <!-- ── Google Fonts ── -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Great+Vibes&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
 
-  <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-    :root {
-      --cream:       #faf8f3;
-      --cream-warm:  #f2e9d8;
-      --cream-mid:   #ede4d3;
-      --gold:        #c9a668;
-      --gold-light:  #dfc08a;
-      --gold-dark:   #a8864a;
-      --sage:        #8a9e7a;
-      --sage-dark:   #5f7a52;
-      --rose:        #c0897a;
-      --rose-light:  #d4a898;
-      --sepia:       #4a3b2e;
-      --sepia-light: #7a6a58;
-      --divider:     #d8cfc0;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--cream);
-      color: var(--sepia);
-      font-family: 'Cormorant Garamond', serif;
-      overflow-x: hidden;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* ═══════════════════════════════════════
-       HEADER / HERO
-    ════════════════════════════════════════ */
-    .rsvp-header {
-      background: linear-gradient(175deg, #f5ede0 0%, #faf8f3 55%, #f0e8d6 100%);
-      text-align: center;
-      padding: 2rem 2rem 1.6rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .back-link {
-      position: absolute;
-      top: 1rem;
-      left: 1.2rem;
-      display: inline-flex;
-      align-items: center;
-      gap: .45rem;
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 300;
-      font-size: .62rem;
-      letter-spacing: .3em;
-      text-transform: uppercase;
-      color: var(--sepia-light);
-      text-decoration: none;
-      opacity: .7;
-      transition: opacity .2s, color .2s;
-    }
-    .back-link:hover { opacity: 1; color: var(--rose); }
-    .back-link svg { width: 14px; height: 14px; }
-
-    .header-logo {
-      width: clamp(44px, 7vw, 58px);
-      mix-blend-mode: multiply;
-      display: block;
-      margin: 0 auto 1rem;
-      animation: shimmerGlow 4s ease-in-out 2s infinite;
-    }
-
-    .header-divider {
-      width: 36px; height: 1px;
-      margin: .8rem auto .75rem;
-      background: linear-gradient(90deg, var(--gold-dark) 0%, var(--gold-light) 50%, var(--gold-dark) 100%);
-    }
-
-    .header-subtitle {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 500;
-      font-size: clamp(1.6rem, 5vw, 2.4rem);
-      color: var(--sepia);
-      letter-spacing: .04em;
-    }
-
-    /* ═══════════════════════════════════════
-       PROGRESS BAR
-    ════════════════════════════════════════ */
-    .progress-wrap {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 0;
-      background: var(--cream);
-      padding: .7rem 2rem .2rem;
-    }
-
-    .progress-step {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: .35rem;
-      position: relative;
-    }
-
-    .progress-step:not(:last-child)::after {
-      content: '';
-      position: absolute;
-      top: 10px;
-      left: calc(50% + 10px);
-      width: calc(100% - 20px);
-      height: 1px;
-      background: var(--divider);
-      transition: background .4s;
-    }
-
-    .progress-step.done:not(:last-child)::after {
-      background: var(--gold);
-    }
-
-    .progress-dot {
-      width: 20px; height: 20px;
-      border-radius: 50%;
-      border: 1.5px solid var(--divider);
-      background: var(--cream);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Montserrat', sans-serif;
-      font-size: .55rem;
-      font-weight: 400;
-      color: var(--sepia-light);
-      transition: all .4s;
-      position: relative;
-      z-index: 1;
-    }
-
-    .progress-step.active .progress-dot {
-      border-color: var(--gold);
-      background: var(--gold);
-      color: var(--cream);
-    }
-
-    .progress-step.done .progress-dot {
-      border-color: var(--gold);
-      background: var(--gold);
-      color: var(--cream);
-    }
-
-    .progress-label {
-      font-family: 'Montserrat', sans-serif;
-      font-size: .52rem;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      color: var(--sepia-light);
-      opacity: .55;
-      transition: opacity .3s;
-      white-space: nowrap;
-    }
-
-    .progress-step.active .progress-label,
-    .progress-step.done .progress-label {
-      opacity: 1;
-      color: var(--sepia);
-    }
-
-    /* ═══════════════════════════════════════
-       FORM CONTAINER
-    ════════════════════════════════════════ */
-    .form-outer {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: .3rem 1rem 3rem;
-    }
-
-    .form-card {
-      width: 100%;
-      max-width: 560px;
-      background: #fff;
-      border: 1px solid var(--divider);
-      padding: 2rem 2rem;
-      box-shadow: 0 8px 40px rgba(74,59,46,.07);
-      position: relative;
-    }
-
-    @media (max-width: 480px) {
-      .form-outer { padding: .25rem .9rem 2.5rem; }
-      .form-card  { padding: 1.6rem 1.2rem; }
-    }
-
-    /* ─── Steps ─── */
-    .step {
-      display: none;
-      animation: stepFade .4s ease both;
-    }
-    .step.active { display: block; }
-
-    @keyframes stepFade {
-      from { opacity: 0; transform: translateY(12px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ─── Step header ─── */
-    .step-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 500;
-      font-size: clamp(1.4rem, 4vw, 1.8rem);
-      color: var(--sepia);
-      margin-bottom: .3rem;
-    }
-
-    .step-subtitle {
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 300;
-      font-size: .67rem;
-      letter-spacing: .08em;
-      color: var(--sepia-light);
-      margin-bottom: 1.2rem;
-      opacity: .8;
-    }
-
-    .step-divider {
-      width: 32px; height: 1px;
-      background: var(--gold);
-      margin-bottom: 1.2rem;
-    }
-
-    /* ─── Fields ─── */
-    .field {
-      margin-bottom: 1.1rem;
-    }
-
-    label {
-      display: block;
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 400;
-      font-size: .62rem;
-      letter-spacing: .2em;
-      text-transform: uppercase;
-      color: var(--sepia-light);
-      margin-bottom: .45rem;
-    }
-
-    input[type="text"],
-    input[type="tel"],
-    textarea,
-    select {
-      width: 100%;
-      background: var(--cream);
-      border: 1px solid var(--divider);
-      border-radius: 0;
-      padding: .75rem .9rem;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.1rem;
-      color: var(--sepia);
-      outline: none;
-      transition: border-color .25s;
-      appearance: none;
-      -webkit-appearance: none;
-    }
-
-    input[type="text"]:focus,
-    input[type="tel"]:focus,
-    textarea:focus,
-    select:focus {
-      border-color: var(--gold);
-    }
-
-    input[type="text"].error,
-    input[type="tel"].error {
-      border-color: var(--rose);
-      border-width: 2px;
-    }
-
-    textarea {
-      min-height: 90px;
-      resize: vertical;
-      line-height: 1.5;
-    }
-
-    .select-wrap {
-      position: relative;
-    }
-
-    .select-wrap::after {
-      content: '';
-      position: absolute;
-      right: 1rem;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 8px; height: 8px;
-      border-right: 1.5px solid var(--gold);
-      border-bottom: 1.5px solid var(--gold);
-      transform: translateY(-65%) rotate(45deg);
-      pointer-events: none;
-    }
-
-    /* ─── Radio groups ─── */
-    .radio-group {
-      display: flex;
-      flex-direction: column;
-      gap: .5rem;
-    }
-
-    .radio-option {
-      display: flex;
-      align-items: center;
-      gap: .75rem;
-      cursor: pointer;
-      padding: .65rem .9rem;
-      border: 1px solid var(--divider);
-      background: var(--cream);
-      transition: border-color .25s, background .25s;
-    }
-
-    .radio-option:hover { border-color: var(--gold-light); }
-
-    .radio-option input[type="radio"] {
-      display: none;
-    }
-
-    .radio-custom {
-      width: 16px; height: 16px;
-      border-radius: 50%;
-      border: 1.5px solid var(--divider);
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: border-color .25s;
-    }
-
-    .radio-custom::after {
-      content: '';
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      background: var(--gold);
-      opacity: 0;
-      transition: opacity .2s;
-    }
-
-    .radio-option input[type="radio"]:checked ~ .radio-custom {
-      border-color: var(--gold);
-    }
-
-    .radio-option input[type="radio"]:checked ~ .radio-custom::after {
-      opacity: 1;
-    }
-
-    .radio-option:has(input[type="radio"]:checked) {
-      border-color: var(--gold);
-      background: rgba(201,166,104,.06);
-    }
-
-    .radio-text {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.05rem;
-      color: var(--sepia);
-    }
-
-    .radio-text small {
-      display: block;
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 300;
-      font-size: .6rem;
-      color: var(--sepia-light);
-      margin-top: .1rem;
-      letter-spacing: .05em;
-    }
-
-    /* ─── Error message ─── */
-    .field-error {
-      font-family: 'Montserrat', sans-serif;
-      font-size: .72rem;
-      font-weight: 600;
-      color: var(--rose);
-      letter-spacing: .05em;
-      margin-top: .4rem;
-      display: none;
-    }
-    .field-error.show { display: block; }
-
-    /* ─── Conditional fields ─── */
-    .conditional {
-      display: none;
-      margin-top: 1.2rem;
-    }
-    .conditional.show { display: block; }
-
-    /* ─── Buttons ─── */
-    .btn-row {
-      display: flex;
-      gap: 1rem;
-      margin-top: 1.6rem;
-      align-items: center;
-    }
-
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: .55rem;
-      padding: .9rem 2rem;
-      border: 1px solid var(--gold);
-      background: transparent;
-      color: var(--sepia);
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 300;
-      font-size: .68rem;
-      letter-spacing: .3em;
-      text-transform: uppercase;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-      transition: color .35s;
-    }
-
-    .btn-primary::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: var(--gold);
-      transform: translateX(-100%);
-      transition: transform .35s cubic-bezier(.77,0,.175,1);
-      z-index: 0;
-    }
-
-    .btn-primary:hover::before { transform: translateX(0); }
-    .btn-primary:hover { color: var(--cream); }
-    .btn-primary:disabled { opacity: .5; cursor: not-allowed; }
-    .btn-primary:disabled::before { display: none; }
-
-    .btn-primary span { position: relative; z-index: 1; }
-    .btn-arrow { transition: transform .3s; position: relative; z-index: 1; }
-    .btn-primary:hover .btn-arrow { transform: translateX(4px); }
-
-    .btn-back {
-      background: none;
-      border: none;
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 300;
-      font-size: .62rem;
-      letter-spacing: .2em;
-      text-transform: uppercase;
-      color: var(--sepia-light);
-      cursor: pointer;
-      opacity: .6;
-      transition: opacity .2s;
-      padding: .5rem;
-    }
-    .btn-back:hover { opacity: 1; }
-
-    /* ─── Loading spinner ─── */
-    .spinner {
-      width: 14px; height: 14px;
-      border: 2px solid rgba(255,255,255,.4);
-      border-top-color: var(--cream);
-      border-radius: 50%;
-      animation: spin .7s linear infinite;
-      display: inline-block;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    /* ─── Note ─── */
-    .step-note {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-size: .95rem;
-      color: var(--sepia-light);
-      margin-top: 1rem;
-      line-height: 1.6;
-      padding-left: .8rem;
-      border-left: 2px solid var(--gold-light);
-    }
-
-    /* ═══════════════════════════════════════
-       SUCCESS SCREEN
-    ════════════════════════════════════════ */
-    .success-screen {
-      display: none;
-      text-align: center;
-      padding: 1rem 0;
-      animation: stepFade .6s ease both;
-    }
-
-    .success-screen.show { display: block; }
-
-    .success-icon {
-      width: 64px; height: 64px;
-      border: 1.5px solid var(--gold);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 1.8rem;
-      animation: popIn .5s cubic-bezier(.175,.885,.32,1.275) .2s both;
-    }
-
-    .success-icon svg { width: 28px; height: 28px; color: var(--gold); }
-
-    @keyframes popIn {
-      from { transform: scale(.5); opacity: 0; }
-      to   { transform: scale(1);  opacity: 1; }
-    }
-
-    .success-title {
-      font-family: 'Great Vibes', cursive;
-      font-size: clamp(2.2rem, 7vw, 3.2rem);
-      color: var(--rose);
-      margin-bottom: .6rem;
-    }
-
-    .success-divider {
-      width: 36px; height: 1px;
-      background: linear-gradient(90deg, var(--gold-dark), var(--gold-light), var(--gold-dark));
-      margin: 1rem auto;
-    }
-
-    .success-msg {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1rem, 2.5vw, 1.2rem);
-      color: var(--sepia-light);
-      line-height: 1.7;
-      max-width: 380px;
-      margin: 0 auto 1.2rem;
-    }
-
-    .success-msg-no {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-size: clamp(1rem, 2.5vw, 1.15rem);
-      color: var(--sepia-light);
-      line-height: 1.7;
-      max-width: 380px;
-      margin: 0 auto 1.2rem;
-    }
-
-    .success-back {
-      display: inline-flex;
-      align-items: center;
-      gap: .5rem;
-      margin-top: 1.6rem;
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 300;
-      font-size: .63rem;
-      letter-spacing: .25em;
-      text-transform: uppercase;
-      color: var(--sepia-light);
-      text-decoration: none;
-      opacity: .65;
-      transition: opacity .2s, color .2s;
-    }
-    .success-back:hover { opacity: 1; color: var(--rose); }
-
-    /* ═══════════════════════════════════════
-       FOOTER
-    ════════════════════════════════════════ */
-    #closing {
-      background: var(--sepia);
-      padding: 2.8rem 2rem;
-      text-align: center;
-      margin-top: auto;
-    }
-
-    .closing-logo {
-      width: clamp(40px, 5vw, 58px);
-      opacity: .75;
-      mix-blend-mode: screen;
-      display: block;
-      margin: 0 auto 1.2rem;
-    }
-
-    .closing-names {
-      font-family: 'Great Vibes', cursive;
-      font-size: clamp(2.4rem, 6vw, 3.8rem);
-      color: var(--cream-warm);
-      line-height: 1;
-    }
-
-    .closing-date {
-      font-family: 'Montserrat', sans-serif; font-weight: 200;
-      font-size: clamp(.6rem, 1.6vw, .75rem);
-      letter-spacing: .55em; text-transform: uppercase;
-      color: var(--cream-warm); margin-top: .8rem; opacity: .45;
-    }
-
-    .closing-tagline {
-      font-family: 'Cormorant Garamond', serif; font-style: italic;
-      font-size: clamp(.9rem, 2vw, 1rem);
-      color: var(--cream-warm);
-      margin-top: .6rem; opacity: .4;
-    }
-
-    .footer-contact {
-      display: flex;
-      justify-content: center;
-      gap: clamp(2rem, 8vw, 6rem);
-      margin-top: 2rem;
-      padding-top: 1.6rem;
-      border-top: 1px solid rgba(255,255,255,.08);
-    }
-
-    .footer-person {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: .55rem;
-    }
-
-    .footer-person-name {
-      font-family: 'Montserrat', sans-serif; font-weight: 400;
-      font-size: .6rem; letter-spacing: .25em; text-transform: uppercase;
-      color: var(--cream-warm); opacity: .5;
-      margin-bottom: .1rem;
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 1.1rem;
-      align-items: center;
-    }
-
-    @media (max-width: 525px) {
-      .footer-links { flex-direction: column; gap: .45rem; align-items: flex-start; }
-    }
-
-    .footer-link {
-      display: flex;
-      align-items: center;
-      gap: .4rem;
-      font-family: 'Montserrat', sans-serif; font-weight: 300;
-      font-size: .65rem; letter-spacing: .04em;
-      color: var(--cream-warm); opacity: .55;
-      text-decoration: none;
-      transition: opacity .2s;
-    }
-
-    .footer-link:hover { opacity: .9; }
-    .footer-link svg { width: 13px; height: 13px; flex-shrink: 0; }
-
-    /* ═══════════════════════════════════════
-       TOUCH — anular hovers, sustituir por :active
-    ════════════════════════════════════════ */
-    @media (hover: none) {
-      .btn-primary::before { display: none; }
-      .btn-primary:hover   { color: var(--sepia); }
-      .btn-primary:hover .btn-arrow { transform: none; }
-      .btn-primary:active  { background: var(--gold); color: var(--cream); }
-
-      .back-link:hover  { opacity: .7; color: var(--sepia-light); }
-      .back-link:active { opacity: 1;  color: var(--rose); }
-
-      .radio-option:hover { border-color: var(--divider); }
-    }
-
-    /* ═══════════════════════════════════════
-       KEYFRAMES
-    ════════════════════════════════════════ */
-    @keyframes shimmerGlow {
-      0%,100% { filter: brightness(1)   drop-shadow(0 0 0px transparent); }
-      50%      { filter: brightness(1.1) drop-shadow(0 0 8px rgba(201,166,104,.4)); }
-    }
-  </style>
+  <!-- ── RSVP page stylesheet ── -->
+  <link rel="stylesheet" href="css/rsvp.css">
 </head>
 <body>
 
-<!-- ════════════════════════════════════════
-     HEADER
-════════════════════════════════════════ -->
+<!-- ============================================================
+     PAGE HEADER — Logo + back link + page title
+     ============================================================ -->
 <header class="rsvp-header">
   <a href="index.html" class="back-link" aria-label="Volver a la página principal">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -704,7 +43,9 @@
 </header>
 
 
-<!-- Progress bar -->
+<!-- ============================================================
+     PROGRESS BAR — Step indicator (managed by JS)
+     ============================================================ -->
 <div class="progress-wrap" id="progressBar" aria-hidden="true">
   <div class="progress-step active" data-step="1" style="width:60px">
     <div class="progress-dot">1</div>
@@ -728,14 +69,14 @@
   </div>
 </div>
 
-<!-- ════════════════════════════════════════
-     FORM
-════════════════════════════════════════ -->
-<main class="form-outer">
 
+<!-- ============================================================
+     MULTI-STEP FORM
+     ============================================================ -->
+<main class="form-outer">
   <div class="form-card">
 
-    <!-- ── ÉXITO ── -->
+    <!-- ── Success screen (shown after submission) ── -->
     <div class="success-screen" id="successScreen">
       <div class="success-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -745,6 +86,7 @@
       <p class="success-title" id="successTitle">¡Hasta pronto!</p>
       <div class="success-divider"></div>
       <p class="success-msg" id="successMsg"></p>
+      <p class="step-note" id="successNote"></p>
       <a href="index.html" class="success-back">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="15 18 9 12 15 6"/>
@@ -753,7 +95,7 @@
       </a>
     </div>
 
-    <!-- ── PASO 1: Datos personales ── -->
+    <!-- ── Step 1: Personal details ── -->
     <div class="step active" id="step1">
       <h1 class="step-title">Tus datos</h1>
       <p class="step-subtitle">Para saber quién confirma</p>
@@ -779,7 +121,7 @@
       </div>
     </div>
 
-    <!-- ── PASO 2: Asistencia ── -->
+    <!-- ── Step 2: Attendance confirmation ── -->
     <div class="step" id="step2">
       <h1 class="step-title">¿Nos acompañas?</h1>
       <p class="step-subtitle">12 de septiembre de 2026 · Elda</p>
@@ -808,7 +150,7 @@
         <p class="field-error" id="asistenciaError">Por favor, selecciona una opción</p>
       </div>
 
-      <!-- Mensaje si no asiste -->
+      <!-- Optional message shown when guest selects "no" -->
       <div class="conditional" id="noAsisteMensaje">
         <div class="field">
           <label for="mensajeNoAsiste">¿Quieres dejarnos un mensaje? <span style="opacity:.6;font-size:.9em">(opcional)</span></label>
@@ -825,7 +167,7 @@
       </div>
     </div>
 
-    <!-- ── PASO 3: Menú ── -->
+    <!-- ── Step 3: Menu selection ── -->
     <div class="step" id="step3">
       <h1 class="step-title">Tu menú</h1>
       <p class="step-subtitle">Para que todo esté perfecto</p>
@@ -871,7 +213,7 @@
         <p class="field-error" id="alergiasError">Por favor, selecciona una opción</p>
       </div>
 
-      <!-- Descripción alergias -->
+      <!-- Allergy detail field — shown when guest selects "yes" -->
       <div class="conditional" id="alergiasDetalle">
         <div class="field">
           <label for="alergiasTexto">Descríbenos tus alergias *</label>
@@ -894,7 +236,7 @@
       </div>
     </div>
 
-    <!-- ── PASO 4: Transporte ── -->
+    <!-- ── Step 4: Transport ── -->
     <div class="step" id="step4">
       <h1 class="step-title">Transporte</h1>
       <p class="step-subtitle">¿Cómo llegarás a la boda?</p>
@@ -920,7 +262,7 @@
         <p class="field-error" id="transporteError">Por favor, selecciona cómo vendrás</p>
       </div>
 
-      <!-- Parada autobús -->
+      <!-- Bus stop selector — shown when guest selects "bus" -->
       <div class="conditional" id="paradaWrap">
         <div class="field">
           <label for="paradaBus">Parada de recogida *</label>
@@ -945,7 +287,7 @@
       </div>
     </div>
 
-    <!-- ── PASO 5: Mensaje para los novios ── -->
+    <!-- ── Step 5: Optional message for the couple ── -->
     <div class="step" id="step5">
       <h1 class="step-title">Un mensaje para nosotros</h1>
       <p class="step-subtitle">Si quieres dejarnos unas palabras, ¡las guardaremos con mucho cariño!</p>
@@ -963,17 +305,15 @@
           <span class="btn-arrow" id="btnEnviarArrow">→</span>
         </button>
       </div>
-
-      <p class="step-note">Muchas gracias por tomarte el tiempo de confirmarnos. ¡Estamos deseando celebrarlo contigo!</p>
     </div>
 
   </div><!-- /form-card -->
 </main>
 
 
-<!-- ════════════════════════════════════════
+<!-- ============================================================
      FOOTER
-════════════════════════════════════════ -->
+     ============================================================ -->
 <footer id="closing">
   <picture>
     <source srcset="illustrations/toWEBP/logo.webp" type="image/webp">
@@ -1014,302 +354,10 @@
 </footer>
 
 
-<script>
-/* ═══════════════════════════════════════════════════════
-   CONFIGURACIÓN — pon aquí tu endpoint de Apps Script
-════════════════════════════════════════════════════════ */
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxcqbBslyoeJNL2pkrSksN3XBfBan8dUwnBetDBueUBovPfLh5V6aJE71W_53PIOaVG/exec';
-
-/* ═══════════════════════════════════════════════════════
-   ESTADO
-════════════════════════════════════════════════════════ */
-let currentStep = 1;
-const TOTAL_STEPS = 5;
-
-/* ═══════════════════════════════════════════════════════
-   NAVEGACIÓN ENTRE PASOS
-════════════════════════════════════════════════════════ */
-function goToStep(n) {
-  if (n < currentStep) {
-    // Retroceder — sin validación
-    showStep(n);
-    return;
-  }
-
-  // Validar paso actual antes de avanzar
-  if (!validateStep(currentStep)) return;
-
-  showStep(n);
-}
-
-function showStep(n) {
-  document.getElementById('step' + currentStep).classList.remove('active');
-  currentStep = n;
-  document.getElementById('step' + currentStep).classList.add('active');
-  updateProgress();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function updateProgress() {
-  document.querySelectorAll('.progress-step').forEach(el => {
-    const s = parseInt(el.dataset.step);
-    el.classList.remove('active', 'done');
-    if (s < currentStep) el.classList.add('done');
-    if (s === currentStep) el.classList.add('active');
-  });
-}
-
-/* ═══════════════════════════════════════════════════════
-   VALIDACIÓN
-════════════════════════════════════════════════════════ */
-function validateStep(step) {
-  let ok = true;
-
-  if (step === 1) {
-    const nombre = document.getElementById('nombre').value.trim();
-    const tel    = document.getElementById('telefono').value.trim();
-
-    setError('nombreError',   !nombre);
-    setError('telefonoError', !tel);
-    if (!nombre) document.getElementById('nombre').classList.add('error');
-    else         document.getElementById('nombre').classList.remove('error');
-    if (!tel)    document.getElementById('telefono').classList.add('error');
-    else         document.getElementById('telefono').classList.remove('error');
-
-    ok = nombre && tel;
-  }
-
-  if (step === 2) {
-    const val = document.querySelector('input[name="asistencia"]:checked');
-    setError('asistenciaError', !val);
-    ok = !!val;
-  }
-
-  if (step === 3) {
-    const menu     = document.querySelector('input[name="menu"]:checked');
-    const alergias = document.querySelector('input[name="alergias"]:checked');
-    let alergiasOk = true;
-
-    setError('menuError',     !menu);
-    setError('alergiasError', !alergias);
-
-    if (alergias && alergias.value === 'si') {
-      const texto = document.getElementById('alergiasTexto').value.trim();
-      setError('alergiasTextoError', !texto);
-      alergiasOk = !!texto;
-    }
-
-    ok = menu && alergias && alergiasOk;
-  }
-
-  if (step === 4) {
-    const transporte = document.querySelector('input[name="transporte"]:checked');
-    setError('transporteError', !transporte);
-    let paradaOk = true;
-
-    if (transporte && transporte.value === 'autobus') {
-      const parada = document.getElementById('paradaBus').value;
-      setError('paradaBusError', !parada);
-      paradaOk = !!parada;
-    }
-
-    ok = transporte && paradaOk;
-  }
-
-  return ok;
-}
-
-function setError(id, show) {
-  const el = document.getElementById(id);
-  if (el) el.classList.toggle('show', show);
-}
-
-/* ═══════════════════════════════════════════════════════
-   LÓGICA CONDICIONAL
-════════════════════════════════════════════════════════ */
-/* ═══════════════════════════════════════════════════════
-   LIMPIEZA DE ERRORES EN TIEMPO REAL
-════════════════════════════════════════════════════════ */
-// Paso 1: nombre y teléfono
-document.getElementById('nombre').addEventListener('input', function() {
-  if (this.value.trim()) {
-    setError('nombreError', false);
-    this.classList.remove('error');
-  }
-});
-document.getElementById('telefono').addEventListener('input', function() {
-  if (this.value.trim()) {
-    setError('telefonoError', false);
-    this.classList.remove('error');
-  }
-});
-
-// Paso 2: asistencia
-document.querySelectorAll('input[name="asistencia"]').forEach(radio => {
-  radio.addEventListener('change', () => setError('asistenciaError', false));
-});
-
-// Paso 3: menú, alergias y texto de alergias
-document.querySelectorAll('input[name="menu"]').forEach(radio => {
-  radio.addEventListener('change', () => setError('menuError', false));
-});
-document.querySelectorAll('input[name="alergias"]').forEach(radio => {
-  radio.addEventListener('change', () => setError('alergiasError', false));
-});
-document.getElementById('alergiasTexto').addEventListener('input', function() {
-  if (this.value.trim()) setError('alergiasTextoError', false);
-});
-
-// Paso 4: transporte y parada de bus
-document.querySelectorAll('input[name="transporte"]').forEach(radio => {
-  radio.addEventListener('change', () => setError('transporteError', false));
-});
-document.getElementById('paradaBus').addEventListener('change', function() {
-  if (this.value) setError('paradaBusError', false);
-});
-
-// Asistencia: mostrar campo mensaje si dice NO
-document.querySelectorAll('input[name="asistencia"]').forEach(radio => {
-  radio.addEventListener('change', () => {
-    const noWrap = document.getElementById('noAsisteMensaje');
-    noWrap.classList.toggle('show', radio.value === 'no');
-  });
-});
-
-function handleAsistencia() {
-  if (!validateStep(2)) return;
-  const val = document.querySelector('input[name="asistencia"]:checked').value;
-
-  if (val === 'no') {
-    // No asiste → deshabilitar botón y enviar directamente
-    const btn = document.getElementById('btnAsistencia');
-    btn.disabled = true;
-    document.getElementById('btnAsistenciaLabel').textContent = 'Enviando...';
-    document.getElementById('btnAsistenciaArrow').innerHTML = '<span class="spinner"></span>';
-    enviarFormulario(true);
-  } else {
-    goToStep(3);
-  }
-}
-
-// Alergias: mostrar textarea si dice SÍ
-function toggleAlergias() {
-  const val = document.querySelector('input[name="alergias"]:checked');
-  document.getElementById('alergiasDetalle').classList.toggle('show', val && val.value === 'si');
-}
-
-// Transporte: mostrar select de parada si elige autobús
-function toggleTransporte() {
-  const val = document.querySelector('input[name="transporte"]:checked');
-  document.getElementById('paradaWrap').classList.toggle('show', val && val.value === 'autobus');
-}
-
-/* ═══════════════════════════════════════════════════════
-   ENVÍO
-════════════════════════════════════════════════════════ */
-async function enviarFormulario(noAsiste = false) {
-  // Validar paso 4 solo si asiste
-  if (!noAsiste && !validateStep(4)) return;
-
-  // Recoger datos
-  const nombre       = document.getElementById('nombre').value.trim();
-  const telefono     = document.getElementById('telefono').value.trim();
-  const asistencia   = document.querySelector('input[name="asistencia"]:checked')?.value || 'no';
-  const mensajeNo    = document.getElementById('mensajeNoAsiste').value.trim();
-  const menu         = document.querySelector('input[name="menu"]:checked')?.value || '';
-  const alergiasVal  = document.querySelector('input[name="alergias"]:checked')?.value || '';
-  const alergiasText  = document.getElementById('alergiasTexto').value.trim();
-  const transporte    = document.querySelector('input[name="transporte"]:checked')?.value || '';
-  const paradaBus    = document.getElementById('paradaBus').value;
-  const mensajeNovios = document.getElementById('mensajeNovios').value.trim();
-
-  const datos = {
-    timestamp:  new Date().toISOString(),
-    nombre,
-    telefono,
-    asistencia,
-    mensajeNoAsiste: mensajeNo,
-    menu,
-    alergias:          alergiasVal,
-    alergiasDetalle:   alergiasText,
-    transporte,
-    paradaBus,
-    mensajeNovios
-  };
-
-  // Estado cargando
-  const btnEnviar = document.getElementById('btnEnviar');
-  if (btnEnviar) {
-    btnEnviar.disabled = true;
-    document.getElementById('btnEnviarLabel').textContent = 'Enviando...';
-    document.getElementById('btnEnviarArrow').innerHTML = '<span class="spinner"></span>';
-  }
-
-  // Si la URL de Apps Script no está configurada, simular éxito
-  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'TU_URL_DE_APPS_SCRIPT_AQUI') {
-    console.warn('Apps Script URL no configurada. Simulando envío exitoso.');
-    await new Promise(r => setTimeout(r, 900));
-    mostrarExito(asistencia, nombre);
-    return;
-  }
-
-  // Modo test: si el nombre es 'test', simular envío sin llamar a Apps Script
-  if (nombre.toLowerCase() === 'test') {
-    console.warn('Modo test activado. Simulando envío sin llamar a Apps Script.');
-    console.log('Datos que se enviarían:', datos);
-    await new Promise(r => setTimeout(r, 900));
-    mostrarExito(asistencia, nombre);
-    return;
-  }
-
-  try {
-    await fetch(APPS_SCRIPT_URL, {
-      method:  'POST',
-      mode:    'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify(datos)
-    });
-    mostrarExito(asistencia, nombre);
-  } catch (err) {
-    console.error('Error al enviar:', err);
-    if (btnEnviar) {
-      btnEnviar.disabled = false;
-      document.getElementById('btnEnviarLabel').textContent = 'Enviar confirmación';
-      document.getElementById('btnEnviarArrow').textContent = '→';
-    }
-    const btnAsistencia = document.getElementById('btnAsistencia');
-    if (btnAsistencia && btnAsistencia.disabled) {
-      btnAsistencia.disabled = false;
-      document.getElementById('btnAsistenciaLabel').textContent = 'Siguiente';
-      document.getElementById('btnAsistenciaArrow').textContent = '→';
-    }
-    alert('Ha ocurrido un error al enviar. Por favor, inténtalo de nuevo o contáctanos directamente.');
-  }
-}
-
-function mostrarExito(asistencia, nombre) {
-  // Ocultar pasos y barra de progreso
-  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-  document.getElementById('progressBar').style.display = 'none';
-
-  const screen    = document.getElementById('successScreen');
-  const title     = document.getElementById('successTitle');
-  const msg       = document.getElementById('successMsg');
-
-  if (asistencia === 'si') {
-    title.textContent = '¡Hasta pronto, ' + nombre.split(' ')[0] + '!';
-    msg.textContent   = 'Hemos recibido tu confirmación. ¡Estamos deseando celebrarlo contigo el 12 de septiembre!';
-  } else {
-    title.textContent = 'Lo sentimos mucho';
-    screen.querySelector('.success-icon svg').innerHTML = '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>';
-    msg.className     = 'success-msg-no';
-    msg.textContent   = 'Te echaremos de menos. Gracias por hacérnoslo saber y por el mensaje que nos has dejado.';
-  }
-
-  screen.classList.add('show');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-</script>
+<!-- ============================================================
+     SCRIPTS
+     ============================================================ -->
+<script src="js/rsvp.js"></script>
 
 </body>
 </html>
