@@ -1139,19 +1139,25 @@
     #book-intro {
       position: fixed;
       inset: 0;
-      width: 100vw;
-      height: 100vh;
-      height: 100svh;
       z-index: 9999;
       background: #f5f0e8;
       display: flex;
-      align-items: stretch;
+      align-items: center;
+      justify-content: center;
       perspective: 2000px;
       cursor: pointer;
       transition: opacity 0.6s ease;
-      gap: 0;
     }
     #book-intro.fade-out { opacity: 0; pointer-events: none; }
+
+    /* Contenedor interior: mismo ancho que las dos enredaderas juntas */
+    .book-inner {
+      position: relative;
+      width: min(calc(2 * clamp(80px, 10vw, 220px) + 2 * clamp(200px, 33vw, 380px)), 100vw);
+      height: 100%;
+      display: flex;
+      align-items: stretch;
+    }
 
     /* Imágenes ocultas hasta que estén completamente cargadas */
     #book-intro img { opacity: 0; transition: opacity 0.25s ease; }
@@ -1925,21 +1931,23 @@ setInterval(updateCountdown, 1000);
 
 <!-- ── INTRO LIBRO: markup ── -->
 <div id="book-intro" role="presentation" aria-hidden="true">
-  <div id="cover-left" class="book-cover">
+  <div class="book-inner">
+    <div id="cover-left" class="book-cover">
+      <picture>
+        <source srcset="illustrations/toWEBP/portada-izquierda.webp" type="image/webp">
+        <img src="illustrations/portada-izquierda.png" alt="">
+      </picture>
+    </div>
     <picture>
-      <source srcset="illustrations/toWEBP/portada-izquierda.webp" type="image/webp">
-      <img src="illustrations/portada-izquierda.png" alt="">
+      <source srcset="illustrations/toWEBP/logo.webp" type="image/webp">
+      <img id="book-logo" src="illustrations/logo.png" alt="">
     </picture>
-  </div>
-  <picture>
-    <source srcset="illustrations/toWEBP/logo.webp" type="image/webp">
-    <img id="book-logo" src="illustrations/logo.png" alt="">
-  </picture>
-  <div id="cover-right" class="book-cover">
-    <picture>
-      <source srcset="illustrations/toWEBP/portada-derecha.webp" type="image/webp">
-      <img src="illustrations/portada-derecha.png" alt="">
-    </picture>
+    <div id="cover-right" class="book-cover">
+      <picture>
+        <source srcset="illustrations/toWEBP/portada-derecha.webp" type="image/webp">
+        <img src="illustrations/portada-derecha.png" alt="">
+      </picture>
+    </div>
   </div>
 </div>
 
@@ -1950,27 +1958,17 @@ setInterval(updateCountdown, 1000);
 
   var done = false;
 
-  // --- Bloquear scroll (cross-browser + iOS) ---
-  var scrollY = 0;
-
+  // --- Bloquear scroll sin salto de layout ---
   function lockScroll() {
-    scrollY = window.scrollY || window.pageYOffset;
-    document.body.style.overflow   = 'hidden';
-    document.body.style.position   = 'fixed';
-    document.body.style.top        = '-' + scrollY + 'px';
-    document.body.style.left       = '0';
-    document.body.style.right      = '0';
-    document.body.style.width      = '100%';
+    // Compensar el hueco que deja la scrollbar antes de ocultarla
+    var sbWidth = window.innerWidth - document.documentElement.clientWidth;
+    if (sbWidth > 0) document.body.style.paddingRight = sbWidth + 'px';
+    document.documentElement.style.overflow = 'hidden';
   }
 
   function unlockScroll() {
-    document.body.style.overflow = '';
-    document.body.style.position = '';
-    document.body.style.top      = '';
-    document.body.style.left     = '';
-    document.body.style.right    = '';
-    document.body.style.width    = '';
-    // Forzar posición top: siempre volvemos a 0, no a scrollY guardado
+    document.documentElement.style.overflow = '';
+    document.body.style.paddingRight = '';
     window.scrollTo({ top: 0, behavior: 'instant' });
   }
 
@@ -1981,11 +1979,9 @@ setInterval(updateCountdown, 1000);
     if (done) return;
     done = true;
 
-    // Restaurar scroll ANTES del fade (el intro aún cubre la pantalla → sin salto visual)
-    unlockScroll();
-
     intro.classList.add('opening');
     setTimeout(function () {
+      unlockScroll();           // las portadas ya giraron → sin salto visible
       intro.classList.add('fade-out');
       setTimeout(function () {
         intro.style.display = 'none';
