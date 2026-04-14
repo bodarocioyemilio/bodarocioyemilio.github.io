@@ -58,7 +58,7 @@
       align-items: center;
       justify-content: flex-start;
       overflow: hidden;
-      background: linear-gradient(175deg, #f5ede0 0%, #faf8f3 45%, #f0e8d6 100%);
+      background: linear-gradient(175deg, #f5ede0 0%, #faf8f3 45%, var(--cream-warm) 100%);
       padding-top: 12vh;
       padding-top: 12svh;
     }
@@ -528,6 +528,10 @@
       }
       .invitation-text-col .msg-quote {
         text-align: center;
+      }
+      /* Mismo fondo que el hero → sin costura visual entre secciones */
+      #invitation-split {
+        background: var(--cream-warm);
       }
     }
 
@@ -1723,6 +1727,7 @@ const isTouch    = window.matchMedia('(hover: none)').matches;
 const rsvpHintEl     = document.querySelector('.hero-rsvp-hint');
 const skylineImg     = document.querySelector('#invitation-split .invitation-skyline');
 const invitationSect = document.getElementById('invitation-split');
+const invitationTextCol = document.querySelector('#invitation-split .invitation-text-col');
 
 /* Fix: eliminar clip-path al terminar la animación de los nombres para evitar
    el bug de compositing GPU en móviles (texto cortado al cargar la página) */
@@ -1773,15 +1778,17 @@ function onScroll() {
 
   applyChurchTransform();
 
-  /* Parallax invitation-split: whole section scrolls faster to close gap */
+  /* Parallax invitation-split: whole section scrolls faster to close gap.
+     On mobile the factor is higher so the section lifts sooner. */
   if (invitationSect) {
     const sectionTop = invitationSect.getBoundingClientRect().top;
-    /* Only apply while section is near/above viewport — avoid affecting layout below */
-    if (sectionTop < window.innerHeight * 1.2) {
-      const push = Math.max(0, window.innerHeight - sectionTop) * 0.18;
+    if (sectionTop < window.innerHeight * 1.3) {
+      const factor = window.innerWidth <= 700 ? 0.20 : 0.18;
+      const push = Math.max(0, window.innerHeight - sectionTop) * factor;
       invitationSect.style.transform = `translateY(-${push}px)`;
       invitationSect.style.marginBottom = `-${push}px`;
     }
+    if (invitationTextCol) invitationTextCol.style.transform = '';
   }
 
   /* Parallax skyline image: extra depth within its column */
