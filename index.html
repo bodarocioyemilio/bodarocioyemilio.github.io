@@ -2250,10 +2250,8 @@ window.addEventListener('load', function () {
   var iframe = document.getElementById('vimeo-main');
   if (!iframe) return;
   var player = new Vimeo.Player(iframe);
-  // Volumen al 30% pero manteniendo el silencio activado
-  player.setVolume(0.15).then(function () {
-    player.setMuted(true);
-  });
+  // Preconfigurar volumen para cuando el usuario desactive el silencio
+  player.setVolume(0.15);
 }());
 </script>
 
