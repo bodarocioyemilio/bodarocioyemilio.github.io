@@ -1257,9 +1257,7 @@
 
   </div>
 
-  <div class="hero-wm" aria-hidden="true">2026</div>
-
-  <div class="hero-rsvp-hint" style="animation: fadeIn 1s ease 1.6s both;">
+<div class="hero-rsvp-hint" style="animation: fadeIn 1s ease 1.6s both;">
     <span>Confirma tu asistencia al final de la página</span>
     <div class="hero-rsvp-arrow"></div>
   </div>
@@ -1868,18 +1866,6 @@ document.querySelectorAll('.aos').forEach(el => revealObs.observe(el));
 ══════════════════════════════════════════════════════ */
 const stickyRsvp = document.getElementById('stickyRsvp');
 if (stickyRsvp && heroEl) {
-  // En móvil: misma pestaña. En escritorio: nueva pestaña.
-  if (isTouch) {
-    stickyRsvp.removeAttribute('target');
-    stickyRsvp.removeAttribute('rel');
-    // También el botón RSVP de la hero
-    document.querySelectorAll('.hero-rsvp').forEach(el => {
-      el.removeAttribute('target');
-      el.removeAttribute('rel');
-    });
-  }
-
-
   const heroObs = new IntersectionObserver(entries => {
     entries[0].isIntersecting
       ? stickyRsvp.classList.remove('show')
