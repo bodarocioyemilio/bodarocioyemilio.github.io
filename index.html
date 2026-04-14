@@ -87,9 +87,8 @@
 
     .hero-logo {
       width: clamp(65px, 8vw, 90px);
-      mix-blend-mode: multiply;
       margin-bottom: 1.8rem;
-      animation: shimmerGlow 4s ease-in-out 2s infinite;
+      filter: drop-shadow(0 4px 16px rgba(0,0,0,0.18));
     }
 
     .hero-names {
@@ -744,8 +743,8 @@
       100% { background-position:  200% center; }
     }
     @keyframes shimmerGlow {
-      0%,100% { filter: brightness(1)   drop-shadow(0 0 0px transparent); }
-      50%      { filter: brightness(1.1) drop-shadow(0 0 8px rgba(201,166,104,.4)); }
+      0%,100% { filter: saturate(0.75) brightness(0.92)  drop-shadow(0 0 0px transparent); }
+      50%      { filter: saturate(0.85) brightness(1.0)   drop-shadow(0 0 6px rgba(201,166,104,.3)); }
     }
 
     /* ═══════════════════════════════════════════════

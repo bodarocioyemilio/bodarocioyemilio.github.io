@@ -286,6 +286,7 @@
     input[type="text"].error,
     input[type="tel"].error {
       border-color: var(--rose);
+      border-width: 2px;
     }
 
     textarea {
@@ -387,7 +388,8 @@
     /* ─── Error message ─── */
     .field-error {
       font-family: 'Montserrat', sans-serif;
-      font-size: .6rem;
+      font-size: .72rem;
+      font-weight: 600;
       color: var(--rose);
       letter-spacing: .05em;
       margin-top: .4rem;
@@ -720,6 +722,10 @@
     <div class="progress-dot">4</div>
     <span class="progress-label">Transporte</span>
   </div>
+  <div class="progress-step" data-step="5" style="width:80px">
+    <div class="progress-dot">5</div>
+    <span class="progress-label">Mensaje</span>
+  </div>
 </div>
 
 <!-- ════════════════════════════════════════
@@ -813,8 +819,8 @@
       <div class="btn-row">
         <button class="btn-back" onclick="goToStep(1)">← Atrás</button>
         <button class="btn-primary" id="btnAsistencia" onclick="handleAsistencia()">
-          <span>Siguiente</span>
-          <span class="btn-arrow">→</span>
+          <span id="btnAsistenciaLabel">Siguiente</span>
+          <span class="btn-arrow" id="btnAsistenciaArrow">→</span>
         </button>
       </div>
     </div>
@@ -898,11 +904,6 @@
         <label>¿Cómo vas a venir? *</label>
         <div class="radio-group" id="transporteGroup">
           <label class="radio-option">
-            <input type="radio" name="transporte" value="coche" onchange="toggleTransporte()">
-            <span class="radio-custom"></span>
-            <span class="radio-text">En coche</span>
-          </label>
-          <label class="radio-option">
             <input type="radio" name="transporte" value="autobus" onchange="toggleTransporte()">
             <span class="radio-custom"></span>
             <span class="radio-text">
@@ -911,14 +912,9 @@
             </span>
           </label>
           <label class="radio-option">
-            <input type="radio" name="transporte" value="taxi" onchange="toggleTransporte()">
+            <input type="radio" name="transporte" value="cuenta_propia" onchange="toggleTransporte()">
             <span class="radio-custom"></span>
-            <span class="radio-text">En taxi / VTC</span>
-          </label>
-          <label class="radio-option">
-            <input type="radio" name="transporte" value="otro" onchange="toggleTransporte()">
-            <span class="radio-custom"></span>
-            <span class="radio-text">Otro</span>
+            <span class="radio-text">Por mi propia cuenta</span>
           </label>
         </div>
         <p class="field-error" id="transporteError">Por favor, selecciona cómo vendrás</p>
@@ -940,16 +936,28 @@
         </div>
       </div>
 
-      <!-- Detalle transporte opcional -->
-      <div class="conditional show" id="detalleTransporteWrap">
-        <div class="field">
-          <label for="detalleTransporte">¿Algo más que quieras contarnos? <span style="opacity:.6;font-size:.9em">(opcional)</span></label>
-          <textarea id="detalleTransporte" name="detalleTransporte" placeholder=""></textarea>
-        </div>
+      <div class="btn-row">
+        <button class="btn-back" onclick="goToStep(3)">← Atrás</button>
+        <button class="btn-primary" onclick="goToStep(5)">
+          <span>Siguiente</span>
+          <span class="btn-arrow">→</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── PASO 5: Mensaje para los novios ── -->
+    <div class="step" id="step5">
+      <h1 class="step-title">Un mensaje para nosotros</h1>
+      <p class="step-subtitle">Si quieres dejarnos unas palabras, ¡las guardaremos con mucho cariño!</p>
+      <div class="step-divider"></div>
+
+      <div class="field">
+        <label for="mensajeNovios">Tu mensaje <span style="opacity:.6;font-size:.9em">(opcional)</span></label>
+        <textarea id="mensajeNovios" name="mensajeNovios" placeholder="Escribe aquí lo que quieras contarnos..." rows="5"></textarea>
       </div>
 
       <div class="btn-row">
-        <button class="btn-back" onclick="goToStep(3)">← Atrás</button>
+        <button class="btn-back" onclick="goToStep(4)">← Atrás</button>
         <button class="btn-primary" id="btnEnviar" onclick="enviarFormulario()">
           <span id="btnEnviarLabel">Enviar confirmación</span>
           <span class="btn-arrow" id="btnEnviarArrow">→</span>
@@ -1010,13 +1018,13 @@
 /* ═══════════════════════════════════════════════════════
    CONFIGURACIÓN — pon aquí tu endpoint de Apps Script
 ════════════════════════════════════════════════════════ */
-const APPS_SCRIPT_URL = 'TU_URL_DE_APPS_SCRIPT_AQUI';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxcqbBslyoeJNL2pkrSksN3XBfBan8dUwnBetDBueUBovPfLh5V6aJE71W_53PIOaVG/exec';
 
 /* ═══════════════════════════════════════════════════════
    ESTADO
 ════════════════════════════════════════════════════════ */
 let currentStep = 1;
-const TOTAL_STEPS = 4;
+const TOTAL_STEPS = 5;
 
 /* ═══════════════════════════════════════════════════════
    NAVEGACIÓN ENTRE PASOS
@@ -1119,6 +1127,47 @@ function setError(id, show) {
 /* ═══════════════════════════════════════════════════════
    LÓGICA CONDICIONAL
 ════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════
+   LIMPIEZA DE ERRORES EN TIEMPO REAL
+════════════════════════════════════════════════════════ */
+// Paso 1: nombre y teléfono
+document.getElementById('nombre').addEventListener('input', function() {
+  if (this.value.trim()) {
+    setError('nombreError', false);
+    this.classList.remove('error');
+  }
+});
+document.getElementById('telefono').addEventListener('input', function() {
+  if (this.value.trim()) {
+    setError('telefonoError', false);
+    this.classList.remove('error');
+  }
+});
+
+// Paso 2: asistencia
+document.querySelectorAll('input[name="asistencia"]').forEach(radio => {
+  radio.addEventListener('change', () => setError('asistenciaError', false));
+});
+
+// Paso 3: menú, alergias y texto de alergias
+document.querySelectorAll('input[name="menu"]').forEach(radio => {
+  radio.addEventListener('change', () => setError('menuError', false));
+});
+document.querySelectorAll('input[name="alergias"]').forEach(radio => {
+  radio.addEventListener('change', () => setError('alergiasError', false));
+});
+document.getElementById('alergiasTexto').addEventListener('input', function() {
+  if (this.value.trim()) setError('alergiasTextoError', false);
+});
+
+// Paso 4: transporte y parada de bus
+document.querySelectorAll('input[name="transporte"]').forEach(radio => {
+  radio.addEventListener('change', () => setError('transporteError', false));
+});
+document.getElementById('paradaBus').addEventListener('change', function() {
+  if (this.value) setError('paradaBusError', false);
+});
+
 // Asistencia: mostrar campo mensaje si dice NO
 document.querySelectorAll('input[name="asistencia"]').forEach(radio => {
   radio.addEventListener('change', () => {
@@ -1132,7 +1181,11 @@ function handleAsistencia() {
   const val = document.querySelector('input[name="asistencia"]:checked').value;
 
   if (val === 'no') {
-    // No asiste → enviar directamente
+    // No asiste → deshabilitar botón y enviar directamente
+    const btn = document.getElementById('btnAsistencia');
+    btn.disabled = true;
+    document.getElementById('btnAsistenciaLabel').textContent = 'Enviando...';
+    document.getElementById('btnAsistenciaArrow').innerHTML = '<span class="spinner"></span>';
     enviarFormulario(true);
   } else {
     goToStep(3);
@@ -1166,10 +1219,9 @@ async function enviarFormulario(noAsiste = false) {
   const menu         = document.querySelector('input[name="menu"]:checked')?.value || '';
   const alergiasVal  = document.querySelector('input[name="alergias"]:checked')?.value || '';
   const alergiasText  = document.getElementById('alergiasTexto').value.trim();
-  const comentariosM  = document.getElementById('comentariosMenu').value.trim();
   const transporte    = document.querySelector('input[name="transporte"]:checked')?.value || '';
   const paradaBus    = document.getElementById('paradaBus').value;
-  const detalleT     = document.getElementById('detalleTransporte').value.trim();
+  const mensajeNovios = document.getElementById('mensajeNovios').value.trim();
 
   const datos = {
     timestamp:  new Date().toISOString(),
@@ -1180,10 +1232,9 @@ async function enviarFormulario(noAsiste = false) {
     menu,
     alergias:          alergiasVal,
     alergiasDetalle:   alergiasText,
-    comentariosMenu:   comentariosM,
     transporte,
     paradaBus,
-    detalleTransporte: detalleT
+    mensajeNovios
   };
 
   // Estado cargando
@@ -1216,6 +1267,12 @@ async function enviarFormulario(noAsiste = false) {
       btnEnviar.disabled = false;
       document.getElementById('btnEnviarLabel').textContent = 'Enviar confirmación';
       document.getElementById('btnEnviarArrow').textContent = '→';
+    }
+    const btnAsistencia = document.getElementById('btnAsistencia');
+    if (btnAsistencia && btnAsistencia.disabled) {
+      btnAsistencia.disabled = false;
+      document.getElementById('btnAsistenciaLabel').textContent = 'Siguiente';
+      document.getElementById('btnAsistenciaArrow').textContent = '→';
     }
     alert('Ha ocurrido un error al enviar. Por favor, inténtalo de nuevo o contáctanos directamente.');
   }
