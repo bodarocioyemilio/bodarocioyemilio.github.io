@@ -87,13 +87,8 @@ function applyChurchTransform() {
   heroChurch.style.transform = `translateX(${mousePartX}px) translateY(${scrollPart + mousePartY}px)`;
 }
 
-const scrollCueEl = document.querySelector('.scroll-cue');
-
 function onScroll() {
   scrollOY = window.scrollY;
-
-  /* Scroll cue: hide when user scrolls down, show at top */
-  if (scrollCueEl) scrollCueEl.classList.toggle('hidden', scrollOY > 40);
 
   /* RSVP hint: fade out smoothly on scroll via CSS class */
   if (rsvpHintEl) rsvpHintEl.classList.toggle('hidden', scrollOY > 80);
@@ -132,7 +127,10 @@ onScroll(); // run once on load to set initial state
 /* ============================================================
    MOUSE PARALLAX — LERP animation loop
    Smooth mouse-tracking with linear interpolation (ease factor 0.07)
+   Loop only runs while values are still converging; restarts on mousemove.
    ============================================================ */
+let lerpRunning = false;
+
 function lerpMouse() {
   const ease = 0.07;
   const tx = heroActive ? targetMX : 0;
@@ -146,7 +144,18 @@ function lerpMouse() {
   }
   applyChurchTransform();
 
-  requestAnimationFrame(lerpMouse);
+  if (Math.abs(tx - mouseOX) > 0.001 || Math.abs(ty - mouseOY) > 0.001) {
+    requestAnimationFrame(lerpMouse);
+  } else {
+    lerpRunning = false;
+  }
+}
+
+function startLerp() {
+  if (!lerpRunning) {
+    lerpRunning = true;
+    requestAnimationFrame(lerpMouse);
+  }
 }
 
 if (!isTouch && heroEl) {
@@ -154,31 +163,12 @@ if (!isTouch && heroEl) {
     heroActive = true;
     targetMX = (e.clientX / window.innerWidth  - 0.5) * 2;
     targetMY = (e.clientY / window.innerHeight - 0.5) * 2;
+    startLerp();
   }, { passive: true });
 
-  heroEl.addEventListener('mouseleave', () => { heroActive = false; });
+  heroEl.addEventListener('mouseleave', () => { heroActive = false; startLerp(); });
 }
 
-lerpMouse();
-
-/* ============================================================
-   3D CARD TILT — Mouse hover effect on venue/info cards
-   ============================================================ */
-if (!isTouch) {
-  document.querySelectorAll('.venue-card, .info-card').forEach(card => {
-    card.addEventListener('mousemove', e => {
-      const r = card.getBoundingClientRect();
-      const x = (e.clientX - r.left) / r.width  - 0.5;
-      const y = (e.clientY - r.top)  / r.height - 0.5;
-      card.style.transform = `perspective(700px) rotateY(${x * 14}deg) rotateX(${-y * 14}deg) translateY(-6px) scale(1.02)`;
-      card.style.boxShadow = `${-x * 16}px ${y * 16}px 36px rgba(74,59,46,.12)`;
-    });
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = '';
-      card.style.boxShadow = '';
-    });
-  });
-}
 
 /* ============================================================
    SCROLL REVEAL — IntersectionObserver for .aos elements
@@ -209,11 +199,17 @@ if (stickyRsvp && heroEl) {
    ============================================================ */
 function pad(n) { return String(n).padStart(2, '0'); }
 
+const _cdTarget = new Date('2026-09-12T18:00:00');
+const _cdDays   = document.getElementById('cd-days');
+const _cdHours  = document.getElementById('cd-hours');
+const _cdMins   = document.getElementById('cd-mins');
+const _cdSecs   = document.getElementById('cd-secs');
+
 function updateCountdown() {
-  const target = new Date('2026-09-12T18:00:00');
-  const diff   = target - new Date();
+  const diff = _cdTarget - new Date();
 
   if (diff <= 0) {
+    clearInterval(_cdInterval);
     const grid = document.getElementById('cdGrid');
     if (grid) grid.innerHTML = '<p class="cd-finish">¡Ya llegó el gran día!</p>';
     return;
@@ -224,14 +220,13 @@ function updateCountdown() {
   const mins  = Math.floor((diff % 36e5)  / 6e4);
   const secs  = Math.floor((diff % 6e4)   / 1e3);
 
-  const el = id => document.getElementById(id);
-  if (el('cd-days'))  el('cd-days').textContent  = pad(days);
-  if (el('cd-hours')) el('cd-hours').textContent = pad(hours);
-  if (el('cd-mins'))  el('cd-mins').textContent  = pad(mins);
-  if (el('cd-secs'))  el('cd-secs').textContent  = pad(secs);
+  if (_cdDays)  _cdDays.textContent  = pad(days);
+  if (_cdHours) _cdHours.textContent = pad(hours);
+  if (_cdMins)  _cdMins.textContent  = pad(mins);
+  if (_cdSecs)  _cdSecs.textContent  = pad(secs);
 }
 updateCountdown();
-setInterval(updateCountdown, 1000);
+const _cdInterval = setInterval(updateCountdown, 1000);
 
 /* ============================================================
    FLOATING PETALS — Decorative petal animation in hero section
@@ -426,12 +421,15 @@ window.addEventListener('load', function () {
     return !introEl || introEl.style.display === 'none';
   }
 
+  var rafScrollTop = false;
   window.addEventListener('scroll', function () {
     if (!introFinished()) return;
-    if (window.scrollY > 300) {
-      btn.classList.add('visible');
-    } else {
-      btn.classList.remove('visible');
+    if (!rafScrollTop) {
+      rafScrollTop = true;
+      requestAnimationFrame(function () {
+        btn.classList.toggle('visible', window.scrollY > 300);
+        rafScrollTop = false;
+      });
     }
   }, { passive: true });
 
