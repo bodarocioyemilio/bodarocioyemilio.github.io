@@ -441,7 +441,7 @@ textarea {
 
 .btn-primary:hover::before { transform: translateX(0); }
 .btn-primary:hover { color: var(--cream); }
-.btn-primary:disabled { opacity: .5; cursor: not-allowed; }
+.btn-primary:disabled { opacity: 1; cursor: not-allowed; background: var(--gold); color: var(--cream); }
 .btn-primary:disabled::before { display: none; }
 
 .btn-primary span { position: relative; z-index: 1; }
@@ -466,12 +466,15 @@ textarea {
 
 /* ── Loading spinner ── */
 .spinner {
-  width: 14px; height: 14px;
-  border: 2px solid rgba(255,255,255,.4);
-  border-top-color: var(--cream);
+  width: 18px; height: 18px;
+  border: 2.5px solid rgba(255,255,255,.25);
+  border-top-color: #fff;
+  border-right-color: rgba(255,255,255,.7);
   border-radius: 50%;
-  animation: spin .7s linear infinite;
+  animation: spin .65s linear infinite;
   display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
 }
 
 @keyframes spin {

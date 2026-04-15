@@ -220,10 +220,7 @@ function buildMenuStep() {
             <input type="radio" name="menu_${i}" value="vegano"
                    onchange="setError('menuError_${i}',false)">
             <span class="radio-custom"></span>
-            <span class="radio-text">
-              Vegano
-              <small>Sin productos animales</small>
-            </span>
+            <span class="radio-text">Vegano</span>
           </label>
         </div>
         <p class="field-error" id="menuError_${i}">Por favor, elige un menú</p>
@@ -537,18 +534,32 @@ function mostrarExito(asistencia, nombre, totalPersonas = 1) {
   const msg    = document.getElementById('successMsg');
   const note   = document.getElementById('successNote');
 
+  const plural = totalPersonas > 1;
+  const nombre1 = nombre.split(' ')[0];
+
+  // Build first-name list: "Juan, María, Rocío y Mar"
+  const allFirstNames = [nombre1, ...companions.map(c => {
+    const el = document.getElementById(c.id);
+    return el ? el.value.trim().split(' ')[0] : '';
+  }).filter(Boolean)];
+  const namesFormatted = allFirstNames.length > 1
+    ? allFirstNames.slice(0, -1).join(', ') + ' y ' + allFirstNames[allFirstNames.length - 1]
+    : allFirstNames[0];
+
   if (asistencia === 'si') {
-    title.textContent = '¡Hasta pronto, ' + nombre.split(' ')[0] + '!';
-    msg.textContent   = totalPersonas > 1
-      ? `Hemos recibido la confirmación de ${totalPersonas} personas. ¡Estamos deseando celebrarlo con vosotros el 12 de septiembre!`
-      : 'Hemos recibido tu confirmación. ¡Estamos deseando celebrarlo contigo el 12 de septiembre!';
+    title.textContent = plural ? '¡Hasta pronto a todos!' : `¡Hasta pronto, ${nombre1}!`;
+    msg.textContent = plural
+      ? `¡Hemos recibido la confirmación de ${namesFormatted}! Estamos deseando celebrarlo con vosotros el 12 de septiembre.`
+      : `¡Hemos recibido tu confirmación! Estamos deseando celebrarlo contigo el 12 de septiembre.`;
     note.textContent = '';
   } else {
     title.textContent = 'Lo sentimos mucho';
     screen.querySelector('.success-icon svg').innerHTML = '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>';
-    msg.className     = 'success-msg-no';
-    msg.textContent   = 'Te echaremos de menos. Gracias por hacérnoslo saber y por el mensaje que nos has dejado.';
-    note.textContent  = '';
+    msg.className    = 'success-msg-no';
+    msg.textContent  = companions.length > 0
+      ? 'Os echaremos de menos. Gracias por hacérnoslo saber.'
+      : 'Te echaremos de menos. Gracias por hacérnoslo saber.';
+    note.textContent = '';
   }
 
   screen.classList.add('show');
