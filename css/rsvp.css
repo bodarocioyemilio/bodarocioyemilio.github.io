@@ -491,6 +491,137 @@ textarea {
 }
 
 /* ============================================================
+   COMPANION SECTION (Step 1) — Add / remove companions
+   ============================================================ */
+.companion-section {
+  margin-top: 1.8rem;
+}
+
+.companion-row {
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+  margin-bottom: .75rem;
+}
+
+.companion-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: .58rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--sepia-light);
+  opacity: .75;
+}
+
+.companion-input-wrap {
+  display: flex;
+  gap: .5rem;
+  align-items: stretch;
+}
+
+.companion-input-wrap input[type="text"] {
+  flex: 1;
+  min-width: 0;
+}
+
+.btn-add-companion {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  width: 100%;
+  padding: .65rem 1rem;
+  border: 1px dashed var(--gold-light);
+  background: transparent;
+  color: var(--sepia-light);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  font-size: .62rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color .25s, color .25s, background .25s;
+  margin-top: .3rem;
+}
+
+.btn-add-companion:hover {
+  border-color: var(--gold);
+  color: var(--sepia);
+  background: rgba(201,166,104,.06);
+}
+
+.btn-remove-companion {
+  flex-shrink: 0;
+  width: 38px;
+  border: 1px solid var(--divider);
+  background: var(--cream);
+  color: var(--sepia-light);
+  font-family: 'Montserrat', sans-serif;
+  font-size: .75rem;
+  cursor: pointer;
+  transition: border-color .25s, color .25s, background .25s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-remove-companion:hover {
+  border-color: var(--rose);
+  color: var(--rose);
+  background: rgba(192,137,122,.06);
+}
+
+.companion-note {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  font-size: .6rem;
+  letter-spacing: .08em;
+  color: var(--sepia-light);
+  opacity: .6;
+  margin-top: .6rem;
+  text-align: center;
+}
+
+/* ============================================================
+   PERSON MENU CARDS (Step 3) — One card per attendee
+   ============================================================ */
+.person-menu-card {
+  border: 1px solid var(--divider);
+  padding: 1.2rem;
+  margin-bottom: 1.2rem;
+  background: var(--cream);
+}
+
+.person-menu-card:last-child {
+  margin-bottom: 0;
+}
+
+.person-menu-header {
+  display: flex;
+  align-items: baseline;
+  gap: .75rem;
+  padding-bottom: .8rem;
+  margin-bottom: .2rem;
+  border-bottom: 1px solid var(--divider);
+}
+
+.person-menu-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: .55rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--gold-dark);
+  flex-shrink: 0;
+}
+
+.person-menu-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--sepia);
+}
+
+/* ============================================================
    SUCCESS SCREEN
    ============================================================ */
 .success-screen {

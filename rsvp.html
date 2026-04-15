@@ -113,6 +113,16 @@
         <p class="field-error" id="telefonoError">Por favor, escribe un teléfono válido</p>
       </div>
 
+      <!-- ── Companions ── -->
+      <div class="field companion-section">
+        <label>¿Vienes acompañado/a?</label>
+        <div id="companionList"><!-- generado por JS --></div>
+        <button type="button" class="btn-add-companion" id="btnAddCompanion" onclick="addCompanion()">
+          + Añadir acompañante
+        </button>
+        <p class="companion-note" id="companionNote">Puedes añadir a tu pareja o familiares</p>
+      </div>
+
       <div class="btn-row">
         <button class="btn-primary" onclick="goToStep(2)">
           <span>Siguiente</span>
@@ -123,27 +133,27 @@
 
     <!-- ── Step 2: Attendance confirmation ── -->
     <div class="step" id="step2">
-      <h1 class="step-title">¿Nos acompañas?</h1>
+      <h1 class="step-title" id="step2Title">¿Nos acompañas?</h1>
       <p class="step-subtitle">12 de septiembre de 2026 · Elda</p>
       <div class="step-divider"></div>
 
       <div class="field">
-        <label>¿Confirmas tu asistencia?</label>
+        <label id="asistenciaLabel">¿Confirmas tu asistencia?</label>
         <div class="radio-group" id="asistenciaGroup">
           <label class="radio-option">
             <input type="radio" name="asistencia" value="si">
             <span class="radio-custom"></span>
             <span class="radio-text">
-              Sí, allí estaré
-              <small>¡Cuento los días!</small>
+              <span id="asisteSiText">Sí, allí estaré</span>
+              <small id="asisteSiSmall">¡Cuento los días!</small>
             </span>
           </label>
           <label class="radio-option">
             <input type="radio" name="asistencia" value="no">
             <span class="radio-custom"></span>
             <span class="radio-text">
-              No podré asistir
-              <small>Lo siento mucho</small>
+              <span id="asisteNoText">No podré asistir</span>
+              <small id="asisteNoSmall">Lo siento mucho</small>
             </span>
           </label>
         </div>
@@ -167,65 +177,13 @@
       </div>
     </div>
 
-    <!-- ── Step 3: Menu selection ── -->
+    <!-- ── Step 3: Menu selection (one card per person, built by JS) ── -->
     <div class="step" id="step3">
-      <h1 class="step-title">Tu menú</h1>
+      <h1 class="step-title">Menú</h1>
       <p class="step-subtitle">Para que todo esté perfecto</p>
       <div class="step-divider"></div>
 
-      <div class="field">
-        <label>Elige tu menú *</label>
-        <div class="radio-group" id="menuGroup">
-          <label class="radio-option">
-            <input type="radio" name="menu" value="carne">
-            <span class="radio-custom"></span>
-            <span class="radio-text">
-              Carne + pescado
-              <small>Menú principal</small>
-            </span>
-          </label>
-          <label class="radio-option">
-            <input type="radio" name="menu" value="vegetariano">
-            <span class="radio-custom"></span>
-            <span class="radio-text">
-              Vegetariano
-              <small>Sin carne ni pescado</small>
-            </span>
-          </label>
-        </div>
-        <p class="field-error" id="menuError">Por favor, elige un menú</p>
-      </div>
-
-      <div class="field" style="margin-top:1.8rem">
-        <label>¿Tienes alergias o intolerancias? *</label>
-        <div class="radio-group" id="alergiasGroup">
-          <label class="radio-option">
-            <input type="radio" name="alergias" value="no" onchange="toggleAlergias()">
-            <span class="radio-custom"></span>
-            <span class="radio-text">No, ninguna</span>
-          </label>
-          <label class="radio-option">
-            <input type="radio" name="alergias" value="si" onchange="toggleAlergias()">
-            <span class="radio-custom"></span>
-            <span class="radio-text">Sí, tengo alergias</span>
-          </label>
-        </div>
-        <p class="field-error" id="alergiasError">Por favor, selecciona una opción</p>
-      </div>
-
-      <!-- Allergy detail field — shown when guest selects "yes" -->
-      <div class="conditional" id="alergiasDetalle">
-        <div class="field">
-          <label for="alergiasTexto">Descríbenos tus alergias *</label>
-          <textarea id="alergiasTexto" name="alergiasTexto" placeholder="Gluten, lactosa, frutos secos..."></textarea>
-          <p class="field-error" id="alergiasTextoError">Por favor, describe tus alergias</p>
-        </div>
-      </div>
-
-      <div class="field" style="margin-top:1.4rem">
-        <label for="comentariosMenu">¿Algo más que debamos saber? <span style="opacity:.6;font-size:.9em">(opcional)</span></label>
-        <textarea id="comentariosMenu" name="comentariosMenu" placeholder="Embarazo, dieta específica..."></textarea>
-      </div>
+      <div id="menuPersonsContainer"><!-- tarjetas generadas por buildMenuStep() --></div>
 
       <div class="btn-row">
         <button class="btn-back" onclick="goToStep(2)">← Atrás</button>
@@ -239,11 +197,11 @@
     <!-- ── Step 4: Transport ── -->
     <div class="step" id="step4">
       <h1 class="step-title">Transporte</h1>
-      <p class="step-subtitle">¿Cómo llegarás a la boda?</p>
+      <p class="step-subtitle" id="step4Subtitle">¿Cómo llegarás a la boda?</p>
       <div class="step-divider"></div>
 
       <div class="field">
-        <label>¿Cómo vas a venir? *</label>
+        <label id="transporteLabel">¿Cómo vas a venir? *</label>
         <div class="radio-group" id="transporteGroup">
           <label class="radio-option">
             <input type="radio" name="transporte" value="autobus" onchange="toggleTransporte()">
@@ -256,10 +214,10 @@
           <label class="radio-option">
             <input type="radio" name="transporte" value="cuenta_propia" onchange="toggleTransporte()">
             <span class="radio-custom"></span>
-            <span class="radio-text">Por mi propia cuenta</span>
+            <span class="radio-text"><span id="transportePropioText">Por mi propia cuenta</span></span>
           </label>
         </div>
-        <p class="field-error" id="transporteError">Por favor, selecciona cómo vendrás</p>
+        <p class="field-error" id="transporteError">Por favor, selecciona cómo vendréis</p>
       </div>
 
       <!-- Bus stop selector — shown when guest selects "bus" -->
@@ -289,8 +247,8 @@
 
     <!-- ── Step 5: Optional message for the couple ── -->
     <div class="step" id="step5">
-      <h1 class="step-title">Un mensaje para nosotros</h1>
-      <p class="step-subtitle">Si quieres dejarnos unas palabras, ¡las guardaremos con mucho cariño!</p>
+      <h1 class="step-title" id="step5Title">Un mensaje para nosotros</h1>
+      <p class="step-subtitle" id="step5Subtitle">Si quieres dejarnos unas palabras, ¡las guardaremos con mucho cariño!</p>
       <div class="step-divider"></div>
 
       <div class="field">

@@ -9,13 +9,17 @@
    Replace with your deployed Apps Script URL to enable
    form submissions to Google Sheets.
    ============================================================ */
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxcqbBslyoeJNL2pkrSksN3XBfBan8dUwnBetDBueUBovPfLh5V6aJE71W_53PIOaVG/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwcjyFQrX8WkVEkjQsDVfTuB43kTDsOl2kXJl6N1psilOSnZ_QLINOALbQTXyxWgcZo/exec';
 
 /* ============================================================
    MULTI-STEP FORM STATE
    ============================================================ */
 let currentStep = 1;
 const TOTAL_STEPS = 5;
+
+// Companions state
+let companions      = [];   // array of { id: string }
+let companionCounter = 0;   // ever-increasing counter for unique IDs
 
 /* ============================================================
    MULTI-STEP FORM — Navigation between steps
@@ -28,7 +32,10 @@ function goToStep(n) {
   }
 
   // Validate current step before advancing
-  if (!validateStep(currentStep)) return;
+  if (!validateStep(currentStep)) {
+    scrollToFirstError();
+    return;
+  }
 
   showStep(n);
 }
@@ -36,9 +43,70 @@ function goToStep(n) {
 function showStep(n) {
   document.getElementById('step' + currentStep).classList.remove('active');
   currentStep = n;
+  // Rebuild menu cards each time step 3 is shown so they match current companions
+  if (n === 3) buildMenuStep();
+  // Update plural/singular texts based on companion count
+  updatePluralTexts();
   document.getElementById('step' + currentStep).classList.add('active');
   updateProgress();
   window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ============================================================
+   PLURAL TEXTS — Update step texts based on companion count
+   ============================================================ */
+function updatePluralTexts() {
+  const plural = companions.length > 0;
+
+  // Step 2
+  const step2Title = document.getElementById('step2Title');
+  if (step2Title) step2Title.textContent = plural ? '¿Nos acompañáis?' : '¿Nos acompañas?';
+
+  const asistenciaLabel = document.getElementById('asistenciaLabel');
+  if (asistenciaLabel) asistenciaLabel.textContent = plural ? '¿Confirmáis vuestra asistencia?' : '¿Confirmas tu asistencia?';
+
+  const asisteSiText = document.getElementById('asisteSiText');
+  if (asisteSiText) asisteSiText.textContent = plural ? 'Sí, allí estaremos' : 'Sí, allí estaré';
+
+  const asisteSiSmall = document.getElementById('asisteSiSmall');
+  if (asisteSiSmall) asisteSiSmall.textContent = plural ? '¡Contamos los días!' : '¡Cuento los días!';
+
+  const asisteNoText = document.getElementById('asisteNoText');
+  if (asisteNoText) asisteNoText.textContent = plural ? 'No podremos asistir' : 'No podré asistir';
+
+  const asisteNoSmall = document.getElementById('asisteNoSmall');
+  if (asisteNoSmall) asisteNoSmall.textContent = plural ? 'Lo sentimos mucho' : 'Lo siento mucho';
+
+  // Step 4
+  const step4Subtitle = document.getElementById('step4Subtitle');
+  if (step4Subtitle) step4Subtitle.textContent = plural ? '¿Cómo llegaréis a la boda?' : '¿Cómo llegarás a la boda?';
+
+  const transporteLabel = document.getElementById('transporteLabel');
+  if (transporteLabel) transporteLabel.textContent = plural ? '¿Cómo vais a venir? *' : '¿Cómo vas a venir? *';
+
+  const transportePropioText = document.getElementById('transportePropioText');
+  if (transportePropioText) transportePropioText.textContent = plural ? 'Por nuestra propia cuenta' : 'Por mi propia cuenta';
+
+  const transporteError = document.getElementById('transporteError');
+  if (transporteError) transporteError.textContent = plural ? 'Por favor, selecciona cómo vendréis' : 'Por favor, selecciona cómo vendrás';
+
+  // Step 5
+  const step5Subtitle = document.getElementById('step5Subtitle');
+  if (step5Subtitle) step5Subtitle.textContent = plural
+    ? 'Si queréis dejarnos unas palabras, ¡las guardaremos con mucho cariño!'
+    : 'Si quieres dejarnos unas palabras, ¡las guardaremos con mucho cariño!';
+}
+
+/* ============================================================
+   SCROLL TO FIRST ERROR — Focus the first visible error
+   ============================================================ */
+function scrollToFirstError() {
+  const activeStep = document.querySelector('.step.active');
+  if (!activeStep) return;
+  const firstError = activeStep.querySelector('.field-error.show, input.error');
+  if (!firstError) return;
+  const target = firstError.closest('.person-menu-card, .companion-row, .field') || firstError;
+  target.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
 function updateProgress() {
@@ -48,6 +116,154 @@ function updateProgress() {
     if (s < currentStep) el.classList.add('done');
     if (s === currentStep) el.classList.add('active');
   });
+}
+
+/* ============================================================
+   COMPANION MANAGEMENT — Add / remove / render
+   ============================================================ */
+function addCompanion() {
+  if (companions.length >= 3) return;
+  companionCounter++;
+  companions.push({ id: 'companion_' + companionCounter });
+  renderCompanions();
+}
+
+function removeCompanion(id) {
+  companions = companions.filter(c => c.id !== id);
+  renderCompanions();
+}
+
+function renderCompanions() {
+  const list = document.getElementById('companionList');
+  const btn  = document.getElementById('btnAddCompanion');
+  const note = document.getElementById('companionNote');
+
+  // Preserve existing input values before rebuilding
+  const savedValues = {};
+  companions.forEach(c => {
+    const el = document.getElementById(c.id);
+    if (el) savedValues[c.id] = el.value;
+  });
+
+  list.innerHTML = companions.map((c, i) => `
+    <div class="companion-row" id="row_${c.id}">
+      <div class="companion-label">Acompañante ${i + 1}</div>
+      <div class="companion-input-wrap">
+        <input type="text" id="${c.id}" placeholder="Nombre y apellidos" autocomplete="off"
+               oninput="clearCompanionError('${c.id}')">
+        <button type="button" class="btn-remove-companion"
+                onclick="removeCompanion('${c.id}')" aria-label="Eliminar acompañante">✕</button>
+      </div>
+      <p class="field-error" id="${c.id}_error">Por favor, escribe el nombre</p>
+    </div>
+  `).join('');
+
+  // Restore saved values
+  companions.forEach(c => {
+    const el = document.getElementById(c.id);
+    if (el && savedValues[c.id] !== undefined) el.value = savedValues[c.id];
+  });
+
+  btn.style.display  = companions.length >= 3 ? 'none' : '';
+  note.style.display = companions.length >= 3 ? 'none' : '';
+}
+
+function clearCompanionError(id) {
+  const el = document.getElementById(id);
+  if (el && el.value.trim()) {
+    setError(id + '_error', false);
+    el.classList.remove('error');
+  }
+}
+
+/* ============================================================
+   MENU STEP — Dynamic cards (one card per person)
+   ============================================================ */
+function escapeHtml(str) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function buildMenuStep() {
+  const container = document.getElementById('menuPersonsContainer');
+  const persons = [
+    { label: 'Tú', nombre: document.getElementById('nombre').value.trim() },
+    ...companions.map((c, i) => ({
+      label:  'Acompañante ' + (i + 1),
+      nombre: document.getElementById(c.id)?.value.trim() || ''
+    }))
+  ];
+
+  container.innerHTML = persons.map((p, i) => `
+    <div class="person-menu-card" id="menuCard_${i}">
+      <div class="person-menu-header">
+        <span class="person-menu-label">${p.label}</span>
+        <span class="person-menu-name">${escapeHtml(p.nombre)}</span>
+      </div>
+
+      <div class="field" style="margin-top:1rem">
+        <label>Elige tu menú *</label>
+        <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="menu_${i}" value="carne"
+                   onchange="setError('menuError_${i}',false)">
+            <span class="radio-custom"></span>
+            <span class="radio-text">
+              Carne + pescado
+              <small>Menú principal</small>
+            </span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="menu_${i}" value="vegano"
+                   onchange="setError('menuError_${i}',false)">
+            <span class="radio-custom"></span>
+            <span class="radio-text">
+              Vegano
+              <small>Sin productos animales</small>
+            </span>
+          </label>
+        </div>
+        <p class="field-error" id="menuError_${i}">Por favor, elige un menú</p>
+      </div>
+
+      <div class="field" style="margin-top:1.2rem">
+        <label>¿Tienes alergias o intolerancias? *</label>
+        <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="alergias_${i}" value="no"
+                   onchange="toggleAlergiasCard(${i})">
+            <span class="radio-custom"></span>
+            <span class="radio-text">No, ninguna</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="alergias_${i}" value="si"
+                   onchange="toggleAlergiasCard(${i})">
+            <span class="radio-custom"></span>
+            <span class="radio-text">Sí, tengo alergias</span>
+          </label>
+        </div>
+        <p class="field-error" id="alergiasError_${i}">Por favor, selecciona una opción</p>
+      </div>
+
+      <div class="conditional" id="alergiasDetalle_${i}">
+        <div class="field">
+          <label for="alergiasTexto_${i}">Descríbenos tus alergias *</label>
+          <textarea id="alergiasTexto_${i}" placeholder="Gluten, lactosa, frutos secos..."
+                    oninput="if(this.value.trim())setError('alergiasTextoError_${i}',false)"></textarea>
+          <p class="field-error" id="alergiasTextoError_${i}">Por favor, describe tus alergias</p>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleAlergiasCard(i) {
+  const val = document.querySelector(`input[name="alergias_${i}"]:checked`);
+  document.getElementById(`alergiasDetalle_${i}`).classList.toggle('show', val && val.value === 'si');
+  if (val) setError(`alergiasError_${i}`, false);
 }
 
 /* ============================================================
@@ -67,7 +283,19 @@ function validateStep(step) {
     if (!tel)    document.getElementById('telefono').classList.add('error');
     else         document.getElementById('telefono').classList.remove('error');
 
-    ok = nombre && tel;
+    ok = !!(nombre && tel);
+
+    // Validate each companion name
+    companions.forEach(c => {
+      const input = document.getElementById(c.id);
+      const val   = input ? input.value.trim() : '';
+      setError(c.id + '_error', !val);
+      if (input) {
+        if (!val) input.classList.add('error');
+        else      input.classList.remove('error');
+      }
+      if (!val) ok = false;
+    });
   }
 
   if (step === 2) {
@@ -77,20 +305,22 @@ function validateStep(step) {
   }
 
   if (step === 3) {
-    const menu     = document.querySelector('input[name="menu"]:checked');
-    const alergias = document.querySelector('input[name="alergias"]:checked');
-    let alergiasOk = true;
+    const totalPersons = 1 + companions.length;
+    for (let i = 0; i < totalPersons; i++) {
+      const menu     = document.querySelector(`input[name="menu_${i}"]:checked`);
+      const alergias = document.querySelector(`input[name="alergias_${i}"]:checked`);
+      setError(`menuError_${i}`,     !menu);
+      setError(`alergiasError_${i}`, !alergias);
 
-    setError('menuError',     !menu);
-    setError('alergiasError', !alergias);
+      let textoOk = true;
+      if (alergias && alergias.value === 'si') {
+        const texto = document.getElementById(`alergiasTexto_${i}`)?.value.trim();
+        setError(`alergiasTextoError_${i}`, !texto);
+        textoOk = !!texto;
+      }
 
-    if (alergias && alergias.value === 'si') {
-      const texto = document.getElementById('alergiasTexto').value.trim();
-      setError('alergiasTextoError', !texto);
-      alergiasOk = !!texto;
+      if (!menu || !alergias || !textoOk) ok = false;
     }
-
-    ok = menu && alergias && alergiasOk;
   }
 
   if (step === 4) {
@@ -104,7 +334,7 @@ function validateStep(step) {
       paradaOk = !!parada;
     }
 
-    ok = transporte && paradaOk;
+    ok = !!(transporte && paradaOk);
   }
 
   return ok;
@@ -126,12 +356,6 @@ document.querySelectorAll('input[name="asistencia"]').forEach(radio => {
     noWrap.classList.toggle('show', radio.value === 'no');
   });
 });
-
-/* Menu step: show allergy detail field if "yes" selected */
-function toggleAlergias() {
-  const val = document.querySelector('input[name="alergias"]:checked');
-  document.getElementById('alergiasDetalle').classList.toggle('show', val && val.value === 'si');
-}
 
 /* Transport step: show bus stop selector if bus selected */
 function toggleTransporte() {
@@ -162,17 +386,6 @@ document.querySelectorAll('input[name="asistencia"]').forEach(radio => {
   radio.addEventListener('change', () => setError('asistenciaError', false));
 });
 
-// Step 3: menu, allergies, and allergy detail text
-document.querySelectorAll('input[name="menu"]').forEach(radio => {
-  radio.addEventListener('change', () => setError('menuError', false));
-});
-document.querySelectorAll('input[name="alergias"]').forEach(radio => {
-  radio.addEventListener('change', () => setError('alergiasError', false));
-});
-document.getElementById('alergiasTexto').addEventListener('input', function() {
-  if (this.value.trim()) setError('alergiasTextoError', false);
-});
-
 // Step 4: transport and bus stop
 document.querySelectorAll('input[name="transporte"]').forEach(radio => {
   radio.addEventListener('change', () => setError('transporteError', false));
@@ -186,7 +399,7 @@ document.getElementById('paradaBus').addEventListener('change', function() {
    When the guest selects "no", the form submits without steps 3–5.
    ============================================================ */
 function handleAsistencia() {
-  if (!validateStep(2)) return;
+  if (!validateStep(2)) { scrollToFirstError(); return; }
   const val = document.querySelector('input[name="asistencia"]:checked').value;
 
   if (val === 'no') {
@@ -203,37 +416,62 @@ function handleAsistencia() {
 
 /* ============================================================
    FORM SUBMISSION — Google Apps Script integration
-   Collects all form data and POSTs to the Apps Script endpoint.
-   Uses no-cors mode since the endpoint does not return CORS headers.
+   Sends one row per attendee (main person + companions).
    ============================================================ */
 async function enviarFormulario(noAsiste = false) {
-  // Only validate step 4 if the guest is attending
+  // Only validate transport step if the guest is attending
   if (!noAsiste && !validateStep(4)) return;
 
-  // Collect all form data
   const nombre        = document.getElementById('nombre').value.trim();
   const telefono      = document.getElementById('telefono').value.trim();
-  const asistencia    = document.querySelector('input[name="asistencia"]:checked')?.value || 'no';
   const mensajeNo     = document.getElementById('mensajeNoAsiste').value.trim();
-  const menu          = document.querySelector('input[name="menu"]:checked')?.value || '';
-  const alergiasVal   = document.querySelector('input[name="alergias"]:checked')?.value || '';
-  const alergiasText  = document.getElementById('alergiasTexto').value.trim();
   const transporte    = document.querySelector('input[name="transporte"]:checked')?.value || '';
   const paradaBus     = document.getElementById('paradaBus').value;
   const mensajeNovios = document.getElementById('mensajeNovios').value.trim();
 
-  const datos = {
-    timestamp:  new Date().toISOString(),
-    nombre,
+  const asistentes = [];
+
+  if (noAsiste) {
+    // Only main person, not attending
+    asistentes.push({
+      esPrincipal: true,
+      nombre,
+      asistencia:      'no',
+      menu:            '',
+      alergias:        '',
+      alergiasDetalle: '',
+    });
+  } else {
+    // Main person attending
+    asistentes.push({
+      esPrincipal:     true,
+      nombre,
+      asistencia:      'si',
+      menu:            document.querySelector('input[name="menu_0"]:checked')?.value || '',
+      alergias:        document.querySelector('input[name="alergias_0"]:checked')?.value || '',
+      alergiasDetalle: document.getElementById('alergiasTexto_0')?.value.trim() || '',
+    });
+    // Companions
+    companions.forEach((c, i) => {
+      const idx = i + 1;
+      asistentes.push({
+        esPrincipal:     false,
+        nombre:          document.getElementById(c.id)?.value.trim() || '',
+        asistencia:      'si',
+        menu:            document.querySelector(`input[name="menu_${idx}"]:checked`)?.value || '',
+        alergias:        document.querySelector(`input[name="alergias_${idx}"]:checked`)?.value || '',
+        alergiasDetalle: document.getElementById(`alergiasTexto_${idx}`)?.value.trim() || '',
+      });
+    });
+  }
+
+  const payload = {
+    asistentes,
     telefono,
-    asistencia,
     mensajeNoAsiste: mensajeNo,
-    menu,
-    alergias:          alergiasVal,
-    alergiasDetalle:   alergiasText,
     transporte,
     paradaBus,
-    mensajeNovios
+    mensajeNovios,
   };
 
   // Show loading state
@@ -248,16 +486,16 @@ async function enviarFormulario(noAsiste = false) {
   if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'TU_URL_DE_APPS_SCRIPT_AQUI') {
     console.warn('Apps Script URL not configured. Simulating successful submission.');
     await new Promise(r => setTimeout(r, 900));
-    mostrarExito(asistencia, nombre);
+    mostrarExito(noAsiste ? 'no' : 'si', nombre, asistentes.length);
     return;
   }
 
   // Test mode: entering "test" as name simulates submission without calling Apps Script
   if (nombre.toLowerCase() === 'test') {
     console.warn('Test mode active. Simulating submission without calling Apps Script.');
-    console.log('Data that would be sent:', datos);
+    console.log('Data that would be sent:', payload);
     await new Promise(r => setTimeout(r, 900));
-    mostrarExito(asistencia, nombre);
+    mostrarExito(noAsiste ? 'no' : 'si', nombre, asistentes.length);
     return;
   }
 
@@ -266,9 +504,9 @@ async function enviarFormulario(noAsiste = false) {
       method:  'POST',
       mode:    'no-cors',
       headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify(datos)
+      body:    JSON.stringify(payload)
     });
-    mostrarExito(asistencia, nombre);
+    mostrarExito(noAsiste ? 'no' : 'si', nombre, asistentes.length);
   } catch (err) {
     console.error('Submission error:', err);
     if (btnEnviar) {
@@ -289,7 +527,7 @@ async function enviarFormulario(noAsiste = false) {
 /* ============================================================
    SUCCESS SCREEN — Personalized message based on RSVP answer
    ============================================================ */
-function mostrarExito(asistencia, nombre) {
+function mostrarExito(asistencia, nombre, totalPersonas = 1) {
   // Hide all form steps and the progress bar
   document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
   document.getElementById('progressBar').style.display = 'none';
@@ -301,13 +539,16 @@ function mostrarExito(asistencia, nombre) {
 
   if (asistencia === 'si') {
     title.textContent = '¡Hasta pronto, ' + nombre.split(' ')[0] + '!';
-    msg.textContent   = 'Hemos recibido tu confirmación. ¡Estamos deseando celebrarlo contigo el 12 de septiembre!';
-    note.textContent  = '¡Muchas gracias por tomarte el tiempo de confirmarnos! Recuerda que, por motivos logísticos, el formulario debe rellenarse de forma individual. Si vienes acompañado/a, pide a tu pareja o familiar que complete también su propia confirmación.';
+    msg.textContent   = totalPersonas > 1
+      ? `Hemos recibido la confirmación de ${totalPersonas} personas. ¡Estamos deseando celebrarlo con vosotros el 12 de septiembre!`
+      : 'Hemos recibido tu confirmación. ¡Estamos deseando celebrarlo contigo el 12 de septiembre!';
+    note.textContent = '';
   } else {
     title.textContent = 'Lo sentimos mucho';
     screen.querySelector('.success-icon svg').innerHTML = '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>';
     msg.className     = 'success-msg-no';
     msg.textContent   = 'Te echaremos de menos. Gracias por hacérnoslo saber y por el mensaje que nos has dejado.';
+    note.textContent  = '';
   }
 
   screen.classList.add('show');
