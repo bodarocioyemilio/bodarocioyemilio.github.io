@@ -489,3 +489,38 @@ window.addEventListener('load', function () {
     toggleMute(e);
   });
 }());
+
+
+/* ============================================================
+   GIFT SECTION — Copy IBAN to clipboard
+   ============================================================ */
+(function () {
+  const copyBtn = document.getElementById('giftCopyBtn');
+  if (!copyBtn) return;
+
+  copyBtn.addEventListener('click', function () {
+    navigator.clipboard.writeText('ES6701825645100201674020').then(function () {
+      copyBtn.textContent = '¡Copiado!';
+      copyBtn.classList.add('copied');
+      setTimeout(function () {
+        copyBtn.textContent = 'Copiar número de cuenta';
+        copyBtn.classList.remove('copied');
+      }, 2500);
+    }).catch(function () {
+      /* Fallback for browsers without clipboard API */
+      const tmp = document.createElement('textarea');
+      tmp.value = 'ES67 0182 5645 1002 0167 4020';
+      tmp.style.position = 'fixed'; tmp.style.opacity = '0';
+      document.body.appendChild(tmp);
+      tmp.select();
+      document.execCommand('copy');
+      document.body.removeChild(tmp);
+      copyBtn.textContent = '¡Copiado!';
+      copyBtn.classList.add('copied');
+      setTimeout(function () {
+        copyBtn.textContent = 'Copiar número de cuenta';
+        copyBtn.classList.remove('copied');
+      }, 2500);
+    });
+  });
+}());

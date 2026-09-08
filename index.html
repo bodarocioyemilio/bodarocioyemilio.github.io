@@ -345,42 +345,140 @@
         <div class="accordion-body" id="accordion-transporte" aria-hidden="true">
 
           <div class="transport-wrapper">
-            <div class="transport-legs-grid">
 
-              <!-- Outbound route: pickup → church -->
-              <div class="transport-leg transport-leg--ida">
-                <p class="transport-leg-title">🚌 Ida — hacia la iglesia</p>
+            <!-- ── IDA: 3 buses independientes ── -->
+            <div class="transport-ida-header">
+              <p class="transport-leg-title">🚌 Ida — hacia la iglesia</p>
+              <p class="transport-note">Hay <strong>tres autobuses</strong>, uno por cada punto de salida. Comprueba el que corresponde a tu parada.</p>
+            </div>
+
+            <div class="transport-buses-grid">
+
+              <!-- Bus 1: Alicante -->
+              <div class="transport-leg">
+                <p class="transport-bus-label">Bus · Alicante</p>
                 <div class="tr-tl">
                   <div class="tr-stop">
                     <div class="tr-dot"></div>
-                    <div><p class="tr-name">Alicante</p><p class="tr-time">Salida · 16:55 h</p><a href="https://maps.app.goo.gl/1LkAMj4sJB66mSvQ7" target="_blank" rel="noopener" class="transport-map-link">📍 Ver punto de recogida</a></div>
+                    <div>
+                      <p class="tr-name">Alicante</p>
+                      <p class="tr-time">Salida · 16:15 h</p>
+                      <p class="tr-dest-label">Plaza de Luceros · parada Bankinter</p>
+                      <a href="https://maps.app.goo.gl/1LkAMj4sJB66mSvQ7" target="_blank" rel="noopener" class="transport-map-link">📍 Ver punto de recogida</a>
+                    </div>
                   </div>
                   <div class="tr-stop">
                     <div class="tr-dot"></div>
-                    <div><p class="tr-name">San Vicente del Raspeig</p><p class="tr-time">Parada · 17:10 h</p><a href="https://maps.app.goo.gl/CwFQf5gSjerCRPTQA" target="_blank" rel="noopener" class="transport-map-link">📍 Ver punto de recogida</a></div>
-                  </div>
-                  <div class="tr-stop">
-                    <div class="tr-dot"></div>
-                    <div><p class="tr-name">AC Hotel Elda</p><p class="tr-time">Parada · 17:40 h</p><a href="https://maps.app.goo.gl/UhspRWQVDBE4Gcqz6" target="_blank" rel="noopener" class="transport-map-link">📍 Ver punto de recogida</a></div>
+                    <div>
+                      <p class="tr-name">AC Hotel Elda</p>
+                      <p class="tr-dest-label">Parada intermedia</p>
+                      <a href="https://maps.app.goo.gl/UhspRWQVDBE4Gcqz6" target="_blank" rel="noopener" class="transport-map-link">📍 Ver punto</a>
+                    </div>
                   </div>
                   <div class="tr-stop">
                     <div class="tr-dot tr-dot--dest"></div>
-                    <div><p class="tr-name">Iglesia</p><p class="tr-dest-label">Destino · llegada ~17:45 h</p></div>
+                    <div>
+                      <p class="tr-name">Iglesia de Santa Ana</p>
+                      <p class="tr-dest-label">Llegada · 17:40 h</p>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <!-- Bridge notice: church → venue -->
-              <p class="transport-bridge transport-bridge--grid">⛪ Tras la ceremonia, el autobús os llevará directamente a la finca. ¡No os preocupéis por nada!</p>
+              <!-- Bus 2: San Vicente -->
+              <div class="transport-leg">
+                <p class="transport-bus-label">Bus · San Vicente</p>
+                <div class="tr-tl">
+                  <div class="tr-stop">
+                    <div class="tr-dot"></div>
+                    <div>
+                      <p class="tr-name">San Vicente del Raspeig</p>
+                      <p class="tr-time">Salida · 16:15 h</p>
+                      <p class="tr-dest-label">Ancha de Castelar · parada de las Monjas</p>
+                      <a href="https://maps.app.goo.gl/CwFQf5gSjerCRPTQA" target="_blank" rel="noopener" class="transport-map-link">📍 Ver punto de recogida</a>
+                    </div>
+                  </div>
+                  <div class="tr-stop">
+                    <div class="tr-dot"></div>
+                    <div>
+                      <p class="tr-name">AC Hotel Elda</p>
+                      <p class="tr-dest-label">Parada intermedia</p>
+                      <a href="https://maps.app.goo.gl/UhspRWQVDBE4Gcqz6" target="_blank" rel="noopener" class="transport-map-link">📍 Ver punto</a>
+                    </div>
+                  </div>
+                  <div class="tr-stop">
+                    <div class="tr-dot tr-dot--dest"></div>
+                    <div>
+                      <p class="tr-name">Iglesia de Santa Ana</p>
+                      <p class="tr-dest-label">Llegada · 17:40 h</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-              <!-- Return route: venue → home -->
-              <div class="transport-leg transport-leg--vuelta">
-                <p class="transport-leg-title">🌙 Vuelta — regreso nocturno</p>
-                <p class="transport-note" style="margin-bottom:1rem;">Habrá dos salidas desde la finca. Ambas realizarán el mismo recorrido de paradas.</p>
+              <!-- Bus 3: Hotel Elda -->
+              <div class="transport-leg">
+                <p class="transport-bus-label">Bus · Hotel Elda</p>
+                <div class="tr-tl">
+                  <div class="tr-stop">
+                    <div class="tr-dot"></div>
+                    <div>
+                      <p class="tr-name">AC Hotel Elda</p>
+                      <p class="tr-time">Salida · 17:00 h</p>
+                      <a href="https://maps.app.goo.gl/UhspRWQVDBE4Gcqz6" target="_blank" rel="noopener" class="transport-map-link">📍 Ver punto de recogida</a>
+                    </div>
+                  </div>
+                  <div class="tr-stop">
+                    <div class="tr-dot tr-dot--dest"></div>
+                    <div>
+                      <p class="tr-name">Iglesia de Santa Ana</p>
+                      <p class="tr-dest-label">Llegada · 17:40 h</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div><!-- /transport-buses-grid -->
+
+            <!-- Bridge: church → venue -->
+            <p class="transport-bridge">⛪ Tras la ceremonia, a las 19:00 h, los autobuses os llevarán desde la rotonda directamente a la Finca Quinta Lacy. ¡No os preocupéis por nada!</p>
+
+            <!-- ── VUELTA: dos salidas con rutas distintas ── -->
+            <div class="transport-ida-header" style="margin-top:.4rem;">
+              <p class="transport-leg-title">🌙 Vuelta — regreso nocturno</p>
+              <p class="transport-note">Habrá <strong>dos salidas</strong> desde la finca con rutas distintas según vuestro destino.</p>
+            </div>
+
+            <div class="transport-returns-grid">
+
+              <!-- 1ª vuelta: Alicante -->
+              <div class="transport-leg">
+                <p class="transport-bus-label">1ª salida · 01:15 h</p>
+                <p class="transport-note" style="margin-bottom:.8rem;font-size:.85rem;">Solo para invitados de Alicante</p>
                 <div class="tr-tl">
                   <div class="tr-stop">
                     <div class="tr-dot tr-dot--bridge"></div>
-                    <div><p class="tr-name">Finca</p><p class="tr-time">1ª salida · 01:00 h &nbsp;·&nbsp; 2ª salida · 04:00 h</p></div>
+                    <div><p class="tr-name">Finca Quinta Lacy</p><p class="tr-time">Salida · 01:15 h</p></div>
+                  </div>
+                  <div class="tr-stop">
+                    <div class="tr-dot"></div>
+                    <div><p class="tr-name">AC Hotel Elda</p><p class="tr-dest-label">Parada intermedia</p></div>
+                  </div>
+                  <div class="tr-stop">
+                    <div class="tr-dot tr-dot--dest"></div>
+                    <div><p class="tr-name">Alicante</p><p class="tr-dest-label">Plaza de Luceros · Bankinter</p></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 2ª vuelta: San Vicente + Alicante -->
+              <div class="transport-leg">
+                <p class="transport-bus-label">2ª salida · 04:00 h</p>
+                <p class="transport-note" style="margin-bottom:.8rem;font-size:.85rem;">Para San Vicente y Alicante (2 buses)</p>
+                <div class="tr-tl">
+                  <div class="tr-stop">
+                    <div class="tr-dot tr-dot--bridge"></div>
+                    <div><p class="tr-name">Finca Quinta Lacy</p><p class="tr-time">Salida · 04:00 h</p></div>
                   </div>
                   <div class="tr-stop">
                     <div class="tr-dot"></div>
@@ -388,16 +486,17 @@
                   </div>
                   <div class="tr-stop">
                     <div class="tr-dot"></div>
-                    <div><p class="tr-name">San Vicente del Raspeig</p><p class="tr-dest-label">Parada intermedia</p></div>
+                    <div><p class="tr-name">San Vicente del Raspeig</p><p class="tr-dest-label">Ancha de Castelar · Monjas</p></div>
                   </div>
                   <div class="tr-stop">
                     <div class="tr-dot tr-dot--dest"></div>
-                    <div><p class="tr-name">Alicante</p><p class="tr-dest-label">Destino final</p></div>
+                    <div><p class="tr-name">Alicante</p><p class="tr-dest-label">Plaza de Luceros · Bankinter</p></div>
                   </div>
                 </div>
               </div>
 
-            </div><!-- /transport-legs-grid -->
+            </div><!-- /transport-returns-grid -->
+
           </div>
 
         </div><!-- /accordion-transporte -->
@@ -469,6 +568,28 @@ En este video podéis ver que nos apuntamos a todos los planes que podemos y que
       </picture>
     </div>
 
+  </div>
+</section>
+
+
+<!-- ============================================================
+     GIFT / CONTRIBUTION SECTION
+     ============================================================ -->
+<section id="gift-section">
+  <div class="s-inner gift-inner">
+    <p class="s-label aos">Un detalle</p>
+    <h2 class="s-title aos d1">Si queréis hacernos un regalo</h2>
+    <div class="gold-bar aos d2"></div>
+    <p class="msg-quote aos d2">
+      Para nosotros, el mejor regalo sois vosotros. Si aun así queréis contribuir a nuestro futuro juntos
+      — ya sea para el viaje de novios o para nuestro nuevo hogar —
+      os dejamos nuestro número de cuenta:
+    </p>
+    <div class="gift-box aos d3">
+      <p class="gift-iban">ES67 0182 5645 1002 0167 4020</p>
+      <button class="gift-copy-btn" id="giftCopyBtn" type="button">Copiar número de cuenta</button>
+    </div>
+    <p class="gift-thanks aos d4">Gracias de corazón ♡</p>
   </div>
 </section>
 

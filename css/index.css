@@ -1056,6 +1056,84 @@ section { position: relative; padding: 4rem 2rem; }
   color: var(--sepia-light); line-height: 1.7; margin-top: .4rem;
 }
 
+/* IDA header + bus grid */
+.transport-ida-header {
+  max-width: 740px; margin: 0 auto .4rem;
+}
+.transport-ida-header .transport-leg-title { margin-bottom: .3rem; }
+
+.transport-buses-grid {
+  display: flex; flex-direction: column; gap: 1rem;
+  max-width: 740px; margin: 0 auto;
+}
+@media (min-width: 640px) {
+  .transport-buses-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    align-items: start;
+  }
+}
+
+.transport-bus-label {
+  font-family: 'Montserrat', sans-serif; font-weight: 600;
+  font-size: .62rem; letter-spacing: .38em; text-transform: uppercase;
+  color: var(--gold-dark); margin-bottom: .9rem;
+}
+
+/* Return routes grid */
+.transport-returns-grid {
+  display: flex; flex-direction: column; gap: 1rem;
+  max-width: 740px; margin: 0 auto;
+}
+@media (min-width: 560px) {
+  .transport-returns-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    align-items: start;
+  }
+}
+
+/* ============================================================
+   GIFT / CONTRIBUTION SECTION
+   ============================================================ */
+#gift-section {
+  background: linear-gradient(180deg, var(--cream) 0%, var(--cream-warm) 100%);
+  text-align: center;
+  padding: 5rem 2rem;
+}
+.gift-inner { max-width: 600px; margin: 0 auto; }
+.gift-inner .msg-quote { margin-bottom: 2rem; }
+
+.gift-box {
+  display: inline-flex; flex-direction: column; align-items: center; gap: 1.1rem;
+  background: var(--cream); border: 1px solid var(--divider);
+  padding: 1.8rem 2.4rem; margin: 0 auto;
+  max-width: 100%;
+}
+.gift-iban {
+  font-family: 'Cormorant Garamond', serif; font-weight: 600;
+  font-size: clamp(1.2rem, 4vw, 1.7rem); color: var(--sepia);
+  letter-spacing: .1em; line-height: 1.2;
+  word-break: break-all;
+}
+.gift-copy-btn {
+  font-family: 'Montserrat', sans-serif; font-weight: 400;
+  font-size: .68rem; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--gold-dark); background: transparent;
+  border: 1px solid var(--gold); padding: .55rem 1.4rem;
+  cursor: pointer; transition: background .22s ease, color .22s ease, border-color .22s ease;
+}
+.gift-copy-btn:hover { background: var(--gold); color: var(--cream); border-color: var(--gold); }
+.gift-copy-btn.copied { background: var(--sage); color: var(--cream); border-color: var(--sage); }
+
+.gift-thanks {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  color: var(--rose); margin-top: 2rem;
+}
+
 /* ============================================================
    VIDEO SECTION
    ============================================================ */
