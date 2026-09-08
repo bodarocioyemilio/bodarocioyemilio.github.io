@@ -1081,6 +1081,18 @@ section { position: relative; padding: 4rem 2rem; }
   color: var(--gold-dark); margin-bottom: .9rem;
 }
 
+/* Church drop-off notice */
+.transport-church-note {
+  max-width: 740px; margin: 0 auto;
+  background: var(--cream); border: 1px solid var(--divider);
+  border-left: 3px solid var(--gold);
+  padding: .9rem 1.2rem;
+  display: flex; flex-direction: column; gap: .4rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: .98rem; color: var(--sepia-light); line-height: 1.6;
+}
+.transport-church-note p { margin: 0; }
+
 /* Return routes grid */
 .transport-returns-grid {
   display: flex; flex-direction: column; gap: 1rem;
