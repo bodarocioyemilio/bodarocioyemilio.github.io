@@ -205,6 +205,8 @@ const _cdHours  = document.getElementById('cd-hours');
 const _cdMins   = document.getElementById('cd-mins');
 const _cdSecs   = document.getElementById('cd-secs');
 
+let _cdInterval = null;
+
 function updateCountdown() {
   const diff = _cdTarget - new Date();
 
@@ -226,7 +228,7 @@ function updateCountdown() {
   if (_cdSecs)  _cdSecs.textContent  = pad(secs);
 }
 updateCountdown();
-const _cdInterval = setInterval(updateCountdown, 1000);
+if (_cdTarget - new Date() > 0) _cdInterval = setInterval(updateCountdown, 1000);
 
 /* ============================================================
    FLOATING PETALS — Decorative petal animation in hero section
